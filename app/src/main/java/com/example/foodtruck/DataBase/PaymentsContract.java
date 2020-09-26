@@ -82,6 +82,8 @@ public final class PaymentsContract {
         cursor.moveToFirst();
         int icount = cursor.getInt(0);
         mDb.close();
+        cursor.close();
+        close();
         return icount <= 0;
     }
 

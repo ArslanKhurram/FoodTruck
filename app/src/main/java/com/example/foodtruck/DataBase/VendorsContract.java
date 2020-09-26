@@ -39,6 +39,7 @@ public class VendorsContract {
             VendorsEntry.COL_FIRST_NAME,
             VendorsEntry.COL_LAST_NAME,
             VendorsEntry.COL_EMAIL,
+            VendorsEntry.COL_PASSWORD,
             VendorsEntry.COL_PHONE_NUMBER,
             VendorsEntry.COL_STREET_NAME,
             VendorsEntry.COL_HOUSE_NUMBER,
@@ -59,13 +60,14 @@ public class VendorsContract {
     }
 
     //used to add recipe into database
-    public Vendor addVendor(String first, String last, String email, String phone, String streetName, String houseNum
+    public Vendor addVendor(String first, String last, String email, String password, String phone, String streetName, String houseNum
             , String zipCode, String city, String state, String dateAdded, String category) {
         open();
         ContentValues cv = new ContentValues();
         cv.put(VendorsEntry.COL_FIRST_NAME, first);
         cv.put(VendorsEntry.COL_LAST_NAME, last);
         cv.put(VendorsEntry.COL_EMAIL, email);
+        cv.put(VendorsEntry.COL_PASSWORD, password);
         cv.put(VendorsEntry.COL_PHONE_NUMBER, phone);
         cv.put(VendorsEntry.COL_STREET_NAME, streetName);
         cv.put(VendorsEntry.COL_HOUSE_NUMBER, houseNum);
@@ -92,14 +94,15 @@ public class VendorsContract {
         vendor.setM_FirstName(cursor.getString(1));
         vendor.setM_LastName(cursor.getString(2));
         vendor.setM_Email(cursor.getString(3));
-        vendor.setM_PhoneNumber(cursor.getString(4));
-        vendor.setM_StreetName(cursor.getString(5));
-        vendor.setM_HouseNumber(cursor.getString(6));
-        vendor.setM_ZipCode(cursor.getString(7));
-        vendor.setM_City(cursor.getString(8));
-        vendor.setM_State(cursor.getString(9));
-        vendor.setM_DateAdded(cursor.getString(10));
-        vendor.setM_Category(cursor.getString(11));
+        vendor.setM_Password(cursor.getString(4));
+        vendor.setM_PhoneNumber(cursor.getString(5));
+        vendor.setM_StreetName(cursor.getString(6));
+        vendor.setM_HouseNumber(cursor.getString(7));
+        vendor.setM_ZipCode(cursor.getString(8));
+        vendor.setM_City(cursor.getString(9));
+        vendor.setM_State(cursor.getString(10));
+        vendor.setM_DateAdded(cursor.getString(11));
+        vendor.setM_Category(cursor.getString(12));
         cursor.close();
         return vendor;
     }
@@ -111,6 +114,7 @@ public class VendorsContract {
         public static final String COL_FIRST_NAME = "first_Name";
         public static final String COL_LAST_NAME = "last_Name";
         public static final String COL_EMAIL = "email";
+        public static final String COL_PASSWORD = "password";
         public static final String COL_PHONE_NUMBER = "phone_Number";
         public static final String COL_STREET_NAME = "street_Name";
         public static final String COL_HOUSE_NUMBER = "house_Number";

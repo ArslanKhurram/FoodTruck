@@ -25,6 +25,7 @@ public final class CustomersContract {
             CustomersEntry.COL_FIRST_NAME,
             CustomersEntry.COL_LAST_NAME,
             CustomersEntry.COL_EMAIL,
+            CustomersEntry.COL_PASSWORD,
             CustomersEntry.COL_PHONE_NUMBER,
             CustomersEntry.COL_STREET_NAME,
             CustomersEntry.COL_HOUSE_NUMBER,
@@ -34,13 +35,14 @@ public final class CustomersContract {
     };
 
     //used to add recipe into database
-    public Customer addCustomer(String first, String last, String email, String phone, String streetName, String houseNum
+    public Customer addCustomer(String first, String last, String email, String password, String phone, String streetName, String houseNum
             , String zipCode, String city, String state) {
         open();
         ContentValues cv = new ContentValues();
         cv.put(CustomersEntry.COL_FIRST_NAME, first);
         cv.put(CustomersEntry.COL_LAST_NAME, last);
         cv.put(CustomersEntry.COL_EMAIL, email);
+        cv.put(CustomersEntry.COL_PASSWORD, password);
         cv.put(CustomersEntry.COL_PHONE_NUMBER, phone);
         cv.put(CustomersEntry.COL_STREET_NAME, streetName);
         cv.put(CustomersEntry.COL_HOUSE_NUMBER, houseNum);
@@ -123,12 +125,13 @@ public final class CustomersContract {
         customer.setM_FirstName(cursor.getString(1));
         customer.setM_LastName(cursor.getString(2));
         customer.setM_Email(cursor.getString(3));
-        customer.setM_PhoneNumber(cursor.getString(4));
-        customer.setM_StreetName(cursor.getString(5));
-        customer.setM_HouseNumber(cursor.getString(6));
-        customer.setM_ZipCode(cursor.getString(7));
-        customer.setM_City(cursor.getString(8));
-        customer.setM_State(cursor.getString(9));
+        customer.setM_Password(cursor.getString(4));
+        customer.setM_PhoneNumber(cursor.getString(5));
+        customer.setM_StreetName(cursor.getString(6));
+        customer.setM_HouseNumber(cursor.getString(7));
+        customer.setM_ZipCode(cursor.getString(8));
+        customer.setM_City(cursor.getString(9));
+        customer.setM_State(cursor.getString(10));
 
         cursor.close();
         return customer;
@@ -140,6 +143,7 @@ public final class CustomersContract {
         public static final String COL_FIRST_NAME = "first_Name";
         public static final String COL_LAST_NAME = "last_Name";
         public static final String COL_EMAIL = "email";
+        public static final String COL_PASSWORD = "password";
         public static final String COL_PHONE_NUMBER = "phone_Number";
         public static final String COL_STREET_NAME = "street_Name";
         public static final String COL_HOUSE_NUMBER = "house_Number";

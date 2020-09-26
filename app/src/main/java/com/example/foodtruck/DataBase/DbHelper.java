@@ -37,6 +37,7 @@ public class DbHelper extends SQLiteOpenHelper {
             CustomersEntry.COL_FIRST_NAME + " TEXT NOT NULL, " +
             CustomersEntry.COL_LAST_NAME + " TEXT NOT NULL, " +
             CustomersEntry.COL_EMAIL + " TEXT NOT NULL, " +
+            CustomersEntry.COL_PASSWORD + " TEXT NOT NULL, " +
             CustomersEntry.COL_PHONE_NUMBER + " TEXT NOT NULL, " +
             CustomersEntry.COL_STREET_NAME + " TEXT NOT NULL, " +
             CustomersEntry.COL_HOUSE_NUMBER + " TEXT NOT NULL, " +
@@ -51,6 +52,7 @@ public class DbHelper extends SQLiteOpenHelper {
             VendorsEntry.COL_FIRST_NAME + " TEXT NOT NULL, " +
             VendorsEntry.COL_LAST_NAME + " TEXT NOT NULL, " +
             VendorsEntry.COL_EMAIL + " TEXT NOT NULL, " +
+            VendorsEntry.COL_PASSWORD + " TEXT NOT NULL, " +
             VendorsEntry.COL_PHONE_NUMBER + " TEXT NOT NULL, " +
             VendorsEntry.COL_STREET_NAME + " TEXT NOT NULL, " +
             VendorsEntry.COL_HOUSE_NUMBER + " TEXT NOT NULL, " +

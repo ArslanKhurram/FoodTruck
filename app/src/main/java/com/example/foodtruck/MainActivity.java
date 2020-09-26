@@ -25,12 +25,12 @@ public class MainActivity extends AppCompatActivity {
     public void makeEntry(View view) {
 
         CustomersContract cc = new CustomersContract(this);
-        cc.addCustomer("Arslan", "Adam", "khura6@farmingdale.edu","631-123-4567", "Apple St","1234","11777","Adams Town","PA");
+        cc.addCustomer("Arslan", "Adam", "khura6@farmingdale.edu", "ILovePie","631-123-4567", "Apple St","1234","11777","Adams Town","PA");
 
 
 
         VendorsContract vc = new VendorsContract(this);
-        vc.addVendor("Mike","Pear","mpwar@gmail.com","516-920-0202","Maple Ave","987","10393","Apple Village","VA", (Calendar.getInstance().getTime()).toString(), "Pizza")  ;
+        vc.addVendor("Mike","Pear","mpwar@gmail.com", "MikeIstheBest1234","516-920-0202","Maple Ave","987","10393","Apple Village","VA", (Calendar.getInstance().getTime()).toString(), "Pizza")  ;
 
 
         Customer cus;
