@@ -13,7 +13,7 @@ import com.example.foodtruck.models.Payment;
 
 //class to add customer data to database, foreign key to orders
 public final class CustomersContract {
-/*
+
     // Database fields
     private SQLiteDatabase mDb;
     private DbHelper mDbHelper;
@@ -31,8 +31,31 @@ public final class CustomersContract {
             CustomersEntry.COL_ZIP_CODE,
             CustomersEntry.COL_CITY,
             CustomersEntry.COL_STATE,
-            CustomersEntry.COL_PAYMENTS_ID
     };
+
+    //used to add recipe into database
+    public Customer addCustomer(String first, String last, String email, String phone, String streetName, String houseNum
+            , String zipCode, String city, String state) {
+        ContentValues cv = new ContentValues();
+        cv.put(CustomersEntry.COL_FIRST_NAME, first);
+        cv.put(CustomersEntry.COL_LAST_NAME, last);
+        cv.put(CustomersEntry.COL_EMAIL, email);
+        cv.put(CustomersEntry.COL_PHONE_NUMBER, phone);
+        cv.put(CustomersEntry.COL_STREET_NAME, streetName);
+        cv.put(CustomersEntry.COL_HOUSE_NUMBER, houseNum);
+        cv.put(CustomersEntry.COL_ZIP_CODE, zipCode);
+        cv.put(CustomersEntry.COL_CITY, city);
+        cv.put(CustomersEntry.COL_STATE, state);
+
+        long insertId = mDb.insert(CustomersEntry.TABLE_NAME, null, cv);
+        Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry._ID +
+                " = " + insertId, null, null, null, null);
+        cursor.moveToFirst();
+        Customer newCustomer = cursorToCustomer(cursor);
+        cursor.close();
+        return newCustomer;
+    }
+
 
     //open database
     public void open() throws SQLException {
@@ -43,6 +66,32 @@ public final class CustomersContract {
     public void close() {
         mDbHelper.close();
     }
+
+    //return Customer by searching by id
+    public Customer getCustomerById(long id) {
+        Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry._ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Customer customer = cursorToCustomer(cursor);
+        return customer;
+    }
+
+    //return Customer by searching by email
+    public Customer getCustomerIdByEmail(String email) {
+        Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry.COL_EMAIL + " = ?",
+                new String[]{String.valueOf(email)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Customer customer = cursorToCustomer(cursor);
+        mDb.close();
+        return customer;
+    }
+
 
     //constructor to open customer table
     public CustomersContract(Context context) {
@@ -56,49 +105,21 @@ public final class CustomersContract {
         }
     }
 
-    //used to add recipe into database
-    public Customer addRecipe(String first, String last, String email, String phone, String streetName, String houseNum
-                                , String zipCode, String city, String state, long paymentID) {
-        ContentValues cv = new ContentValues();
-        cv.put(CustomersEntry.COL_FIRST_NAME, first);
-        cv.put(CustomersEntry.COL_LAST_NAME, last);
-        cv.put(CustomersEntry.COL_EMAIL, email);
-        cv.put(CustomersEntry.COL_PHONE_NUMBER, phone);
-        cv.put(CustomersEntry.COL_STREET_NAME, streetName);
-        cv.put(CustomersEntry.COL_HOUSE_NUMBER, houseNum);
-        cv.put(CustomersEntry.COL_ZIP_CODE, zipCode);
-        cv.put(CustomersEntry.COL_CITY, city);
-        cv.put(CustomersEntry.COL_STATE, state);
-        cv.put(CustomersEntry.COL_PAYMENTS_ID, paymentID);
-        long insertId = mDb.insert(CustomersEntry.TABLE_NAME, null, cv);
-        Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry._ID +
-                " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        Customer newCustomer = cursorToCustomer(cursor);
-        cursor.close();
-        return newCustomer;
-    }
 
-    //used to set data to specific recipe object
-    private Customer cursorToRecipe(Cursor cursor) {
+    //used to set data to specific customer object
+    private Customer cursorToCustomer(Cursor cursor) {
         Customer customer = new Customer();
         customer.setM_Id(cursor.getLong(0));
         customer.setM_FirstName(cursor.getString(1));
         customer.setM_LastName(cursor.getString(2));
         customer.setM_Email(cursor.getString(3));
-        customer.setM_StreetName(cursor.getString(4));
-        customer.setM_HouseNumber(cursor.getString(5));
-        customer.setM_ZipCode(cursor.getString(6));
-        customer.setM_City(cursor.getString(7));
-        customer.setM_State(cursor.getString(8));
+        customer.setM_PhoneNumber(cursor.getString(4));
+        customer.setM_StreetName(cursor.getString(5));
+        customer.setM_HouseNumber(cursor.getString(6));
+        customer.setM_ZipCode(cursor.getString(7));
+        customer.setM_City(cursor.getString(8));
+        customer.setM_State(cursor.getString(9));
 
-        //get The User by id
-        long parentId = cursor.getLong(9);
-        CustomersContract contract = new CustomersContract(mContext);
-        Payment payment = contract.getParentById(parentId);
-        if (contract != null) {
-            customer.setPayment(payment);
-        }
         return customer;
     }
 
@@ -114,7 +135,6 @@ public final class CustomersContract {
         public static final String COL_ZIP_CODE = "zip_Code";
         public static final String COL_CITY = "city";
         public static final String COL_STATE = "state";
-        public static final String COL_PAYMENTS_ID = "payment_id_FK";
     }
-*/
+
 }

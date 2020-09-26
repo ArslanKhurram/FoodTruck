@@ -12,7 +12,6 @@ public class Customer {
     private String m_ZipCode;
     private String m_City;
     private String m_State;
-    private Payment payment;
 
     //default constructor
     public Customer() {};
@@ -97,12 +96,5 @@ public class Customer {
         this.m_State = m_State;
     }
 
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
 
 }

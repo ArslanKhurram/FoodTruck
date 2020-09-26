@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import com.example.foodtruck.models.Customer;
 import com.example.foodtruck.models.Payment;
 
 import java.util.Objects;
@@ -38,23 +39,26 @@ public final class PaymentsContract {
             PaymentsEntry.COL_NAME_ON_CARD,
             PaymentsEntry.COL_CC_EXP_DATE,
             PaymentsEntry.COL_CCV,
-            PaymentsEntry.COL_DATE_ADDED
+            PaymentsEntry.COL_DATE_ADDED,
+            PaymentsEntry.COL_CUSTOMER_ID
+
     };
 
     //add user into database
-    public Payment createPayment(String paymentType, String name, String exp, String ccv, String dateAdded) {
+    public Payment createPayment(String paymentType, String name, String exp, String ccv, String dateAdded, long customerID) {
         ContentValues cv = new ContentValues();
         cv.put(PaymentsEntry.COL_PAYMENT_TYPE, paymentType);
         cv.put(PaymentsEntry.COL_NAME_ON_CARD, name);
         cv.put(PaymentsEntry.COL_CC_EXP_DATE, exp);
         cv.put(PaymentsEntry.COL_CCV, ccv);
         cv.put(PaymentsEntry.COL_DATE_ADDED, dateAdded);
+        cv.put(PaymentsEntry.COL_CUSTOMER_ID, customerID);
 
         long insertId = mDb.insert(PaymentsEntry.TABLE_NAME, null, cv);
         Cursor cursor = mDb.query(PaymentsEntry.TABLE_NAME, mAllColumns, PaymentsEntry._ID +
                 " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
-        Payment newPayment = cursorToPayment(cursor);
+        Payment newPayment = cursorToPayment(cursor, customerID);
         cursor.close();
         mDb.close();
         return newPayment;
@@ -83,16 +87,17 @@ public final class PaymentsContract {
 
     //column and table names
     public static final class PaymentsEntry implements BaseColumns {
-        public static final String TABLE_NAME = "users";
+        public static final String TABLE_NAME = "payments";
         public static final String COL_PAYMENT_TYPE = "paymentType";
         public static final String COL_NAME_ON_CARD = "nameOnCard";
         public static final String COL_CC_EXP_DATE = "CCEXPDATE";
         public static final String COL_CCV = "ccv";
         public static final String COL_DATE_ADDED = "dateAdded";
+        public static final String COL_CUSTOMER_ID = "customer_id";
     }
 
     //set data to specific payment object
-    protected Payment cursorToPayment(Cursor cursor) {
+    protected Payment cursorToPayment(Cursor cursor, long id) {
         Payment payment = new Payment();
         payment.setM_ID(cursor.getLong(0));
         payment.setM_PaymentType(cursor.getString(1));
@@ -100,6 +105,13 @@ public final class PaymentsContract {
         payment.setM_CCEXPDATE(cursor.getString(3));
         payment.setM_CCV(cursor.getString(4));
         payment.setM_DateAdded(cursor.getString(5));
+
+        //get The Customer by id
+        CustomersContract contract = new CustomersContract(mContext);
+        Customer customer = contract.getCustomerById(id);
+        if (contract != null) {
+            payment.setmCustomer(customer);
+        }
         return payment;
     }
 }

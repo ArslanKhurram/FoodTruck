@@ -9,6 +9,7 @@ public class Payment {
     private String m_CCEXPDATE;
     private String m_CCV;
     private String m_DateAdded;
+    private Customer mCustomer;
 
     //default constructor
     public Payment() {};
@@ -67,5 +68,13 @@ public class Payment {
 
     public void setM_DateAdded(String m_DateAdded) {
         this.m_DateAdded = m_DateAdded;
+    }
+
+    public Customer getmCustomer() {
+        return mCustomer;
+    }
+
+    public void setmCustomer(Customer mCustomer) {
+        this.mCustomer = mCustomer;
     }
 }
