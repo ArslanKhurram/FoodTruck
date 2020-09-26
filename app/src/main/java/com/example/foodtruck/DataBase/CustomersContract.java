@@ -11,7 +11,7 @@ import android.util.Log;
 import com.example.foodtruck.models.Customer;
 import com.example.foodtruck.models.Payment;
 
-//class to add customer data to database, foreign key to orders
+//class to add customer data to database, foreign key to orders/payments
 public final class CustomersContract {
 
     // Database fields
@@ -36,6 +36,7 @@ public final class CustomersContract {
     //used to add recipe into database
     public Customer addCustomer(String first, String last, String email, String phone, String streetName, String houseNum
             , String zipCode, String city, String state) {
+        open();
         ContentValues cv = new ContentValues();
         cv.put(CustomersEntry.COL_FIRST_NAME, first);
         cv.put(CustomersEntry.COL_LAST_NAME, last);
@@ -53,6 +54,8 @@ public final class CustomersContract {
         cursor.moveToFirst();
         Customer newCustomer = cursorToCustomer(cursor);
         cursor.close();
+        mDb.close();
+        close();
         return newCustomer;
     }
 
@@ -69,6 +72,7 @@ public final class CustomersContract {
 
     //return Customer by searching by id
     public Customer getCustomerById(long id) {
+        open();
         Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry._ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
         if (cursor != null) {
@@ -76,11 +80,15 @@ public final class CustomersContract {
         }
 
         Customer customer = cursorToCustomer(cursor);
+        cursor.close();
+        mDb.close();
+        close();
         return customer;
     }
 
     //return Customer by searching by email
     public Customer getCustomerIdByEmail(String email) {
+        open();
         Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry.COL_EMAIL + " = ?",
                 new String[]{String.valueOf(email)}, null, null, null);
         if (cursor != null) {
@@ -88,7 +96,9 @@ public final class CustomersContract {
         }
 
         Customer customer = cursorToCustomer(cursor);
+        cursor.close();
         mDb.close();
+        close();
         return customer;
     }
 
@@ -120,6 +130,7 @@ public final class CustomersContract {
         customer.setM_City(cursor.getString(8));
         customer.setM_State(cursor.getString(9));
 
+        cursor.close();
         return customer;
     }
 

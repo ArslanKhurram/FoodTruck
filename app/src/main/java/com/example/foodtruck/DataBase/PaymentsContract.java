@@ -112,6 +112,7 @@ public final class PaymentsContract {
         if (contract != null) {
             payment.setmCustomer(customer);
         }
+        cursor.close();
         return payment;
     }
 }
