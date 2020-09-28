@@ -59,9 +59,41 @@ public class VendorsContract {
         mDbHelper.close();
     }
 
-    //used to add recipe into database
-    public Vendor addVendor(String first, String last, String email, String password, String phone, String streetName, String houseNum
-            , String zipCode, String city, String state, String dateAdded, String category) {
+    //return Vendor by searching by id
+    public Vendor getVendorById(long id) {
+        open();
+        Cursor cursor = mDb.query(VendorsEntry.TABLE_NAME, mAllColumns, VendorsEntry._ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Vendor vendor = cursorToVednor(cursor);
+        cursor.close();
+        mDb.close();
+        close();
+        return vendor;
+    }
+
+    //return Vendor by searching by email
+    public Vendor getVendorIdByEmail(String email) {
+        open();
+        Cursor cursor = mDb.query(VendorsEntry.TABLE_NAME, mAllColumns, VendorsEntry.COL_EMAIL + " = ?",
+                new String[]{String.valueOf(email)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Vendor vendor = cursorToVednor(cursor);
+        cursor.close();
+        mDb.close();
+        close();
+        return vendor;
+    }
+
+    //used to add vendor into database
+    public Vendor addVendor(String first, String last, String email, String password, String phone, String streetName, String houseNum,
+            String zipCode, String city, String state, String dateAdded, String category) {
         open();
         ContentValues cv = new ContentValues();
         cv.put(VendorsEntry.COL_FIRST_NAME, first);

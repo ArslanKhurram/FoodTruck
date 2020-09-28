@@ -34,7 +34,7 @@ public final class CustomersContract {
             CustomersEntry.COL_STATE,
     };
 
-    //used to add recipe into database
+    //used to add customer into database
     public Customer addCustomer(String first, String last, String email, String password, String phone, String streetName, String houseNum
             , String zipCode, String city, String state) {
         open();
