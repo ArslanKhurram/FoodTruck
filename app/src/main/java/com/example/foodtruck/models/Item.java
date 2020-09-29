@@ -1,5 +1,7 @@
 package com.example.foodtruck.models;
 
+import java.util.Arrays;
+
 public class Item {
 
     private long m_Id;
@@ -58,5 +60,16 @@ public class Item {
 
     public void setM_Menu(Menu m_Menu) {
         this.m_Menu = m_Menu;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "m_Id=" + m_Id +
+                ", m_Name='" + m_Name + '\'' +
+                ", m_Price='" + m_Price + '\'' +
+                ", m_Available='" + m_Available + '\'' +
+                ", m_Menu For=" + m_Menu.getM_Vendor().getM_VendorName() +
+                '}';
     }
 }

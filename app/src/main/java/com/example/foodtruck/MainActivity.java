@@ -11,6 +11,7 @@ import android.net.LocalSocketAddress;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
@@ -18,10 +19,12 @@ import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.models.Customer;
+import com.example.foodtruck.models.Item;
 import com.example.foodtruck.models.Menu;
 import com.example.foodtruck.models.Vendor;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -32,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button b = findViewById(R.id.button);
+        final TextView tv1 = findViewById(R.id.textView1);
+        final TextView tv2 = findViewById(R.id.textView2);
+
         b.setOnClickListener(new View.OnClickListener() { //on click listener for button
             @Override
             public void onClick(View view) {
@@ -42,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
                 //Test Vendor Table
                 VendorsContract vc = new VendorsContract(MainActivity.this);
-                vc.addVendor("Mike","Pear","mpwar@gmail.com", "MikeIstheBest1234","516-920-0202","Maple Ave","987","10393","Apple Village","VA", (Calendar.getInstance().getTime()).toString(), "Pizza")  ;
-                vc.addVendor("John","Deer","jdeer@gmail.com", "JohnIstheBest1234","516-920-0202","Chap Ave","314","10398","Down Town","NY", (Calendar.getInstance().getTime()).toString(), "Tacos")  ;
+                vc.addVendor("Mikes Pizza's","Mike","Pear","mpwar@gmail.com", "MikeIstheBest1234","516-920-0202","Maple Ave","987","10393","Apple Village","VA", (Calendar.getInstance().getTime()).toString(), "Pizza")  ;
+                vc.addVendor("Deer Taco's","John","Deer","jdeer@gmail.com", "JohnIstheBest1234","516-920-0202","Chap Ave","314","10398","Down Town","NY", (Calendar.getInstance().getTime()).toString(), "Tacos")  ;
 
                 //Get Vendor Objects by email for menu table
                 Vendor ven,ven1;
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 mc.createMenu(ven.getM_Id());
                 mc.createMenu(ven1.getM_Id());
 
+                //Get Menu id by vendor ID
                 Menu menu = mc.getMenuByVendorId(ven.getM_Id());
 
                 //code to convert test image to byte[] for items constructor
@@ -76,6 +83,13 @@ public class MainActivity extends AppCompatActivity {
                 //Test Items Table
                 ItemsContract ic = new ItemsContract(MainActivity.this);
                 ic.createItem("Cheese Pizza", "9.99", "Y", bitMapData ,menu.getM_Id());
+                ic.createItem("Pancake", "3.99", "Y", bitMapData ,menu.getM_Id());
+
+                //set ArrayList to items list
+                ArrayList<Item> list = ic.ItemsList(menu.getM_Id());
+
+                for (int i=0; i<list.size(); i++)
+                    tv1.append(list.get(i).toString() + "\n");
 
 
             }
