@@ -57,10 +57,10 @@ public class ItemsContract {
     public ArrayList<Item> ItemsList(long menuID) {
         open();
         ArrayList<Item> itemList = new ArrayList<Item>();
-        Cursor cursor = mDb.rawQuery("SELECT * FROM " + ItemsEntry.TABLE_NAME + " WHERE " + ItemsEntry.COL_MENU_ID + " = +" +menuID , null );
+        //Cursor cursor = mDb.rawQuery("SELECT * FROM " + ItemsEntry.TABLE_NAME + " WHERE " + ItemsEntry.COL_MENU_ID + " = " + "'" +menuID + "'", null );
 
-       // Cursor cursor = mDb.query(ItemsEntry.TABLE_NAME, mAllColumns, ItemsEntry.COL_MENU_ID + " =?",
-           //     new String[]{String.valueOf(menuID)}, null, null, null);
+        Cursor cursor = mDb.query(ItemsEntry.TABLE_NAME, mAllColumns, ItemsEntry.COL_MENU_ID + " =?",
+                new String[]{String.valueOf(menuID)}, null, null, null);
 
          if (cursor != null) {
             cursor.moveToFirst();
@@ -72,19 +72,6 @@ public class ItemsContract {
                 else
                     cursor.moveToNext();
             }
-
-            /*
-            do {
-                Item item = cursorToItem(cursor, menuID);
-                items.add(item);
-
-                if (cursor.isClosed() || cursor.isLast())
-                    break;
-                else
-                    cursor.moveToNext();
-
-            } while (cursor.isAfterLast());
-            */
 
         }
         cursor.close();
@@ -147,7 +134,7 @@ public class ItemsContract {
         if (contract != null) {
             item.setM_Menu(menu);
         }
-        cursor.close();
+
         return item;
     }
 
