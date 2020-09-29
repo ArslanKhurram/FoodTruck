@@ -67,14 +67,26 @@ public class MenusContract {
         return newMenu;
     }
 
+    //return Menu by searching by id
+    public Menu getMenuByVendorId(long id) {
+        open();
+        Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry._ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        Menu menu = cursorToMenu(cursor, id);
+        cursor.close();
+        mDb.close();
+        close();
+        return menu;
+    }
 
     //column and table names
     public static final class MenusEntry implements BaseColumns {
         public static final String TABLE_NAME = "menus";
         public static final String COL_VENODR_ID = "vendor_id";
     }
-
-
 
     //set data to specific menu object
     protected Menu cursorToMenu(Cursor cursor, long id) {

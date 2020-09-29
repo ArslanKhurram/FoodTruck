@@ -2,18 +2,26 @@ package com.example.foodtruck;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.LocalSocketAddress;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.models.Customer;
+import com.example.foodtruck.models.Menu;
 import com.example.foodtruck.models.Vendor;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
 
@@ -54,6 +62,22 @@ public class MainActivity extends AppCompatActivity {
                 MenusContract mc = new MenusContract(MainActivity.this);
                 mc.createMenu(ven.getM_Id());
                 mc.createMenu(ven1.getM_Id());
+
+                Menu menu = mc.getMenuByVendorId(ven.getM_Id());
+
+                //code to convert test image to byte[] for items constructor
+                Resources res = getResources();
+                Drawable drawable = res.getDrawable(R.drawable.test);
+                Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] bitMapData = stream.toByteArray();
+
+                //Test Items Table
+                ItemsContract ic = new ItemsContract(MainActivity.this);
+                ic.createItem("Cheese Pizza", "9.99", "Y", bitMapData ,menu.getM_Id());
+
+
             }
         });
     }

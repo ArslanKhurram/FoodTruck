@@ -10,6 +10,7 @@ import static com.example.foodtruck.DataBase.PaymentsContract.PaymentsEntry;
 import static com.example.foodtruck.DataBase.CustomersContract.CustomersEntry;
 import static com.example.foodtruck.DataBase.VendorsContract.VendorsEntry;
 import static com.example.foodtruck.DataBase.MenusContract.MenusEntry;
+import static com.example.foodtruck.DataBase.ItemsContract.ItemsEntry;
 
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -70,12 +71,23 @@ public class DbHelper extends SQLiteOpenHelper {
             MenusEntry.COL_VENODR_ID + " INTEGER NOT NULL" +
             "); ";
 
+    //query to create items table
+    public static final String SQL_CREATE_ITEMS_TABLE = "CREATE TABLE " + ItemsEntry.TABLE_NAME + " (" +
+            ItemsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            ItemsEntry.COL_NAME + " TEXT NOT NULL, " +
+            ItemsEntry.COL_PRICE + " TEXT NOT NULL, " +
+            ItemsEntry.COL_AVAILABILITY + " TEXT NOT NULL, " +
+            ItemsEntry.COL_IMAGE + " BLOB NOT NULL, " +
+            ItemsEntry.COL_MENU_ID + " INTEGER" +
+            "); ";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_PAYMENTS_TABLE);
         db.execSQL(SQL_CREATE_CUSTOMERS_TABLE);
         db.execSQL(SQL_CREATE_VENDORS_TABLE);
         db.execSQL(SQL_CREATE_MENUS_TABLE);
+        db.execSQL(SQL_CREATE_ITEMS_TABLE);
     }
 
     @Override
@@ -84,6 +96,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CustomersEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + VendorsEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MenusEntry.TABLE_NAME);
-
+        db.execSQL("DROP TABLE IF EXISTS " + ItemsEntry.TABLE_NAME);
+        onCreate(db);
     }
 }
