@@ -4,11 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.foodtruck.models.Customer;
-
 import static com.example.foodtruck.DataBase.PaymentsContract.PaymentsEntry;
 import static com.example.foodtruck.DataBase.CustomersContract.CustomersEntry;
 import static com.example.foodtruck.DataBase.VendorsContract.VendorsEntry;
+import static com.example.foodtruck.DataBase.MenusContract.MenusEntry;
+import static com.example.foodtruck.DataBase.ItemsContract.ItemsEntry;
 
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -31,12 +31,13 @@ public class DbHelper extends SQLiteOpenHelper {
             PaymentsEntry.COL_CUSTOMER_ID + " INTEGER NOT NULL" +
             "); ";
 
-    //query to create  customer table
+    //query to create customer table
     public static final String SQL_CREATE_CUSTOMERS_TABLE = "CREATE TABLE " + CustomersEntry.TABLE_NAME + " (" +
             CustomersEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             CustomersEntry.COL_FIRST_NAME + " TEXT NOT NULL, " +
             CustomersEntry.COL_LAST_NAME + " TEXT NOT NULL, " +
             CustomersEntry.COL_EMAIL + " TEXT NOT NULL, " +
+            CustomersEntry.COL_PASSWORD + " TEXT NOT NULL, " +
             CustomersEntry.COL_PHONE_NUMBER + " TEXT NOT NULL, " +
             CustomersEntry.COL_STREET_NAME + " TEXT NOT NULL, " +
             CustomersEntry.COL_HOUSE_NUMBER + " TEXT NOT NULL, " +
@@ -45,12 +46,14 @@ public class DbHelper extends SQLiteOpenHelper {
             CustomersEntry.COL_STATE + " TEXT NOT NULL" +
             "); ";
 
-    //query to create  customer table
+    //query to create vendor table
     public static final String SQL_CREATE_VENDORS_TABLE = "CREATE TABLE " + VendorsEntry.TABLE_NAME + " (" +
             VendorsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            VendorsEntry.COL_VENDOR_NAME + " TEXT NOT NULL, " +
             VendorsEntry.COL_FIRST_NAME + " TEXT NOT NULL, " +
             VendorsEntry.COL_LAST_NAME + " TEXT NOT NULL, " +
             VendorsEntry.COL_EMAIL + " TEXT NOT NULL, " +
+            VendorsEntry.COL_PASSWORD + " TEXT NOT NULL, " +
             VendorsEntry.COL_PHONE_NUMBER + " TEXT NOT NULL, " +
             VendorsEntry.COL_STREET_NAME + " TEXT NOT NULL, " +
             VendorsEntry.COL_HOUSE_NUMBER + " TEXT NOT NULL, " +
@@ -60,12 +63,30 @@ public class DbHelper extends SQLiteOpenHelper {
             VendorsEntry.COL_DATE_ADDED + " TEXT NOT NULL, " +
             VendorsEntry.COL_CATEGORY + " TEXT NOT NULL" +
             "); ";
+
+    //query to create menu table
+    public static final String SQL_CREATE_MENUS_TABLE = "CREATE TABLE " + MenusEntry.TABLE_NAME + " (" +
+            MenusEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            MenusEntry.COL_VENDOR_ID + " INTEGER NOT NULL" +
+            "); ";
+
+    //query to create items table
+    public static final String SQL_CREATE_ITEMS_TABLE = "CREATE TABLE " + ItemsEntry.TABLE_NAME + " (" +
+            ItemsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            ItemsEntry.COL_NAME + " TEXT NOT NULL, " +
+            ItemsEntry.COL_PRICE + " TEXT NOT NULL, " +
+            ItemsEntry.COL_AVAILABILITY + " TEXT NOT NULL, " +
+            ItemsEntry.COL_IMAGE + " BLOB NOT NULL, " +
+            ItemsEntry.COL_MENU_ID + " INTEGER" +
+            "); ";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_PAYMENTS_TABLE);
         db.execSQL(SQL_CREATE_CUSTOMERS_TABLE);
         db.execSQL(SQL_CREATE_VENDORS_TABLE);
-
+        db.execSQL(SQL_CREATE_MENUS_TABLE);
+        db.execSQL(SQL_CREATE_ITEMS_TABLE);
     }
 
     @Override
@@ -73,6 +94,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + PaymentsEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + CustomersEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + VendorsEntry.TABLE_NAME);
-
+        db.execSQL("DROP TABLE IF EXISTS " + MenusEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + ItemsEntry.TABLE_NAME);
+        onCreate(db);
     }
 }
