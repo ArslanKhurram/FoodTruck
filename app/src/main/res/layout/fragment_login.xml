@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-
-
+    >
 
     <ImageView
         android:id="@+id/imgLogo"
@@ -67,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login as"
-        app:layout_constraintBottom_toTopOf="@id/sapceFiller"
+        app:layout_constraintBottom_toTopOf="@id/btnLayout"
         app:layout_constraintEnd_toStartOf="@id/spnLoginType"
         app:layout_constraintHorizontal_bias="0.379"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,50 +74,43 @@
 
     <Spinner
         android:id="@+id/spnLoginType"
-        android:layout_width="119dp"
-        android:layout_height="21dp"
+        android:layout_width="135dp"
+        android:layout_height="30dp"
         android:entries="@array/loginType"
-        app:layout_constraintBottom_toTopOf="@id/sapceFiller"
+        app:layout_constraintBottom_toTopOf="@id/btnLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.681"
         app:layout_constraintStart_toEndOf="@id/textView2"
         app:layout_constraintTop_toBottomOf="@id/etPassword"
         app:layout_constraintVertical_bias="0.516" />
 
-    <Space
-        android:id="@+id/sapceFiller"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@android:color/transparent"
+
+    <RelativeLayout
+        android:id="@+id/btnLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/spnLoginType"
-        app:layout_constraintBottom_toTopOf="@id/btnLogin"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+       >
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="179dp"
         android:layout_height="43dp"
         android:text="Login"
-        app:layout_constraintBottom_toTopOf="@id/btnSignUp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sapceFiller"
-        app:layout_constraintVertical_bias="0.622" />
+
+        />
 
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="179dp"
         android:layout_height="43dp"
-        android:onClick="ToSignUp"
         android:text="Sign Up"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin"
-        app:layout_constraintVertical_bias="0.719" />
-
+        android:layout_below="@id/btnLogin"
+        />
+                </RelativeLayout>
 
 
 
