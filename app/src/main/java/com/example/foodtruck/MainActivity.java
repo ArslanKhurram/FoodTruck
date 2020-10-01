@@ -26,6 +26,10 @@ import com.example.foodtruck.models.FoodTruck;
 import com.example.foodtruck.models.Item;
 import com.example.foodtruck.models.Menu;
 import com.example.foodtruck.models.Vendor;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -33,6 +37,7 @@ import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +47,12 @@ public class MainActivity extends AppCompatActivity {
         final TextView tv1 = findViewById(R.id.textView1);
         final ImageView image = findViewById(R.id.myImg);
 
+
+        /*
         b.setOnClickListener(new View.OnClickListener() { //on click listener for button
             @Override
             public void onClick(View view) {
+
 
                 //code to convert test image to byte[] for items constructor
                 Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.test, null);
@@ -117,5 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        */
+
     }
+
 }
