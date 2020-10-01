@@ -12,6 +12,7 @@ import com.example.foodtruck.models.Item;
 import com.example.foodtruck.models.Menu;
 import com.example.foodtruck.models.Vendor;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ItemsContract {
@@ -53,6 +54,49 @@ public class ItemsContract {
             ItemsEntry.COL_MENU_ID
     };
 
+    public ArrayList<Item> ItemsList(long menuID) {
+        open();
+        ArrayList<Item> itemList = new ArrayList<Item>();
+        //Cursor cursor = mDb.rawQuery("SELECT * FROM " + ItemsEntry.TABLE_NAME + " WHERE " + ItemsEntry.COL_MENU_ID + " = " + "'" +menuID + "'", null );
+
+        Cursor cursor = mDb.query(ItemsEntry.TABLE_NAME, mAllColumns, ItemsEntry.COL_MENU_ID + " =?",
+                new String[]{String.valueOf(menuID)}, null, null, null);
+
+         if (cursor != null) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                Item item = cursorToItem(cursor,menuID);
+                itemList.add(item);
+                if (cursor.isLast() || cursor.isClosed())
+                    break;
+                else
+                    cursor.moveToNext();
+            }
+
+        }
+        cursor.close();
+        mDb.close();
+        close();
+        return itemList;
+    }
+
+    //return Item by searching by id
+    public Item getItemById(long id) {
+        open();
+        Cursor cursor = mDb.query(ItemsEntry.TABLE_NAME, mAllColumns, ItemsEntry._ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Item item = cursorToItem(cursor, id);
+        cursor.close();
+        mDb.close();
+        close();
+        return item;
+    }
+
+
     //add item into database
     public Item createItem(String name, String price, String available, byte[] image, long menuID) {
         open();
@@ -84,13 +128,13 @@ public class ItemsContract {
         item.setM_Available(cursor.getString(3));
         item.setM_Image(cursor.getBlob(4));
 
-        //get The Customer by id
+        //get The Vendor by id
         MenusContract contract = new MenusContract(mContext);
         Menu menu = contract.getMenuByVendorId(id);
         if (contract != null) {
             item.setM_Menu(menu);
         }
-        cursor.close();
+
         return item;
     }
 

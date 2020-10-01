@@ -3,6 +3,7 @@ package com.example.foodtruck.models;
 public class Vendor {
 
     long m_Id;
+    private String m_VendorName;
     private String m_FirstName;
     private String m_LastName;
     private String m_Email;
@@ -25,6 +26,14 @@ public class Vendor {
 
     public void setM_Id(long m_Id) {
         this.m_Id = m_Id;
+    }
+
+    public String getM_VendorName() {
+        return m_VendorName;
+    }
+
+    public void setM_VendorName(String m_VendorName) {
+        this.m_VendorName = m_VendorName;
     }
 
     public String getM_FirstName() {

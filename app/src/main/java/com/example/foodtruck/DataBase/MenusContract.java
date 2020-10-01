@@ -8,9 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import com.example.foodtruck.models.Customer;
 import com.example.foodtruck.models.Menu;
-import com.example.foodtruck.models.Payment;
 import com.example.foodtruck.models.Vendor;
 
 import java.util.Objects;
@@ -47,14 +45,14 @@ public class MenusContract {
     //reference to table column names for queries
     private String[] mAllColumns = {
             MenusEntry._ID,
-            MenusEntry.COL_VENODR_ID
+            MenusEntry.COL_VENDOR_ID
     };
 
     //add menu into database
     public Menu createMenu(long vendorID) {
         open();
         ContentValues cv = new ContentValues();
-        cv.put(MenusEntry.COL_VENODR_ID, vendorID);
+        cv.put(MenusEntry.COL_VENDOR_ID, vendorID);
 
         long insertId = mDb.insert(MenusEntry.TABLE_NAME, null, cv);
         Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry._ID +
@@ -85,7 +83,7 @@ public class MenusContract {
     //column and table names
     public static final class MenusEntry implements BaseColumns {
         public static final String TABLE_NAME = "menus";
-        public static final String COL_VENODR_ID = "vendor_id";
+        public static final String COL_VENDOR_ID = "vendor_id";
     }
 
     //set data to specific menu object

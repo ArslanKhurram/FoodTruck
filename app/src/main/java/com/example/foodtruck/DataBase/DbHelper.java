@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.foodtruck.models.Customer;
-
 import static com.example.foodtruck.DataBase.PaymentsContract.PaymentsEntry;
 import static com.example.foodtruck.DataBase.CustomersContract.CustomersEntry;
 import static com.example.foodtruck.DataBase.VendorsContract.VendorsEntry;
@@ -51,6 +49,7 @@ public class DbHelper extends SQLiteOpenHelper {
     //query to create vendor table
     public static final String SQL_CREATE_VENDORS_TABLE = "CREATE TABLE " + VendorsEntry.TABLE_NAME + " (" +
             VendorsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            VendorsEntry.COL_VENDOR_NAME + " TEXT NOT NULL, " +
             VendorsEntry.COL_FIRST_NAME + " TEXT NOT NULL, " +
             VendorsEntry.COL_LAST_NAME + " TEXT NOT NULL, " +
             VendorsEntry.COL_EMAIL + " TEXT NOT NULL, " +
@@ -68,7 +67,7 @@ public class DbHelper extends SQLiteOpenHelper {
     //query to create menu table
     public static final String SQL_CREATE_MENUS_TABLE = "CREATE TABLE " + MenusEntry.TABLE_NAME + " (" +
             MenusEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            MenusEntry.COL_VENODR_ID + " INTEGER NOT NULL" +
+            MenusEntry.COL_VENDOR_ID + " INTEGER NOT NULL" +
             "); ";
 
     //query to create items table
