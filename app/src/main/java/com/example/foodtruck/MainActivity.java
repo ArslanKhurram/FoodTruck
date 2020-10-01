@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         CustomersContract cc = new CustomersContract(this);
         cc.open();
-        cc.addCustomer("Arslan", "Adam", "khura6@farmingdale.edu","631-123-4567", "Apple St","1234","11777","Adams Town","PA");
+        cc.addCustomer("Arslan", "Adam", "khura6@farmingdale.edu","adbc", "631-123-4567","Apple St","1234","11632","Green" ,  "NY");
 
         Customer cus;
         cus = cc.getCustomerIdByEmail("khura6@farmingdale.edu");

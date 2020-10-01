@@ -8,13 +8,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.foodtruck.DataBase.CustomersContract;
-import com.example.foodtruck.DataBase.PaymentsContract;
 
 public class activity_signup extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.frag_signup);
     }
 
     public void CreateAccount(View v){
@@ -31,7 +30,7 @@ public class activity_signup extends AppCompatActivity {
         // New customer entry that will be filled in with the values of of the text boxes
         CustomersContract cc = new CustomersContract(this);
         cc.open();
-        cc.addCustomer(txtFName.getText().toString(), txtLname.getText().toString(), txtEmail.getText().toString(), txtPhone.getText().toString(), txtStreet.getText().toString(),"123", txtZip.getText().toString(), txtCity.getText().toString(), txtState.getSelectedItem().toString());
+        cc.addCustomer(txtFName.getText().toString(), txtLname.getText().toString(), txtEmail.getText().toString(),txtPassword.getText().toString() ,txtPhone.getText().toString(), txtStreet.getText().toString(),"123", txtZip.getText().toString(), txtCity.getText().toString(), txtState.getSelectedItem().toString());
         cc.close();
         finish();
     }
