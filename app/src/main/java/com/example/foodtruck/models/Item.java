@@ -69,7 +69,7 @@ public class Item {
                 ", m_Name='" + m_Name + '\'' +
                 ", m_Price='" + m_Price + '\'' +
                 ", m_Available='" + m_Available + '\'' +
-                ", m_Menu For=" + m_Menu.getM_Vendor().getM_VendorName() +
+                ", m_Menu For=" + m_Menu.getM_Id() +
                 '}';
     }
 }

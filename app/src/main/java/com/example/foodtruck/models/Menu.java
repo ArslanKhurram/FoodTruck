@@ -3,7 +3,7 @@ package com.example.foodtruck.models;
 public class Menu {
 
     private long m_Id;
-    private Vendor m_Vendor;
+    private FoodTruck m_FoodTruck;
 
     public Menu() {}
 
@@ -15,11 +15,11 @@ public class Menu {
         this.m_Id = m_Id;
     }
 
-    public Vendor getM_Vendor() {
-        return m_Vendor;
+    public FoodTruck getM_FoodTruck() {
+        return m_FoodTruck;
     }
 
-    public void setM_Vendor(Vendor m_Vendor) {
-        this.m_Vendor = m_Vendor;
+    public void setM_FoodTruck(FoodTruck m_FoodTruck) {
+        this.m_FoodTruck = m_FoodTruck;
     }
 }

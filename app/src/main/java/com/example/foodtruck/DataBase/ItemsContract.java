@@ -15,7 +15,8 @@ import com.example.foodtruck.models.Vendor;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ItemsContract {
+//class to add items data to database
+public final class ItemsContract {
 
     //initialize sql database
     private SQLiteDatabase mDb;
@@ -54,10 +55,10 @@ public class ItemsContract {
             ItemsEntry.COL_MENU_ID
     };
 
+    //return array list of items from a particular menu
     public ArrayList<Item> ItemsList(long menuID) {
         open();
         ArrayList<Item> itemList = new ArrayList<Item>();
-        //Cursor cursor = mDb.rawQuery("SELECT * FROM " + ItemsEntry.TABLE_NAME + " WHERE " + ItemsEntry.COL_MENU_ID + " = " + "'" +menuID + "'", null );
 
         Cursor cursor = mDb.query(ItemsEntry.TABLE_NAME, mAllColumns, ItemsEntry.COL_MENU_ID + " =?",
                 new String[]{String.valueOf(menuID)}, null, null, null);
@@ -130,7 +131,7 @@ public class ItemsContract {
 
         //get The Vendor by id
         MenusContract contract = new MenusContract(mContext);
-        Menu menu = contract.getMenuByVendorId(id);
+        Menu menu = contract.getMenuByFoodTruckId(id);
         if (contract != null) {
             item.setM_Menu(menu);
         }

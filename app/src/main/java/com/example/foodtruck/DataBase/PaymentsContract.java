@@ -13,6 +13,7 @@ import com.example.foodtruck.models.Payment;
 
 import java.util.Objects;
 
+//class to add payment data to customer in database
 public final class PaymentsContract {
 
     //initialize sql database
