@@ -6,6 +6,7 @@ public class Customer {
     private String m_FirstName;
     private String m_LastName;
     private String m_Email;
+    private String m_Password;
     private String m_PhoneNumber;
     private String m_StreetName;
     private String m_HouseNumber;
@@ -14,7 +15,7 @@ public class Customer {
     private String m_State;
 
     //default constructor
-    public Customer() {};
+    public Customer() {}
 
     public long getM_Id() {
         return m_Id;
@@ -46,6 +47,14 @@ public class Customer {
 
     public void setM_Email(String m_Email) {
         this.m_Email = m_Email;
+    }
+
+    public String getM_Password() {
+        return m_Password;
+    }
+
+    public void setM_Password(String m_Password) {
+        this.m_Password = m_Password;
     }
 
     public String getM_PhoneNumber() {

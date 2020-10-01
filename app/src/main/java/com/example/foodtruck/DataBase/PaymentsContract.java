@@ -13,6 +13,7 @@ import com.example.foodtruck.models.Payment;
 
 import java.util.Objects;
 
+//class to add payment data to customer in database
 public final class PaymentsContract {
 
     //initialize sql database
@@ -44,8 +45,9 @@ public final class PaymentsContract {
 
     };
 
-    //add user into database
+    //add payment into database
     public Payment createPayment(String paymentType, String name, String exp, String ccv, String dateAdded, long customerID) {
+        open();
         ContentValues cv = new ContentValues();
         cv.put(PaymentsEntry.COL_PAYMENT_TYPE, paymentType);
         cv.put(PaymentsEntry.COL_NAME_ON_CARD, name);
@@ -61,6 +63,7 @@ public final class PaymentsContract {
         Payment newPayment = cursorToPayment(cursor, customerID);
         cursor.close();
         mDb.close();
+        close();
         return newPayment;
     }
 
@@ -76,12 +79,15 @@ public final class PaymentsContract {
 
     //check for empty table
     public boolean checkForEmptyTable() {
+        open();
         mDb = mDbHelper.getWritableDatabase();
         String count = "SELECT count(*) FROM " + PaymentsEntry.TABLE_NAME;
         Cursor cursor = mDb.rawQuery(count, null);
         cursor.moveToFirst();
         int icount = cursor.getInt(0);
         mDb.close();
+        cursor.close();
+        close();
         return icount <= 0;
     }
 

@@ -28,6 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText txtFName = findViewById(R.id.editTextFirstName);
     EditText txtLName = findViewById(R.id.editTextLastName);
     EditText txtEmail= findViewById(R.id.editTextEmail);
+    EditText txtPassword = findViewById(R.id.editTextPassword);
     EditText txtPhone = findViewById(R.id.editTextPhoneNumber);
     EditText txtStreet = findViewById(R.id.editTextStreet);
     EditText txtHNum = findViewById(R.id.editTextNumber);
@@ -57,6 +58,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                 cc.addCustomer(txtFName.getText().toString(),
                                                         txtLName.getText().toString(),
                                                         txtEmail.getText().toString(),
+                                                        txtPassword.getText().toString(),
                                                         txtPhone.getText().toString(),
                                                         txtStreet.getText().toString(),
                                                         txtHNum.getText().toString(),

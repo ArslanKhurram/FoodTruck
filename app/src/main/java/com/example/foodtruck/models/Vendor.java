@@ -6,17 +6,16 @@ public class Vendor {
     private String m_FirstName;
     private String m_LastName;
     private String m_Email;
+    private String m_Password;
     private String m_PhoneNumber;
     private String m_StreetName;
     private String m_HouseNumber;
     private String m_ZipCode;
     private String m_City;
     private String m_State;
-    private String m_DateAdded;
-    private String m_Category;
 
     //default constructor;
-    public Vendor() { };
+    public Vendor() { }
 
     public long getM_Id() {
         return m_Id;
@@ -48,6 +47,14 @@ public class Vendor {
 
     public void setM_Email(String m_Email) {
         this.m_Email = m_Email;
+    }
+
+    public String getM_Password() {
+        return m_Password;
+    }
+
+    public void setM_Password(String m_Password) {
+        this.m_Password = m_Password;
     }
 
     public String getM_PhoneNumber() {
@@ -98,19 +105,4 @@ public class Vendor {
         this.m_State = m_State;
     }
 
-    public String getM_DateAdded() {
-        return m_DateAdded;
-    }
-
-    public void setM_DateAdded(String m_DateAdded) {
-        this.m_DateAdded = m_DateAdded;
-    }
-
-    public String getM_Category() {
-        return m_Category;
-    }
-
-    public void setM_Category(String m_Category) {
-        this.m_Category = m_Category;
-    }
 }
