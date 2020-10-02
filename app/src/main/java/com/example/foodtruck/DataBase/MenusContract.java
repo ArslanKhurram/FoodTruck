@@ -8,12 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import com.example.foodtruck.models.Menu;
-import com.example.foodtruck.models.Vendor;
+import com.example.foodtruck.Models.FoodTruck;
+import com.example.foodtruck.Models.Menu;
 
 import java.util.Objects;
 
-public class MenusContract {
+//class to add menu data to database, foreign key to Items
+public final class MenusContract {
 
     //initialize sql database
     private SQLiteDatabase mDb;
@@ -45,20 +46,20 @@ public class MenusContract {
     //reference to table column names for queries
     private String[] mAllColumns = {
             MenusEntry._ID,
-            MenusEntry.COL_VENDOR_ID
+            MenusEntry.COL_FOOD_TRUCK_ID
     };
 
     //add menu into database
-    public Menu createMenu(long vendorID) {
+    public Menu createMenu(long foodTruckID) {
         open();
         ContentValues cv = new ContentValues();
-        cv.put(MenusEntry.COL_VENDOR_ID, vendorID);
+        cv.put(MenusEntry.COL_FOOD_TRUCK_ID, foodTruckID);
 
         long insertId = mDb.insert(MenusEntry.TABLE_NAME, null, cv);
         Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry._ID +
                 " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
-        Menu newMenu = cursorToMenu(cursor, vendorID);
+        Menu newMenu = cursorToMenu(cursor, foodTruckID);
         cursor.close();
         mDb.close();
         close();
@@ -66,7 +67,7 @@ public class MenusContract {
     }
 
     //return Menu by searching by id
-    public Menu getMenuByVendorId(long id) {
+    public Menu getMenuByFoodTruckId(long id) {
         open();
         Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry._ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
@@ -83,7 +84,7 @@ public class MenusContract {
     //column and table names
     public static final class MenusEntry implements BaseColumns {
         public static final String TABLE_NAME = "menus";
-        public static final String COL_VENDOR_ID = "vendor_id";
+        public static final String COL_FOOD_TRUCK_ID = "foodTruck_ID";
     }
 
     //set data to specific menu object
@@ -92,10 +93,10 @@ public class MenusContract {
         menu.setM_Id(cursor.getLong(0));
 
         //get The Customer by id
-        VendorsContract contract = new VendorsContract(mContext);
-        Vendor vendor = contract.getVendorById(id);
+        FoodTrucksContract contract = new FoodTrucksContract(mContext);
+        FoodTruck foodTruck = contract.getFoodTruckById(id);
         if (contract != null) {
-            menu.setM_Vendor(vendor);
+            menu.setM_FoodTruck(foodTruck);
         }
         cursor.close();
         return menu;

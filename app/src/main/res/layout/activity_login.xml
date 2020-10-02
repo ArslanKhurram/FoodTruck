@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.SignUpActivity">
+    tools:context=".activity_login">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:id="@+id/fragment_container" />
+        android:id="@+id/test2"
+        />
 
 </RelativeLayout>

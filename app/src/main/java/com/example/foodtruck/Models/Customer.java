@@ -1,9 +1,8 @@
-package com.example.foodtruck.models;
+package com.example.foodtruck.Models;
 
-public class Vendor {
+public class Customer {
 
-    long m_Id;
-    private String m_VendorName;
+    private long m_Id;
     private String m_FirstName;
     private String m_LastName;
     private String m_Email;
@@ -14,11 +13,9 @@ public class Vendor {
     private String m_ZipCode;
     private String m_City;
     private String m_State;
-    private String m_DateAdded;
-    private String m_Category;
 
-    //default constructor;
-    public Vendor() { }
+    //default constructor
+    public Customer() {}
 
     public long getM_Id() {
         return m_Id;
@@ -26,14 +23,6 @@ public class Vendor {
 
     public void setM_Id(long m_Id) {
         this.m_Id = m_Id;
-    }
-
-    public String getM_VendorName() {
-        return m_VendorName;
-    }
-
-    public void setM_VendorName(String m_VendorName) {
-        this.m_VendorName = m_VendorName;
     }
 
     public String getM_FirstName() {
@@ -116,19 +105,5 @@ public class Vendor {
         this.m_State = m_State;
     }
 
-    public String getM_DateAdded() {
-        return m_DateAdded;
-    }
 
-    public void setM_DateAdded(String m_DateAdded) {
-        this.m_DateAdded = m_DateAdded;
-    }
-
-    public String getM_Category() {
-        return m_Category;
-    }
-
-    public void setM_Category(String m_Category) {
-        this.m_Category = m_Category;
-    }
 }

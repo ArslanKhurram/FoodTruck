@@ -8,8 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import com.example.foodtruck.models.Customer;
-import com.example.foodtruck.models.Payment;
+import com.example.foodtruck.Models.Customer;
 
 //class to add customer data to database, foreign key to orders/payments
 public final class CustomersContract {

@@ -1,8 +1,8 @@
-package com.example.foodtruck.models;
+package com.example.foodtruck.Models;
 
-public class Customer {
+public class Vendor {
 
-    private long m_Id;
+    long m_Id;
     private String m_FirstName;
     private String m_LastName;
     private String m_Email;
@@ -14,8 +14,8 @@ public class Customer {
     private String m_City;
     private String m_State;
 
-    //default constructor
-    public Customer() {}
+    //default constructor;
+    public Vendor() { }
 
     public long getM_Id() {
         return m_Id;
@@ -104,6 +104,5 @@ public class Customer {
     public void setM_State(String m_State) {
         this.m_State = m_State;
     }
-
 
 }
