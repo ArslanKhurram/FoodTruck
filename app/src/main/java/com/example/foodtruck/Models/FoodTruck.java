@@ -1,4 +1,4 @@
-package com.example.foodtruck.models;
+package com.example.foodtruck.Models;
 
 public class FoodTruck {
 

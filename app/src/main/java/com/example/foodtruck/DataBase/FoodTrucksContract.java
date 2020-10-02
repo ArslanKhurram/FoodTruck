@@ -8,11 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import com.example.foodtruck.models.Customer;
-import com.example.foodtruck.models.FoodTruck;
-import com.example.foodtruck.models.Item;
-import com.example.foodtruck.models.Payment;
-import com.example.foodtruck.models.Vendor;
+import com.example.foodtruck.Models.FoodTruck;
+import com.example.foodtruck.Models.Vendor;
 
 import java.util.ArrayList;
 import java.util.Objects;

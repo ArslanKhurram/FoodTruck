@@ -1,39 +1,13 @@
-package com.example.foodtruck;
+package com.example.foodtruck.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.LocalSocketAddress;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.foodtruck.DataBase.FoodTrucksContract;
-import com.example.foodtruck.DataBase.ItemsContract;
-import com.example.foodtruck.DataBase.MenusContract;
-import com.example.foodtruck.DataBase.PaymentsContract;
-import com.example.foodtruck.DataBase.CustomersContract;
-import com.example.foodtruck.DataBase.VendorsContract;
-import com.example.foodtruck.models.Customer;
-import com.example.foodtruck.models.FoodTruck;
-import com.example.foodtruck.models.Item;
-import com.example.foodtruck.models.Menu;
-import com.example.foodtruck.models.Vendor;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
+import com.example.foodtruck.R;
 
 
 public class MainActivity extends AppCompatActivity {

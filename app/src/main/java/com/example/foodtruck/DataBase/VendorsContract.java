@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import com.example.foodtruck.models.Vendor;
+import com.example.foodtruck.Models.Vendor;
 
 import java.util.Objects;
 
