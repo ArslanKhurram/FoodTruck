@@ -23,4 +23,10 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
+    <string name="favorites">favorites</string>
+    <string name="search">search</string>
+    <string name="map">map</string>
+    <string name="account">account</string>
+    <string name="cart">cart</string>
+
 </resources>

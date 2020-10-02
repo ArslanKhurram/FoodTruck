@@ -5,9 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.foodtruck.Fragments.LoginFragment;
+import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.R;
 
 public class SignUpActivity extends AppCompatActivity {
+
+    Customer customer = new Customer();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,5 +25,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
 
+    }
 }
