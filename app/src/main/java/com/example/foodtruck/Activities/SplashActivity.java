@@ -1,4 +1,4 @@
-package com.example.foodtruck;
+package com.example.foodtruck.Activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.foodtruck.R;
 
 //Splash screen before user signs into app
 public class SplashActivity extends AppCompatActivity {
@@ -24,7 +26,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent mainIntent = new Intent(SplashActivity.this, SignUpActivity.class);
                 SplashActivity.this.startActivity(mainIntent);
                 SplashActivity.this.finish();
             }

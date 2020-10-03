@@ -8,8 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import com.example.foodtruck.models.Customer;
-import com.example.foodtruck.models.Payment;
+import com.example.foodtruck.Models.Customer;
 
 //class to add customer data to database, foreign key to orders/payments
 public final class CustomersContract {
@@ -33,6 +32,32 @@ public final class CustomersContract {
             CustomersEntry.COL_CITY,
             CustomersEntry.COL_STATE,
     };
+
+    //used to add customer into database
+    public Customer addCustomerByObject(Customer customer) {
+        open();
+        ContentValues cv = new ContentValues();
+        cv.put(CustomersEntry.COL_FIRST_NAME, customer.getM_FirstName());
+        cv.put(CustomersEntry.COL_LAST_NAME, customer.getM_LastName());
+        cv.put(CustomersEntry.COL_EMAIL, customer.getM_Email());
+        cv.put(CustomersEntry.COL_PASSWORD, customer.getM_Password());
+        cv.put(CustomersEntry.COL_PHONE_NUMBER, customer.getM_PhoneNumber());
+        cv.put(CustomersEntry.COL_STREET_NAME, customer.getM_StreetName());
+        cv.put(CustomersEntry.COL_HOUSE_NUMBER, customer.getM_HouseNumber());
+        cv.put(CustomersEntry.COL_ZIP_CODE, customer.getM_ZipCode());
+        cv.put(CustomersEntry.COL_CITY, customer.getM_City());
+        cv.put(CustomersEntry.COL_STATE, customer.getM_State());
+
+        long insertId = mDb.insert(CustomersEntry.TABLE_NAME, null, cv);
+        Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry._ID +
+                " = " + insertId, null, null, null, null);
+        cursor.moveToFirst();
+        Customer newCustomer = cursorToCustomer(cursor);
+        cursor.close();
+        mDb.close();
+        close();
+        return newCustomer;
+    }
 
     //used to add customer into database
     public Customer addCustomer(String first, String last, String email, String password, String phone, String streetName, String houseNum
