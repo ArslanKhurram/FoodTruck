@@ -10,7 +10,7 @@ import com.example.foodtruck.R;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    Customer customer = new Customer();
+    public Customer customer = new Customer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

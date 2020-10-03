@@ -1,7 +1,6 @@
 package com.example.foodtruck.Fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +42,8 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new SearchFragment()).commit();
                 break;
             case "map":
+                //Intent i = new Intent(getActivity(), MapsActivity.class);
+                //startActivity(i);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MapFragment()).commit();
                 break;
             case "account":

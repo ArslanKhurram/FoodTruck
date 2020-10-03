@@ -28,5 +28,6 @@
     <string name="map">map</string>
     <string name="account">account</string>
     <string name="cart">cart</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
