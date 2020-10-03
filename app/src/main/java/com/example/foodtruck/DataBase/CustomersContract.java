@@ -151,4 +151,7 @@ public final class CustomersContract {
         public static final String COL_STATE = "state";
     }
 
+
+
+
 }
