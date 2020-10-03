@@ -89,8 +89,35 @@ public final class VendorsContract {
     }
 
     //used to add vendor into database
+    public Vendor addVendorByObject(Vendor vendor) {
+        open();
+        ContentValues cv = new ContentValues();
+        cv.put(VendorsEntry.COL_FIRST_NAME, vendor.getM_FirstName());
+        cv.put(VendorsEntry.COL_LAST_NAME, vendor.getM_LastName());
+        cv.put(VendorsEntry.COL_EMAIL, vendor.getM_Email());
+        cv.put(VendorsEntry.COL_PASSWORD, vendor.getM_Password());
+        cv.put(VendorsEntry.COL_PHONE_NUMBER, vendor.getM_PhoneNumber());
+        cv.put(VendorsEntry.COL_STREET_NAME, vendor.getM_StreetName());
+        cv.put(VendorsEntry.COL_HOUSE_NUMBER, vendor.getM_HouseNumber());
+        cv.put(VendorsEntry.COL_ZIP_CODE, vendor.getM_ZipCode());
+        cv.put(VendorsEntry.COL_CITY, vendor.getM_City());
+        cv.put(VendorsEntry.COL_STATE, vendor.getM_State());
+
+        long insertId = mDb.insert(VendorsEntry.TABLE_NAME, null, cv);
+        Cursor cursor = mDb.query(VendorsEntry.TABLE_NAME, mAllColumns, VendorsEntry._ID +
+                " = " + insertId, null, null, null, null);
+        cursor.moveToFirst();
+        Vendor newVendor = cursorToVendor(cursor);
+        cursor.close();
+        mDb.close();
+        close();
+        return newVendor;
+    }
+
+
+    //used to add vendor into database
     public Vendor addVendor(String first, String last, String email, String password, String phone, String streetName, String houseNum,
-            String zipCode, String city, String state) {
+                            String zipCode, String city, String state) {
         open();
         ContentValues cv = new ContentValues();
         cv.put(VendorsEntry.COL_FIRST_NAME, first);

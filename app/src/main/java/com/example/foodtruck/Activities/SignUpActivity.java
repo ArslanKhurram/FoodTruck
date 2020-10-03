@@ -1,11 +1,10 @@
 package com.example.foodtruck.Activities;
 
-import android.app.AppComponentFactory;
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.foodtruck.LoginFragment;
+import android.os.Bundle;
+
+import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.R;
 
@@ -26,5 +25,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
 
+    }
 }
