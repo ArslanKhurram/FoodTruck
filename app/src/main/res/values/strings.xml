@@ -1,15 +1,16 @@
 <resources>
     <string name="app_name">FoodTruck</string>
 
-    <string-array name="loginType">
-        <item>User</item>
-        <item>Vendor</item>
-    </string-array>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="stateNames">
         <item>MA</item>
         <item>NJ</item>
         <item>NY</item>
+    </string-array>
+    <string-array name="loginType">
+        <item>User</item>
+        <item>Vendor</item>
     </string-array>
 
 </resources>

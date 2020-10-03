@@ -7,8 +7,6 @@
     tools:context=".MainActivity">
 
 
-
-
     <ImageView
         android:id="@+id/imgLogo"
         android:layout_width="150dp"
