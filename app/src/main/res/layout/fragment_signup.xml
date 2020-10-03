@@ -34,7 +34,7 @@
 
     <RelativeLayout
             android:id="@+id/inputLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="275dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/imgLogo"
             app:layout_constraintBottom_toTopOf="@id/btnLayout"
@@ -44,44 +44,44 @@
 
         <EditText
             android:id="@+id/etFirstName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textSize="50px"
             android:hint="First Name"
             android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/etLastName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textSize="50px"
             android:hint="Last Name"
             android:inputType="textPersonName"
             android:layout_below="@id/etFirstName"/>
 
         <EditText
             android:id="@+id/etEmailAdd"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textSize="50px"
             android:hint="Email Address"
             android:inputType="textEmailAddress"
             android:layout_below="@id/etLastName"/>
 
         <EditText
             android:id="@+id/etNewPassword"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textSize="50px"
             android:hint="Password"
             android:inputType="textPassword"
             android:layout_below="@id/etEmailAdd"/>
 
           <EditText
               android:id="@+id/testNewPassword"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:ems="10"
+              android:textSize="50px"
               android:hint="Confirm Password"
               android:inputType="textPassword"
               android:layout_below="@id/etNewPassword"/>
@@ -106,11 +106,11 @@
 
                 />
             <Button
-                android:id="@+id/btnForward"
+                android:id="@+id/btnNext"
                 android:layout_width="wrap_content"
                 android:layout_height="43dp"
-                android:onClick="Forward"
-                android:text="Forward"
+                android:onClick="Next"
+                android:text="Next"
                 android:layout_toRightOf="@id/btnBack"
                 />
 

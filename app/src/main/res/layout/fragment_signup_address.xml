@@ -30,7 +30,7 @@
 -->
     <RelativeLayout
         android:id="@+id/inputLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="275dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/imgLogo"
         app:layout_constraintBottom_toTopOf="@id/btnLayout"
@@ -40,26 +40,26 @@
 
         <EditText
             android:id="@+id/etStreetName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textSize="50px"
             android:hint="Street Name"
             android:inputType="textPostalAddress" />
 
         <EditText
             android:id="@+id/etHouseNum"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textSize="50px"
             android:hint="House Number"
-            android:inputType="textPostalAddress"
+            android:inputType="phone"
             android:layout_below="@id/etStreetName"/>
 
         <EditText
             android:id="@+id/etPhone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textSize="50px"
             android:hint="Phone Number"
             android:inputType="phone"
             android:layout_below="@id/etHouseNum"
@@ -67,38 +67,60 @@
 
         <EditText
             android:id="@+id/etCity"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textSize="50px"
             android:hint="City"
             android:inputType="textPersonName"
             android:layout_below="@id/etPhone"/>
 
         <EditText
             android:id="@+id/etZip"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:textSize="50px"
             android:hint="Zip Code"
             android:inputType="number"
             android:layout_below="@id/etCity"/>
+          </RelativeLayout>
 
-        <Spinner
+<LinearLayout
+    android:id="@+id/stateLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/inputLayout"
+    app:layout_constraintBottom_toTopOf="@id/btnLayout"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+
+    >
+    <TextView
+        android:id="@+id/txtState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="State:"
+        android:height="24dp"
+        android:layout_below="@id/etZip"
+        android:textSize="50px"
+
+        />
+    <Spinner
             android:id="@+id/spnState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/stateNames"
             android:layout_below="@id/etZip"
             android:layout_alignRight="@id/etZip"
+            android:minHeight="24dp"
             />
+</LinearLayout>
 
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/btnLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/inputLayout"
+        app:layout_constraintTop_toBottomOf="@id/stateLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -113,11 +135,11 @@
 
             />
         <Button
-            android:id="@+id/btnForward"
+            android:id="@+id/btnNext"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:onClick="Forward"
-            android:text="Forward"
+            android:onClick="Next"
+            android:text="Next"
             android:layout_toRightOf="@id/btnBack"
             />
     </RelativeLayout>

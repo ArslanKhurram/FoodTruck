@@ -7,4 +7,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <!--Text Style for sign gui -->
+<style name="editText" parent="Widget.AppCompat.EditText">
+    <item name="android:textSize">50px</item>
+</style>
 </resources>
