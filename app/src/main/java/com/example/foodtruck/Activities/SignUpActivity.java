@@ -6,11 +6,13 @@ import android.os.Bundle;
 
 import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.Models.Customer;
+import com.example.foodtruck.Models.Payment;
 import com.example.foodtruck.R;
 
 public class SignUpActivity extends AppCompatActivity {
 
     public Customer customer = new Customer();
+    public Payment payment = new Payment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.foodtruck.R;
+import com.example.foodtruck.SignUpFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -48,6 +51,29 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
+        Button signUpBtn = v.findViewById(R.id.btnSignUp);
+        final Spinner spnChoice = v.findViewById(R.id.spnLoginType);
+        //switch statement for spnChoice for onclick btn
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+
+
+            public void onClick(View v) {
+                //switch statement for spnChoice for onclick btn
+                switch (spnChoice.getSelectedItem().toString()){
+                    case "Customer":
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SignUpFragment()).commit();
+                        break;
+                    case "Vendor":
+                        //  getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.test,new SignUpFragment()).commit();      Enter vendor fragment here
+                        break;
+                    default:
+                        break;
+
+                }
+
+            }
+        });
         SignInButton googleSignInBtn = v.findViewById(R.id.sign_in_button);
         googleSignInBtn.setOnClickListener(this); //set onclick listener to google sign in button
         return v;
