@@ -89,7 +89,7 @@ public class SignUpAddFragment extends Fragment {
             stName.setError("Can Not Be Empty ");
             return false;
         } else if (!st) {
-            stName.setError("Password Does Not Meet Minimum Requirements");
+            stName.setError("Only Letters Allowed");
             return false;
         }
 
