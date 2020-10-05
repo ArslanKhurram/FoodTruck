@@ -1,6 +1,4 @@
-package com.example.foodtruck.models;
-
-import java.util.Arrays;
+package com.example.foodtruck.Models;
 
 public class Item {
 
