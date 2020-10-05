@@ -52,6 +52,7 @@ public final class PaymentsContract {
         ContentValues cv = new ContentValues();
         cv.put(PaymentsEntry.COL_PAYMENT_TYPE, paymentType);
         cv.put(PaymentsEntry.COL_NAME_ON_CARD, name);
+        cv.put(PaymentsEntry.COL_CARD_NUMBER,cardNumber);
         cv.put(PaymentsEntry.COL_CARD_NUMBER, cardNumber);
         cv.put(PaymentsEntry.COL_CC_EXP_DATE, exp);
         cv.put(PaymentsEntry.COL_CCV, ccv);

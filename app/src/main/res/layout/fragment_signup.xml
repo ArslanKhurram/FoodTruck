@@ -1,144 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-    <TextView
-        android:id="@+id/txtSignUp"
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:id="@+id/inputLayout"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Sign Up"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.248" />
+        android:layout_centerInParent="true"
+        >
 
-    <EditText
-        android:id="@+id/etStreetAdd"
-        android:layout_width="337dp"
-        android:layout_height="52dp"
-        android:ems="10"
-        android:hint="Street Address"
-        android:inputType="textPostalAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.326" />
+        <EditText
+            android:id="@+id/etFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="50px"
+            android:hint="First Name"
+            android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/etPhone"
-        android:layout_width="167dp"
-        android:layout_height="42dp"
-        android:ems="10"
-        android:hint="Phone"
-        android:inputType="phone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.709" />
+        <EditText
+            android:id="@+id/etLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="50px"
+            android:hint="Last Name"
+            android:inputType="textPersonName"
+            android:layout_below="@id/etFirstName"
+            />
 
-    <EditText
-        android:id="@+id/etLastName"
-        android:layout_width="146dp"
-        android:layout_height="42dp"
-        android:ems="10"
-        android:hint="Last Name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.92"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        <EditText
+            android:id="@+id/etEmailAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="50px"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:layout_below="@id/etLastName"/>
 
-    <EditText
-        android:id="@+id/etEmailAdd"
-        android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/etNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="50px"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:layout_below="@id/etEmailAdd"/>
+
+        <EditText
+            android:id="@+id/testNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="50px"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:layout_below="@id/etNewPassword"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/btnLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Email Address"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.174"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.399" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="5dp"
+        android:layout_above="@id/sOne"
+        >
 
-    <Spinner
-        android:id="@+id/spnState"
-        android:layout_width="90dp"
-        android:layout_height="51dp"
-        android:entries="@array/stateNames"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.615" />
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:text="Back"
+            android:background="@drawable/btn_round"
 
-    <EditText
-        android:id="@+id/etFirstName"
-        android:layout_width="146dp"
-        android:layout_height="42dp"
-        android:ems="10"
-        android:hint="First Name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.143"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.77" />
+            />
 
-    <EditText
-        android:id="@+id/etZip"
-        android:layout_width="116dp"
-        android:layout_height="45dp"
-        android:ems="10"
-        android:hint="Zip Code"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.877"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.61" />
-
-    <EditText
-        android:id="@+id/etCity"
-        android:layout_width="100dp"
-        android:layout_height="51dp"
-        android:ems="10"
-        android:hint="City"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.122"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.616" />
-
-    <Button
-        android:id="@+id/btnCreateAcc"
-        android:layout_width="135dp"
-        android:layout_height="65dp"
-        android:onClick="CreateAccount"
-        android:text="Create Account"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.824"
-        />
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="1dp"/>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:text="Next"
+            android:background="@drawable/btn_round"
+
+            />
+
+    </LinearLayout>
+
+        <Space
+            android:id="@+id/sOne"
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"/>
+
+
+
+</RelativeLayout>
