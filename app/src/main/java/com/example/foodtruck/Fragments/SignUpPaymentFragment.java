@@ -67,7 +67,7 @@ public class SignUpPaymentFragment extends Fragment{
                     pc = new PaymentsContract(getContext());
                     pc.createPayment(payType.getSelectedItem().toString(), fullName.getText().toString(), cardNumber.getText().toString(), expDate.getText().toString(), ccv.getText().toString(), Calendar.getInstance().getTime().toString(), cust1.getM_Id());
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
                 }
             }
         });

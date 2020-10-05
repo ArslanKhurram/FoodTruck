@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.foodtruck.DataBase.CustomersContract;
+import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.R;
 import com.example.foodtruck.Fragments.SignUpFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -30,6 +33,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     GoogleSignInClient mGoogleSignInClient;
     int RC_SIGN_IN = 0;
+    Spinner spinner;
+    EditText email, password;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,29 +56,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
-        Button signUpBtn = v.findViewById(R.id.btnSignUp);
-        final Spinner spnChoice = v.findViewById(R.id.spnLoginType);
-        //switch statement for spnChoice for onclick btn
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
+        email = v.findViewById(R.id.etEmail);
+        password = v.findViewById(R.id.etPassword);
 
-
-            public void onClick(View v) {
-                //switch statement for spnChoice for onclick btn
-                switch (spnChoice.getSelectedItem().toString()){
-                    case "Customer":
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SignUpFragment()).commit();
-                        break;
-                    case "Vendor":
-                        //  getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.test,new SignUpFragment()).commit();      Enter vendor fragment here
-                        break;
-                    default:
-                        break;
-
-                }
-
-            }
-        });
+        spinner = v.findViewById(R.id.spnLoginType); //add reference to spinner so it can be used in the onclick method
+        v.findViewById(R.id.btnSignUp).setOnClickListener(this); //set onclick listener to sign up button
+        v.findViewById(R.id.btnLogin).setOnClickListener(this); //set onclick listener to login button
         SignInButton googleSignInBtn = v.findViewById(R.id.sign_in_button);
         googleSignInBtn.setOnClickListener(this); //set onclick listener to google sign in button
         return v;
@@ -83,10 +71,43 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) { //switch case to handle passed in on click objects
-            case R.id.sign_in_button:
+            case R.id.sign_in_button: //if google sign in is pressed the execute signIn()
                 signIn();
                 break;
+            case R.id.btnSignUp: //if local signUp button is pressed then check for login type
+                if (spinner.getSelectedItem().toString().equals("Customer")) { //launch customer sign up
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SignUpFragment()).commit();
+                } else if (spinner.getSelectedItem().toString().equals("Vendor")) { //launch vendor sign up
+                    //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SignUpFragment()).commit();
+                }
+                break;
+            case R.id.btnLogin:
+                validateLogIn(spinner.getSelectedItem().toString());
         }
+    }
+
+    //process the login validation
+    private void validateLogIn(String loginType) {
+        switch (loginType) {
+            case "Customer":
+                if (checkForExistingCustomer()) //login if the user exists in the database
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
+                else
+                    Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show(); // notify customer if the login was incorrect
+                break;
+            case "Vendor":
+                Log.d("LogIn", "Vendor");
+        }
+    }
+
+    public boolean checkForExistingCustomer() {
+        CustomersContract cc = new CustomersContract(getContext());
+        if (cc.checkForEmptyTable()) { //check is the table is empty
+            return false;
+        } else if (cc.validateCustomer(email.getText().toString(), password.getText().toString())) {
+            return true;
+        } else
+            return false;
     }
 
     //method to execute google sign in process

@@ -86,6 +86,36 @@ public final class CustomersContract {
         return newCustomer;
     }
 
+    //check for empty table
+    public boolean checkForEmptyTable() {
+        open();
+        mDb = mDbHelper.getWritableDatabase();
+        String count = "SELECT count(*) FROM " + CustomersEntry.TABLE_NAME;
+        Cursor cursor = mDb.rawQuery(count, null);
+        cursor.moveToFirst();
+        int icount = cursor.getInt(0);
+        mDb.close();
+        cursor.close();
+        close();
+        return icount <= 0;
+    }
+
+    //return boolean after checking email and password match for customer
+    public boolean validateCustomer(String email, String password) {
+        open();
+        String selection = CustomersEntry.COL_EMAIL + "=?" + " and " + CustomersEntry.COL_PASSWORD + "=?"; //where statement
+        String[] selectionArgs = {email, password}; //columns to compare input to
+        Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, selection, selectionArgs, null, null, null);
+        int count = cursor.getCount();
+        mDb.close();
+        cursor.close();
+        close();
+
+        if (count > 0)
+            return true;
+        else
+            return false;
+    }
 
     //open database
     public void open() throws SQLException {
@@ -118,10 +148,10 @@ public final class CustomersContract {
         open();
         Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry.COL_EMAIL + " = ?",
                 new String[]{String.valueOf(email)}, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor == null) {
+            return new Customer();
         }
-
+        cursor.moveToFirst();
         Customer customer = cursorToCustomer(cursor);
         cursor.close();
         mDb.close();
