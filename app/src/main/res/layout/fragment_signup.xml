@@ -1,44 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-    <ImageView
-        android:id="@+id/imgLogo"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:background="@drawable/test"
-        app:layout_constraintBottom_toTopOf="@+id/inputLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-
-    <!-- Create Your Account Text Field Remember adjust imgLogo constraints & txtSignUp constraints
-<TextView
-    android:id="@+id/txtSignUp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Create Your Account"
-    app:layout_constraintBottom_toTopOf="@id/inputLayout"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/imgLogo" />
-        -->
-
-
 
     <RelativeLayout
         android:id="@+id/inputLayout"
-        android:layout_width="275dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/imgLogo"
-        app:layout_constraintBottom_toTopOf="@id/btnLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_centerInParent="true"
         >
 
         <EditText
@@ -56,7 +29,8 @@
             android:textSize="50px"
             android:hint="Last Name"
             android:inputType="textPersonName"
-            android:layout_below="@id/etFirstName"/>
+            android:layout_below="@id/etFirstName"
+            />
 
         <EditText
             android:id="@+id/etEmailAdd"
@@ -86,33 +60,47 @@
             android:layout_below="@id/etNewPassword"/>
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/btnLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/inputLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="5dp"
+        android:layout_above="@id/sOne"
         >
 
         <Button
             android:id="@+id/btnBack"
+            android:layout_height="40dp"
             android:layout_width="wrap_content"
-            android:layout_height="43dp"
-            android:onClick="Back"
             android:text="Back"
+            android:background="@drawable/btn_round"
 
             />
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="1dp"/>
+
+
         <Button
             android:id="@+id/btnNext"
+            android:layout_height="40dp"
             android:layout_width="wrap_content"
-            android:layout_height="43dp"
-            android:onClick="Next"
             android:text="Next"
-            android:layout_toRightOf="@id/btnBack"
+            android:background="@drawable/btn_round"
+
             />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Space
+            android:id="@+id/sOne"
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"/>
+
+
+
+</RelativeLayout>

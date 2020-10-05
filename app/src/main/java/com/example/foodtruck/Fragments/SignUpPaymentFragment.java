@@ -40,7 +40,7 @@ public class SignUpPaymentFragment extends Fragment{
         final EditText cardNumber = v.findViewById(R.id.etCardNum);
         final EditText ccv = v.findViewById(R.id.etCv);
         final EditText expDate = v.findViewById(R.id.etExDate);
-
+        payType.setDropDownHorizontalOffset(50);
         // Moves From singUpPaymentFragment to signUpAddFragment
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
