@@ -32,7 +32,6 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         String selectedItem = item.getTitle().toString();
-        //Log.d("Menu","This is the Selected Item: " + selectedItem);
 
         switch (selectedItem) {
             case "favorites":
@@ -42,8 +41,6 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new SearchFragment()).commit();
                 break;
             case "map":
-                //Intent i = new Intent(getActivity(), MapsActivity.class);
-                //startActivity(i);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MapFragment()).commit();
                 break;
             case "account":

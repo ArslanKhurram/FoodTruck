@@ -1,6 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/yourCartTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/your_cart"
+        android:layout_centerHorizontal="true"
+        android:padding="25dp"
+        style="@style/TextViewHeader" />
+
+    <ImageView
+        android:id="@+id/z1"
+        android:layout_height="2dp"
+        android:layout_width="match_parent"
+        android:layout_below="@id/yourCartTv"
+        android:background="@drawable/horizontal_line" />
+
+    <LinearLayout
+        android:id="@+id/deliveryLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/z1"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_delivery" />
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            style="@style/DeliveryText"
+            android:text="@string/delivery" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/z2"
+        android:layout_height="2dp"
+        android:layout_width="match_parent"
+        android:layout_below="@id/deliveryLL"
+        android:background="@drawable/horizontal_line" />
+
+    <RelativeLayout
+        android:id="@+id/deliveryChoices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/z2"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/t1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delivery Options"
+            style="@style/DeliveryText" />
+
+        <HorizontalScrollView
+            android:id="@+id/cartHorizontalSV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:layout_below="@id/t1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="120dp"
+                    android:layout_height="35dp"
+                    app:cardBackgroundColor="@color/gray"
+                    app:cardCornerRadius="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/pick_at_truck" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="10dp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="120dp"
+                    android:layout_height="35dp"
+                    app:cardBackgroundColor="@color/gray"
+                    app:cardCornerRadius="20dp">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/delivery_home" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/z3"
+        android:layout_height="2dp"
+        android:layout_width="match_parent"
+        android:layout_below="@id/deliveryChoices"
+        android:background="@drawable/horizontal_line" />
+
+    <RelativeLayout
+        android:id="@+id/r1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/z3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Order"
+            style="@style/DeliveryText"
+            android:padding="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            style="@style/DeliveryText"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/see_menu"
+            android:padding="10dp" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cartRecyclerView"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/r1" />
+
 
 </RelativeLayout>

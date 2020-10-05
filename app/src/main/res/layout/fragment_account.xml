@@ -3,17 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/accountTextView"
         android:paddingTop="10dp"
         android:paddingBottom="15dp"
-        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="MY ACCOUNT"
-        android:textSize="45px"
-        android:textColor="@color/colorPrimary" />
+        android:text="@string/my_account"
+        style="@style/TextViewHeader" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/accountRecycleView"

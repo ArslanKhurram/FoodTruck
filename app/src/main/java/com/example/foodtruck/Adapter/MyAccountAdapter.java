@@ -88,6 +88,6 @@ public class MyAccountAdapter extends RecyclerView.Adapter<MyAccountAdapter.MyVi
 
 
     public interface OnCardListener {
-        void onCardClick(int postion);
+        void onCardClick(int position);
     }
 }
