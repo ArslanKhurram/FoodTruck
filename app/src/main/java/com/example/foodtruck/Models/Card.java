@@ -1,6 +1,4 @@
-package com.example.foodtruck.models;
-
-import android.widget.ImageView;
+package com.example.foodtruck.Models;
 
 import com.example.foodtruck.R;
 
