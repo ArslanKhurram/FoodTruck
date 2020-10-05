@@ -27,6 +27,7 @@ public class DbHelper extends SQLiteOpenHelper {
             PaymentsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             PaymentsEntry.COL_PAYMENT_TYPE + " TEXT NOT NULL, " +
             PaymentsEntry.COL_NAME_ON_CARD + " TEXT NOT NULL, " +
+            PaymentsEntry.COL_CARD_NUMBER + " TEXT NOT NULL, " +
             PaymentsEntry.COL_CC_EXP_DATE + " TEXT NOT NULL, " +
             PaymentsEntry.COL_CCV + " TEXT NOT NULL, " +
             PaymentsEntry.COL_DATE_ADDED + " TEXT NOT NULL, " +

@@ -1,4 +1,4 @@
-package com.example.foodtruck;
+package com.example.foodtruck.Fragments;
 
 import android.os.Bundle;
 
@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.foodtruck.Activities.SignUpActivity;
+import com.example.foodtruck.R;
+import com.example.foodtruck.SignUpFragment;
 
 
 public class SignUpAddFragment extends Fragment{

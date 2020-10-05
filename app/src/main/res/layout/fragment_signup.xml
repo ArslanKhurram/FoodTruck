@@ -17,30 +17,29 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
 
-        <!-- Create Your Account Text Field Remember adjust imgLogo constraints & txtSignUp constraints
-
-    <TextView
-        android:id="@+id/txtSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Your Account"
-        app:layout_constraintBottom_toTopOf="@id/inputLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgLogo" />
-            -->
+    <!-- Create Your Account Text Field Remember adjust imgLogo constraints & txtSignUp constraints
+<TextView
+    android:id="@+id/txtSignUp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Create Your Account"
+    app:layout_constraintBottom_toTopOf="@id/inputLayout"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/imgLogo" />
+        -->
 
 
 
     <RelativeLayout
-            android:id="@+id/inputLayout"
-            android:layout_width="275dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/imgLogo"
-            app:layout_constraintBottom_toTopOf="@id/btnLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
+        android:id="@+id/inputLayout"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/imgLogo"
+        app:layout_constraintBottom_toTopOf="@id/btnLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
 
         <EditText
             android:id="@+id/etFirstName"
@@ -77,42 +76,42 @@
             android:inputType="textPassword"
             android:layout_below="@id/etEmailAdd"/>
 
-          <EditText
-              android:id="@+id/testNewPassword"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:textSize="50px"
-              android:hint="Confirm Password"
-              android:inputType="textPassword"
-              android:layout_below="@id/etNewPassword"/>
+        <EditText
+            android:id="@+id/testNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="50px"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:layout_below="@id/etNewPassword"/>
     </RelativeLayout>
 
     <RelativeLayout
-            android:id="@+id/btnLayout"
+        android:id="@+id/btnLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/inputLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <Button
+            android:id="@+id/btnBack"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/inputLayout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
+            android:layout_height="43dp"
+            android:onClick="Back"
+            android:text="Back"
 
-            <Button
-                android:id="@+id/btnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                android:onClick="Back"
-                android:text="Back"
-
-                />
-            <Button
-                android:id="@+id/btnNext"
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                android:onClick="Next"
-                android:text="Next"
-                android:layout_toRightOf="@id/btnBack"
-                />
+            />
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="43dp"
+            android:onClick="Next"
+            android:text="Next"
+            android:layout_toRightOf="@id/btnBack"
+            />
 
     </RelativeLayout>
 

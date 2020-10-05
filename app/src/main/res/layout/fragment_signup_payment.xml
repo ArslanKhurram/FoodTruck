@@ -50,6 +50,16 @@
         android:inputType="textPersonName"
         android:layout_below="@id/spnPaymentType"/>
 
+     <EditText
+         android:id="@+id/etCardNum"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:ems="10"
+         android:hint="Card Number"
+         android:inputType="number"
+         android:layout_below="@id/etFullName"/>
+
+
     <EditText
         android:id="@+id/etExDate"
         android:layout_width="wrap_content"
@@ -57,7 +67,7 @@
         android:ems="10"
         android:hint="Exp Date: MM/YY"
         android:inputType="number"
-        android:layout_below="@id/etFullName" />
+        android:layout_below="@id/etCardNum" />
 
     <EditText
         android:id="@+id/etCv"

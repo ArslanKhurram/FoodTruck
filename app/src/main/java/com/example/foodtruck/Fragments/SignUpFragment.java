@@ -15,6 +15,7 @@ import com.example.foodtruck.Activities.MainActivity;
 import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.Fragments.LoginFragment;
+import com.example.foodtruck.Fragments.SignUpAddFragment;
 
 
 public class SignUpFragment extends Fragment {
