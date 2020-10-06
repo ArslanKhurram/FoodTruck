@@ -4,14 +4,8 @@
     android:layout_height="50dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="0dp"
-    app:cardBackgroundColor="@android:color/darker_gray"
+    app:cardBackgroundColor="@android:color/white"
     app:cardElevation="0dp">
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
-        android:layout_height="49dp"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,6 +27,9 @@
                 android:layout_centerVertical="true" />
         </RelativeLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/horizontal_line" />
 
 </androidx.cardview.widget.CardView>

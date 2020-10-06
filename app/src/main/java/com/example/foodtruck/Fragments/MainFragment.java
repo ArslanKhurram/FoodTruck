@@ -44,7 +44,7 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MapFragment()).commit();
                 break;
             case "account":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new AccountFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CustomerAccountFragment()).commit();
                 break;
             case "cart":
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CartFragment()).commit();

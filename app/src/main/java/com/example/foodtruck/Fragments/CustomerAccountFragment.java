@@ -22,7 +22,7 @@ import com.google.android.material.internal.NavigationMenuView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountFragment extends Fragment implements MyAccountAdapter.OnCardListener {
+public class CustomerAccountFragment extends Fragment implements MyAccountAdapter.OnCardListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;

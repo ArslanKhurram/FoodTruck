@@ -79,7 +79,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.btnLogin:
-                validateLogIn(spinner.getSelectedItem().toString());
+                validateLogIn(spinner.getSelectedItem().toString()); //validate the log in
         }
     }
 
