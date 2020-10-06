@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FoodTruck</string>
+    <string name="app_name">Food Street</string>
 
     <string-array name="loginType">
         <item>Customer</item>
@@ -87,5 +87,11 @@
     <string name="account">account</string>
     <string name="cart">cart</string>
     <string name="title_activity_maps">Map</string>
+    <string name="my_account">MY ACCOUNT</string>
+    <string name="your_cart">Your Cart</string>
+    <string name="delivery">Delivery</string>
+    <string name="pick_at_truck">Pick at Truck</string>
+    <string name="delivery_home">Delivery Home</string>
+    <string name="see_menu"><u>See Menu</u></string>
 
 </resources>

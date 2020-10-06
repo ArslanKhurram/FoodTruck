@@ -53,6 +53,7 @@ public final class PaymentsContract {
         cv.put(PaymentsEntry.COL_PAYMENT_TYPE, paymentType);
         cv.put(PaymentsEntry.COL_NAME_ON_CARD, name);
         cv.put(PaymentsEntry.COL_CARD_NUMBER,cardNumber);
+        cv.put(PaymentsEntry.COL_CARD_NUMBER, cardNumber);
         cv.put(PaymentsEntry.COL_CC_EXP_DATE, exp);
         cv.put(PaymentsEntry.COL_CCV, ccv);
         cv.put(PaymentsEntry.COL_DATE_ADDED, dateAdded);
