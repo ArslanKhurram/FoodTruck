@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/picView"
-            android:layout_width="208dp"
-            android:layout_height="184dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_centerInParent="true"
             android:layout_alignParentTop="true"
             app:srcCompat="@drawable/ic_delivery" />
@@ -28,7 +28,7 @@
             android:ems="10"
             android:hint="Food Truck Name"
             android:inputType="textPersonName"
-            android:layout_below="@id/picView"/>
+            android:layout_below="@id/picView" />
 
         <EditText
             android:id="@+id/etCategory"
@@ -36,32 +36,19 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/etName"
             android:hint="Category"
-            android:inputType="number" />
-        <Spinner
-            android:id="@+id/spnPaymentType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/etCategory"
-            android:entries="@array/CategoryType"
-            android:spinnerMode="dialog"
-            android:paddingTop="10dp"
-            />
+            android:inputType="text" />
+
+
         <Button
-            android:id="@+id/spnImageUpload"
+            android:id="@+id/btnImageUpload"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_below="@id/etCategory"
-            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
             android:text="Upload Image"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginBottom="4dp"
-            android:textColor="#8F2188B1"
-            android:background="@drawable/btn_upload"
-            android:textSize="12sp"
-            android:textAllCaps="false"/>
+            android:textColor="#FC000102"
+            android:background="@android:color/white"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 

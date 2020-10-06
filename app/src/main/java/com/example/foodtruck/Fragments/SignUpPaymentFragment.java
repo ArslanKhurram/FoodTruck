@@ -1,6 +1,9 @@
 package com.example.foodtruck.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,6 +19,7 @@ import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.Models.Customer;
+import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -66,12 +70,19 @@ public class SignUpPaymentFragment extends Fragment{
                     //Add payments value to payment data base
                     pc = new PaymentsContract(getContext());
                     pc.createPayment(payType.getSelectedItem().toString(), fullName.getText().toString(), cardNumber.getText().toString(), expDate.getText().toString(), ccv.getText().toString(), Calendar.getInstance().getTime().toString(), cust1.getM_Id());
-
+                    saveKeyData(SignUpA.customer);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
                 }
             }
         });
         return v;
+    }
+
+    public void saveKeyData(Customer customer) {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("UserType", "Customer");
+        editor.putString("Email", customer.getM_Email());
     }
 
     //regex validation  for full Name

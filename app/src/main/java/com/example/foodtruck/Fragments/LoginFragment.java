@@ -1,6 +1,8 @@
 package com.example.foodtruck.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,8 +75,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btnSignUp: //if local signUp button is pressed then check for login type
                 if (spinner.getSelectedItem().toString().equals("Customer")) { //launch customer sign up
+                    saveKeyData(spinner);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SignUpFragment()).commit();
                 } else if (spinner.getSelectedItem().toString().equals("Vendor")) { //launch vendor sign up
+                    saveKeyData(spinner);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VendorSignUpFragment()).commit();
                 }
                 break;
@@ -87,15 +91,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private void validateLogIn(String loginType) {
         switch (loginType) {
             case "Customer":
-                if (checkForExistingCustomer()) //login if the user exists in the database
+                if (checkForExistingCustomer()) { //login if the user exists in the database
+                    saveKeyData(spinner, email);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
-                else
+                } else
                     Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show(); // notify customer if the login was incorrect
                 break;
             case "Vendor":
-                if (checkForExistingVendor()) //login if the user exists in the database
+                if (checkForExistingVendor()) { //login if the user exists in the database
+                    saveKeyData(spinner, email);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
-                else
+                } else
                     Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show(); // notify customer if the login was incorrect
                 break;
         }
@@ -146,6 +152,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public void saveKeyData(Spinner spinner, EditText email) {
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("UserType", spinner.getSelectedItem().toString());
+        editor.putString("Email", email.getText().toString());
+        editor.apply();
+    }
+
+    public void saveKeyData(Spinner spinner) {
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("UserType", spinner.getSelectedItem().toString());
+        editor.apply();
+    }
+
     //will process the transaction for new fragment
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
@@ -169,6 +190,4 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
         }
     }
-
-
 }

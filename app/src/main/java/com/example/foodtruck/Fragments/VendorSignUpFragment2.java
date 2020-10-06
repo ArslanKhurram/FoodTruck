@@ -1,5 +1,7 @@
 package com.example.foodtruck.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.Spinner;
 
 import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 
 import androidx.fragment.app.Fragment;
@@ -52,12 +55,20 @@ public class VendorSignUpFragment2 extends Fragment implements View.OnClickListe
                 signUpAct.vendor.setM_ZipCode(etZip.getText().toString());
                 signUpAct.vendor.setM_PhoneNumber(etPhone.getText().toString());
                 VendorsContract vc = new VendorsContract(getActivity());
-                vc.addVendor(signUpAct.vendor);
+                vc.addVendor(signUpAct.vendor); //create a record in the database
+                saveKeyData(signUpAct.vendor); //save the email and user type for later use
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
                 break;
             case R.id.btnBack:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VendorSignUpFragment()).commit();
                 break;
         }
+    }
+
+    public void saveKeyData(Vendor vendor) {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("UserType", "Vendor");
+        editor.putString("Email", vendor.getM_Email());
     }
 }

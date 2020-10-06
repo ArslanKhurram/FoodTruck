@@ -1,5 +1,7 @@
 package com.example.foodtruck.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -32,6 +34,7 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         String selectedItem = item.getTitle().toString();
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
 
         switch (selectedItem) {
             case "favorites":
@@ -44,7 +47,12 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MapFragment()).commit();
                 break;
             case "account":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CustomerAccountFragment()).commit();
+                if (sharedPref.getString("UserType", " ").equals("Customer"))
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CustomerAccountFragment()).commit();
+                else if (sharedPref.getString("UserType", "Vendor").equals("Vendor"))
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new VendorAccountFragment()).commit();
+                else
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CustomerAccountFragment()).commit();
                 break;
             case "cart":
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CartFragment()).commit();

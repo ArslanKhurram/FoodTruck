@@ -18,7 +18,7 @@ import com.example.foodtruck.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerAccountFragment extends Fragment implements MyAccountAdapter.OnCardListener {
+public class VendorAccountFragment extends Fragment implements MyAccountAdapter.OnCardListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -28,12 +28,13 @@ public class CustomerAccountFragment extends Fragment implements MyAccountAdapte
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_customer_account, container, false);
+        View v = inflater.inflate(R.layout.fragment_vendor_account, container, false);
 
         mRecyclerView = v.findViewById(R.id.accountRecycleView);
         cardList.add(new Card("Name"));
         cardList.add(new Card("Email"));
         cardList.add(new Card("Payments"));
+        cardList.add(new Card("Food Truck"));
         cardList.add(new Card("Sign Out"));
 
         //improve performance of app by setting fixed size
@@ -47,9 +48,9 @@ public class CustomerAccountFragment extends Fragment implements MyAccountAdapte
         mAdapter = new MyAccountAdapter(cardList, getActivity(), this);
         mRecyclerView.setAdapter(mAdapter);
 
+
         return v;
     }
-
 
     //handel action after card is pressed
     @Override
@@ -62,6 +63,9 @@ public class CustomerAccountFragment extends Fragment implements MyAccountAdapte
                 break;
             case "Email":
                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new LoginFragment()).commit();
+                break;
+            case "Food Truck":
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new AddFoodTruckFragment()).commit();
                 break;
             case "Payments":
                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new LoginFragment()).commit();
