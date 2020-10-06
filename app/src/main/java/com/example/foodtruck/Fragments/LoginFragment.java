@@ -6,20 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.foodtruck.DataBase.CustomersContract;
-import com.example.foodtruck.Models.Customer;
+import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.R;
-import com.example.foodtruck.Fragments.SignUpFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -78,7 +75,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 if (spinner.getSelectedItem().toString().equals("Customer")) { //launch customer sign up
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SignUpFragment()).commit();
                 } else if (spinner.getSelectedItem().toString().equals("Vendor")) { //launch vendor sign up
-                    //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SignUpFragment()).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VendorSignUpFragment()).commit();
                 }
                 break;
             case R.id.btnLogin:
@@ -96,7 +93,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show(); // notify customer if the login was incorrect
                 break;
             case "Vendor":
-                Log.d("LogIn", "Vendor");
+                if (checkForExistingVendor()) //login if the user exists in the database
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
+                else
+                    Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show(); // notify customer if the login was incorrect
+                break;
         }
     }
 
@@ -105,6 +106,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         if (cc.checkForEmptyTable()) { //check is the table is empty
             return false;
         } else if (cc.validateCustomer(email.getText().toString(), password.getText().toString())) {
+            return true;
+        } else
+            return false;
+    }
+
+    public boolean checkForExistingVendor() {
+        VendorsContract vc = new VendorsContract(getContext());
+        if (vc.checkForEmptyTable()) { //check is the table is empty
+            return false;
+        } else if (vc.validateVendor(email.getText().toString(), password.getText().toString())) {
             return true;
         } else
             return false;

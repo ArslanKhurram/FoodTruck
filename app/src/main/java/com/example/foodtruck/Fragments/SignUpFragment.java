@@ -1,6 +1,5 @@
 package com.example.foodtruck.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,18 +7,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.foodtruck.Activities.MainActivity;
 import com.example.foodtruck.Activities.SignUpActivity;
-import com.example.foodtruck.DataBase.CustomersContract;
-import com.example.foodtruck.Fragments.LoginFragment;
-import com.example.foodtruck.Fragments.SignUpAddFragment;
 import com.example.foodtruck.R;
 
 import java.util.regex.Matcher;

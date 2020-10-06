@@ -3,16 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
 
     <RelativeLayout
         android:id="@+id/inputLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        >
+        android:layout_centerInParent="true">
 
         <EditText
             android:id="@+id/etFirstName"
@@ -29,15 +27,14 @@
             android:textSize="50px"
             android:hint="Last Name"
             android:inputType="textPersonName"
-            android:layout_below="@id/etFirstName"
-            />
+            android:layout_below="@id/etFirstName" />
 
         <EditText
             android:id="@+id/etEmailAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="50px"
-            android:hint="Email Address"
+            android:hint="Email"
             android:inputType="textEmailAddress"
             android:layout_below="@id/etLastName"/>
 
@@ -67,17 +64,14 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:padding="5dp"
-        android:layout_above="@id/sOne"
-        >
+        android:layout_above="@id/sOne">
 
         <Button
             android:id="@+id/btnBack"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="Back"
-            android:background="@drawable/btn_round"
-
-            />
+            android:background="@drawable/btn_round" />
 
         <Space
             android:layout_width="20dp"
@@ -89,9 +83,7 @@
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="Next"
-            android:background="@drawable/btn_round"
-
-            />
+            android:background="@drawable/btn_round" />
 
     </LinearLayout>
 
@@ -100,7 +92,5 @@
             android:layout_width="1dp"
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"/>
-
-
 
 </RelativeLayout>

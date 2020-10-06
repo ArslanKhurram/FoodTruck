@@ -5,7 +5,6 @@
         <item>Customer</item>
         <item>Vendor</item>
     </string-array>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="stateNames">
         <item>AL</item>

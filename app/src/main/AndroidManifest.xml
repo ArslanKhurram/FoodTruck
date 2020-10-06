@@ -40,7 +40,6 @@
         <activity
             android:name=".Activities.SignUpActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Activities.MainActivity" />
     </application>
 
 

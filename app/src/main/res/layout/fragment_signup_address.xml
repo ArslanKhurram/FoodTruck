@@ -86,11 +86,7 @@
             android:entries="@array/stateNames"
             android:minHeight="24dp"
             android:gravity="center"
-            android:spinnerMode="dialog"
-
-
-
-           />
+            android:spinnerMode="dialog" />
     </LinearLayout>
 
 
@@ -108,23 +104,18 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@drawable/btn_round"
-            android:text="Back"
-
-            />
+            android:text="Back" />
 
         <Space
             android:layout_width="20dp"
             android:layout_height="1dp" />
-
 
         <Button
             android:id="@+id/btnNext"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@drawable/btn_round"
-            android:text="Next"
-
-            />
+            android:text="Next" />
 
     </LinearLayout>
 
