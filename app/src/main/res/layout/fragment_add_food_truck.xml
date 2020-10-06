@@ -8,8 +8,16 @@
         android:id="@+id/TruckLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        >
 
+        <ImageView
+            android:id="@+id/picView"
+            android:layout_width="208dp"
+            android:layout_height="184dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            app:srcCompat="@drawable/ic_delivery" />
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
@@ -19,7 +27,8 @@
             android:layout_marginEnd="0dp"
             android:ems="10"
             android:hint="Food Truck Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:layout_below="@id/picView"/>
 
         <EditText
             android:id="@+id/etCategory"
@@ -66,24 +75,11 @@
         android:padding="5dp">
 
         <Button
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@drawable/btn_round"
-            android:text="Back" />
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="1dp" />
-
-
-        <Button
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@drawable/btn_round"
             android:text="Submit"
-
             />
 
     </LinearLayout>
@@ -94,18 +90,6 @@
         android:layout_height="30dp"
         android:layout_alignParentBottom="true" />
 
-    <ImageView
-        android:id="@+id/picView"
-        android:layout_width="208dp"
-        android:layout_height="184dp"
-        android:layout_above="@+id/TruckLayout"
-        android:layout_alignStart="@+id/TruckLayout"
-        android:layout_alignEnd="@+id/TruckLayout"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="50dp"
-        app:srcCompat="@drawable/ic_delivery" />
+
 
 </RelativeLayout>

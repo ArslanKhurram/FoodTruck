@@ -17,20 +17,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.foodtruck.DataBase.CustomersContract;
+import com.example.foodtruck.DataBase.FoodTrucksContract;
+import com.example.foodtruck.DataBase.PaymentsContract;
+import com.example.foodtruck.Models.Customer;
+import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.R;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Calendar;
 
 import static android.app.Activity.RESULT_OK;
 
-public class AddFoodTruckFragment extends Fragment {
+public class AddFoodTruckFragment extends Fragment implements View.OnClickListener {
 
     ImageView picView;
     Button picBttn;
     EditText etName;
     EditText etCategory;
     Spinner spFoodType;
-    Button back;
     Button submit;
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    Bitmap selectedImage;
+
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_add_food_truck, container, false);
 
@@ -39,16 +48,7 @@ public class AddFoodTruckFragment extends Fragment {
         etName = v.findViewById(R.id.etName);
         etCategory = v.findViewById(R.id.etCategory);
         spFoodType = v.findViewById(R.id.spnPaymentType);
-        back = v.findViewById(R.id.btnBack);
-        submit = v.findViewById(R.id.btnSubmit);
-
-        //choose an image from gallery after clicking button
-        picBttn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto, 1);
-            }
-        });
+        v.findViewById(R.id.btnSubmit).setOnClickListener(this);
         return v;
     }
 
@@ -56,9 +56,23 @@ public class AddFoodTruckFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && data != null) {
-            Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+            selectedImage = (Bitmap) data.getExtras().get("data");
             picView.setImageBitmap(selectedImage);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        FoodTrucksContract ft = new FoodTrucksContract(getContext());
+
+        //convert image to byte to be able to pass int food truck database
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        selectedImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] bitMapData = stream.toByteArray();
+
+        //calling create function
+        ft.createFoodTruck(etName.toString(), etCategory.toString(), bitMapData, 234);
+
 
     }
 }

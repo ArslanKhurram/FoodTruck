@@ -16,7 +16,7 @@ import android.widget.Spinner;
 
 import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.R;
-import com.example.foodtruck.Fragments.SignUpAddFragment;
+
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
