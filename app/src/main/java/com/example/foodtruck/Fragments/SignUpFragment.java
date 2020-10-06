@@ -41,6 +41,7 @@ public class SignUpFragment extends Fragment {
         final EditText lastN = v.findViewById(R.id.etLastName);
         final EditText eMail = v.findViewById(R.id.etEmailAdd);
         final EditText passWd = v.findViewById(R.id.etNewPassword);
+        final EditText confirmPassWd = v.findViewById(R.id.testNewPassword);
 
 
         //Moves From signUpFragment to signUPAddFragment
@@ -48,7 +49,7 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (validateNames(firstN) && validateNames(lastN) && validateEmail(eMail) && validatePassword(passWd)) {
+                if (validateNames(firstN) & validateNames(lastN) & validateEmail(eMail) & validatePassword(passWd, confirmPassWd)) {
                     SignUpA.customer.setM_FirstName(firstN.getText().toString());
                     SignUpA.customer.setM_LastName(lastN.getText().toString());
                     SignUpA.customer.setM_Email(eMail.getText().toString());
@@ -108,17 +109,21 @@ public class SignUpFragment extends Fragment {
      * an upper case letter must be used once
      * no spaces are allowed
      * at least 8 character*/
-    private boolean validatePassword(EditText passWd) {
-        p = Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,}", Pattern.CASE_INSENSITIVE);
+    private boolean validatePassword(EditText passWd, EditText confirmPass) {
+        p = Pattern.compile("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{1,}", Pattern.CASE_INSENSITIVE);
         m = p.matcher(passWd.getText().toString());
         boolean pw = m.find();
         String strPass = passWd.getText().toString();
+        String strConfirmPass = confirmPass.getText().toString();
 
         if (TextUtils.isEmpty(strPass)) {
             passWd.setError("Can Not Be Empty ");
             return false;
         } else if (!pw) {
             passWd.setError("Password Does Not Meet Minimum Requirements");
+            return false;
+        } else if (!strPass.equals(strConfirmPass)) {
+            confirmPass.setError("Passwords must match");
             return false;
         }
 

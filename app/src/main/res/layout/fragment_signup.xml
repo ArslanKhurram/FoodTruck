@@ -87,10 +87,10 @@
 
     </LinearLayout>
 
-        <Space
-            android:id="@+id/sOne"
-            android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:layout_alignParentBottom="true"/>
+    <Space
+        android:id="@+id/sOne"
+        android:layout_width="1dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

@@ -54,7 +54,7 @@ public class SignUpAddFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(validateStreetName(stName)&& validateHouse(houseNum)&& validatePhone(phoneNum)&& validateCity(city)&& validateZip(zipCode)) {
+                if(validateStreetName(stName) & validateHouse(houseNum) & validatePhone(phoneNum) & validateCity(city) & validateZip(zipCode)) {
                     SignUpA.customer.setM_StreetName(stName.getText().toString());
                     SignUpA.customer.setM_HouseNumber(houseNum.getText().toString());
                     SignUpA.customer.setM_PhoneNumber(phoneNum.getText().toString());
