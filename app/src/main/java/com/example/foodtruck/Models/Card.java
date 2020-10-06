@@ -1,7 +1,5 @@
 package com.example.foodtruck.Models;
 
-import android.widget.ImageView;
-
 import com.example.foodtruck.R;
 
 public class Card {
