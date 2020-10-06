@@ -53,7 +53,7 @@ public class MapFragment extends Fragment {
                 mMap.addMarker(new MarkerOptions().position(latLng).title("Marker at Your Moms House"));
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(8).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(12).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
             }
