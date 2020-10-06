@@ -46,7 +46,7 @@ public class VendorSignUpFragment extends Fragment implements View.OnClickListen
                 signupAct.vendor.setM_LastName(etLName.getText().toString());
                 signupAct.vendor.setM_Email(etEmail.getText().toString());
                 signupAct.vendor.setM_Password(etPass.getText().toString());
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VendorSignUpFragment2()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VendorSignUpFragment()).commit();
                 break;
             case R.id.btnBack: //go back to the previous fragment
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
