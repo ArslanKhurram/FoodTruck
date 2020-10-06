@@ -1,4 +1,4 @@
-package com.example.foodtruck;
+package com.example.foodtruck.Models;
 
 public class PaymentCard {
     private int imResource;
