@@ -1,4 +1,4 @@
-package com.example.foodtruck.Fragments;
+package com.example.foodtruck.Fragments.Vendor;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

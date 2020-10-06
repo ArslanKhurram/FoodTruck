@@ -1,4 +1,4 @@
-package com.example.foodtruck.Fragments;
+package com.example.foodtruck.Fragments.Vendor;
 
 import android.os.Bundle;
 
@@ -7,11 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.foodtruck.Activities.SignUpActivity;
+import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.R;
 
 public class VendorSignUpFragment extends Fragment implements View.OnClickListener {

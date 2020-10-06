@@ -1,4 +1,4 @@
-package com.example.foodtruck.Fragments;
+package com.example.foodtruck.Fragments.Customer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,8 +20,8 @@ import android.widget.Toast;
 import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.PaymentsContract;
+import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.Models.Customer;
-import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 
 import java.util.Calendar;

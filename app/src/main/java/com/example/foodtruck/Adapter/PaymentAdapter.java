@@ -1,4 +1,4 @@
-package com.example.foodtruck;
+package com.example.foodtruck.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.foodtruck.Models.PaymentCard;
+import com.example.foodtruck.R;
 
 import java.util.ArrayList;
 

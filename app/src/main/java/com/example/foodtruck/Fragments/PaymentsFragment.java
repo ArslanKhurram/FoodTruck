@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.foodtruck.PaymentAdapter;
+import com.example.foodtruck.Adapter.PaymentAdapter;
 import com.example.foodtruck.Models.PaymentCard;
 import com.example.foodtruck.R;
 

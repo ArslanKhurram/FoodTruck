@@ -1,4 +1,4 @@
-package com.example.foodtruck.Fragments;
+package com.example.foodtruck.Fragments.Customer;
 
 import android.os.Bundle;
 

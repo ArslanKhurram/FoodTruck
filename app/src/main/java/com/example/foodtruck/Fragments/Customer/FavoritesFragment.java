@@ -1,5 +1,6 @@
-package com.example.foodtruck.Fragments;
+package com.example.foodtruck.Fragments.Customer;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +12,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.foodtruck.R;
 
-public class CartFragment extends Fragment {
-
+public class FavoritesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_cart, container, false);
-
-
+        View v = inflater.inflate(R.layout.fragment_favorites, container, false);
         return v;
+
     }
 }

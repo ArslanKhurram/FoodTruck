@@ -1,15 +1,11 @@
-package com.example.foodtruck.Fragments;
+package com.example.foodtruck.Fragments.Vendor;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,19 +20,13 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
-import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
-import com.example.foodtruck.Models.Customer;
-import com.example.foodtruck.Models.FoodTruck;
+import com.example.foodtruck.Fragments.Vendor.VendorAccountFragment;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Calendar;
-
-import static android.app.Activity.RESULT_OK;
 
 public class AddFoodTruckFragment extends Fragment implements View.OnClickListener {
 

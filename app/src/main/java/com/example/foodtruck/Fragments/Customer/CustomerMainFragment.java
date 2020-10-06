@@ -1,4 +1,4 @@
-package com.example.foodtruck.Fragments;
+package com.example.foodtruck.Fragments.Customer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,15 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.foodtruck.Fragments.MapFragment;
+import com.example.foodtruck.Fragments.SearchFragment;
 import com.example.foodtruck.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class VendorMainFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class CustomerMainFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_vendor_main, container, false);
+        View v = inflater.inflate(R.layout.fragment_customer_main, container, false);
 
         //reference to bottom navigation bar
         BottomNavigationView navigationView = v.findViewById(R.id.bottom_navigation);
@@ -38,7 +40,7 @@ public class VendorMainFragment extends Fragment implements BottomNavigationView
         SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
 
         switch (selectedItem) {
-            case "menu":
+            case "favorites":
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new FavoritesFragment()).commit();
                 break;
             case "search":
@@ -48,10 +50,10 @@ public class VendorMainFragment extends Fragment implements BottomNavigationView
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MapFragment()).commit();
                 break;
             case "account":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new VendorAccountFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CustomerAccountFragment()).commit();
                 break;
-            case "order":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new OrderFragment()).commit();
+            case "cart":
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CartFragment()).commit();
                 break;
         }
 

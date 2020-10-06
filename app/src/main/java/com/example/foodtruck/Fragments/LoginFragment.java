@@ -18,6 +18,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Fragments.Customer.CustomerMainFragment;
+import com.example.foodtruck.Fragments.Customer.SignUpFragment;
+import com.example.foodtruck.Fragments.Vendor.VendorMainFragment;
+import com.example.foodtruck.Fragments.Vendor.VendorSignUpFragment;
 import com.example.foodtruck.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;

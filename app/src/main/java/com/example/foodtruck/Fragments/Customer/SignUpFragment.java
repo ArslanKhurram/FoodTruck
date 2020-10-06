@@ -1,4 +1,4 @@
-package com.example.foodtruck.Fragments;
+package com.example.foodtruck.Fragments.Customer;
 
 import android.os.Bundle;
 
@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.foodtruck.Activities.SignUpActivity;
+import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.R;
 
 import java.util.regex.Matcher;
