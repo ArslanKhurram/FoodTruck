@@ -5,64 +5,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+
+    <RelativeLayout
         android:id="@+id/inputLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:layout_centerInParent="true">
+
 
         <EditText
-            android:id="@+id/etVenStreetNum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Street Number"
-            android:inputType="textPersonName"
-            android:textSize="50px" />
-
-        <EditText
-            android:id="@+id/etVenStreetName"
+            android:id="@+id/etStreetName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Street Name"
-            android:inputType="textPersonName"
+            android:inputType="textPostalAddress"
             android:textSize="50px" />
 
         <EditText
-            android:id="@+id/etVenCity"
+            android:id="@+id/etHouseNum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/etStreetName"
+            android:hint="House Number"
+            android:inputType="phone"
+            android:textSize="50px" />
+
+        <EditText
+            android:id="@+id/etPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etHouseNum"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:textSize="50px" />
+
+        <EditText
+            android:id="@+id/etCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etPhone"
             android:hint="City"
             android:inputType="textPersonName"
             android:textSize="50px" />
 
         <EditText
-            android:id="@+id/etVenZip"
+            android:id="@+id/etZip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Zip"
+            android:layout_below="@id/etCity"
+            android:hint="Zip Code"
             android:inputType="number"
             android:textSize="50px" />
-
-        <EditText
-            android:id="@+id/etVenPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone Number"
-            android:inputType="phone"
-            android:textSize="50px" />
-
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/stateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/inputLayout"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:layout_below="@id/inputLayout"
+        >
 
         <TextView
             android:id="@+id/txtState"
@@ -70,21 +74,21 @@
             android:layout_height="wrap_content"
             android:height="24dp"
             android:text="State:"
-            android:textSize="50px" />
-
+            android:textSize="50px"
+            />
         <Space
             android:layout_width="20dp"
             android:layout_height="1dp" />
-
         <Spinner
             android:id="@+id/spnState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/stateNames"
-            android:gravity="center"
             android:minHeight="24dp"
+            android:gravity="center"
             android:spinnerMode="dialog" />
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/btnLayout"
@@ -122,3 +126,8 @@
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
+
+
+
+
+

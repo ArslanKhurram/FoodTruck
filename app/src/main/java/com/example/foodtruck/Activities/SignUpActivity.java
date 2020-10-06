@@ -1,13 +1,10 @@
 package com.example.foodtruck.Activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Spinner;
 
 import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.Models.Customer;
@@ -16,8 +13,8 @@ import com.example.foodtruck.R;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    public Customer newCust = new Customer();
-    public Vendor newVen = new Vendor();
+    public Customer customer = new Customer();
+    public Vendor vendor = new Vendor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +26,31 @@ public class SignUpActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
         }
 
-
     }
 
     @Override
     public void onBackPressed() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
+        AlertDialog.Builder alertdialog = new AlertDialog.Builder(this);
+        alertdialog.setTitle("Warning");
+        alertdialog.setMessage("Are you sure you want to cancel sign up?");
+        alertdialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
+            }
+        });
+
+        alertdialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alert = alertdialog.create();
+        alertdialog.show();
 
     }
+
 }

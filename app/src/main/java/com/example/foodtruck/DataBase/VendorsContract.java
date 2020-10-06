@@ -88,32 +88,36 @@ public final class VendorsContract {
         return vendor;
     }
 
-    //used to add vendor into database
-    public Vendor addVendorByObject(Vendor vendor) {
+    //check for empty table
+    public boolean checkForEmptyTable() {
         open();
-        ContentValues cv = new ContentValues();
-        cv.put(VendorsEntry.COL_FIRST_NAME, vendor.getM_FirstName());
-        cv.put(VendorsEntry.COL_LAST_NAME, vendor.getM_LastName());
-        cv.put(VendorsEntry.COL_EMAIL, vendor.getM_Email());
-        cv.put(VendorsEntry.COL_PASSWORD, vendor.getM_Password());
-        cv.put(VendorsEntry.COL_PHONE_NUMBER, vendor.getM_PhoneNumber());
-        cv.put(VendorsEntry.COL_STREET_NAME, vendor.getM_StreetName());
-        cv.put(VendorsEntry.COL_HOUSE_NUMBER, vendor.getM_HouseNumber());
-        cv.put(VendorsEntry.COL_ZIP_CODE, vendor.getM_ZipCode());
-        cv.put(VendorsEntry.COL_CITY, vendor.getM_City());
-        cv.put(VendorsEntry.COL_STATE, vendor.getM_State());
-
-        long insertId = mDb.insert(VendorsEntry.TABLE_NAME, null, cv);
-        Cursor cursor = mDb.query(VendorsEntry.TABLE_NAME, mAllColumns, VendorsEntry._ID +
-                " = " + insertId, null, null, null, null);
+        mDb = mDbHelper.getWritableDatabase();
+        String count = "SELECT count(*) FROM " + VendorsEntry.TABLE_NAME;
+        Cursor cursor = mDb.rawQuery(count, null);
         cursor.moveToFirst();
-        Vendor newVendor = cursorToVendor(cursor);
-        cursor.close();
+        int icount = cursor.getInt(0);
         mDb.close();
+        cursor.close();
         close();
-        return newVendor;
+        return icount <= 0;
     }
 
+    //return boolean after checking email and password match for vendor
+    public boolean validateVendor(String email, String password) {
+        open();
+        String selection = VendorsEntry.COL_EMAIL + "=?" + " and " + VendorsEntry.COL_PASSWORD + "=?"; //where statement
+        String[] selectionArgs = {email, password}; //columns to compare input to
+        Cursor cursor = mDb.query(VendorsEntry.TABLE_NAME, mAllColumns, selection, selectionArgs, null, null, null);
+        int count = cursor.getCount();
+        mDb.close();
+        cursor.close();
+        close();
+
+        if (count > 0)
+            return true;
+        else
+            return false;
+    }
 
     //used to add vendor into database
     public Vendor addVendor(String first, String last, String email, String password, String phone, String streetName, String houseNum,

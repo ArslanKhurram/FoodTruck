@@ -18,6 +18,8 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
 
+import static android.view.View.GONE;
+
 public class MyAccountAdapter extends RecyclerView.Adapter<MyAccountAdapter.MyViewHolder> {
 
     private List<Card> mCardList;
