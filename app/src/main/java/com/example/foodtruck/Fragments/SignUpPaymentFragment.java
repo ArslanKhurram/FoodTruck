@@ -79,7 +79,7 @@ public class SignUpPaymentFragment extends Fragment{
     }
 
     public void saveKeyData(Customer customer) {
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("UserType", "Customer");
         editor.putString("Email", customer.getM_Email());

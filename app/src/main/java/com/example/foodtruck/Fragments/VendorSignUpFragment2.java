@@ -66,7 +66,7 @@ public class VendorSignUpFragment2 extends Fragment implements View.OnClickListe
     }
 
     public void saveKeyData(Vendor vendor) {
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("UserType", "Vendor");
         editor.putString("Email", vendor.getM_Email());
