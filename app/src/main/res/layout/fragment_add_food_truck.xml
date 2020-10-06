@@ -8,8 +8,7 @@
         android:id="@+id/TruckLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        >
+        android:layout_centerInParent="true">
 
         <ImageView
             android:id="@+id/picView"
@@ -18,6 +17,7 @@
             android:layout_centerInParent="true"
             android:layout_alignParentTop="true"
             app:srcCompat="@drawable/ic_delivery" />
+
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
@@ -46,7 +46,7 @@
             android:layout_below="@id/etCategory"
             android:layout_centerHorizontal="true"
             android:text="Upload Image"
-            android:textColor="#FC000102"
+            android:textColor="@android:color/black"
             android:background="@android:color/white"
             android:textSize="12sp" />
 
@@ -66,8 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@drawable/btn_round"
-            android:text="Submit"
-            />
+            android:text="Submit" />
 
     </LinearLayout>
 

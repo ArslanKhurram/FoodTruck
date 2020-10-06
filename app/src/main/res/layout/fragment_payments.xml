@@ -24,6 +24,7 @@
     android:layout_height="wrap_content"
     android:foregroundGravity="bottom"
     android:layout_margin="16dp"
+    android:enabled="true"
     android:layout_alignParentBottom="true"
     android:src="@android:drawable/ic_input_add"
     android:layout_alignParentEnd="true" />
