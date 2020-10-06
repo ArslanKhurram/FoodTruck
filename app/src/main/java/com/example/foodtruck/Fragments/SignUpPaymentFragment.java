@@ -15,12 +15,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
+
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -71,6 +74,7 @@ public class SignUpPaymentFragment extends Fragment{
                     pc = new PaymentsContract(getContext());
                     pc.createPayment(payType.getSelectedItem().toString(), fullName.getText().toString(), cardNumber.getText().toString(), expDate.getText().toString(), ccv.getText().toString(), Calendar.getInstance().getTime().toString(), cust1.getM_Id());
                     saveKeyData(SignUpA.customer);
+                    Toast.makeText(getContext(), "Account Created", Toast.LENGTH_SHORT).show();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
                 }
             }

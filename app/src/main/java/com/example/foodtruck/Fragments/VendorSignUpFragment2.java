@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.DataBase.VendorsContract;
@@ -57,6 +58,7 @@ public class VendorSignUpFragment2 extends Fragment implements View.OnClickListe
                 VendorsContract vc = new VendorsContract(getActivity());
                 vc.addVendor(signUpAct.vendor); //create a record in the database
                 saveKeyData(signUpAct.vendor); //save the email and user type for later use
+                Toast.makeText(getContext(), "Account Created", Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
                 break;
             case R.id.btnBack:

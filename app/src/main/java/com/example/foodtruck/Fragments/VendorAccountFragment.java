@@ -68,7 +68,7 @@ public class VendorAccountFragment extends Fragment implements MyAccountAdapter.
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new AddFoodTruckFragment()).commit();
                 break;
             case "Payments":
-                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new LoginFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new PaymentsFragment()).commit();
                 break;
             case "Sign Out":
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new LoginFragment()).commit();

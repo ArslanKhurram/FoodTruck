@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.R;
@@ -46,7 +47,7 @@ public class VendorSignUpFragment extends Fragment implements View.OnClickListen
                 signupAct.vendor.setM_LastName(etLName.getText().toString());
                 signupAct.vendor.setM_Email(etEmail.getText().toString());
                 signupAct.vendor.setM_Password(etPass.getText().toString());
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VendorSignUpFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VendorSignUpFragment2()).commit();
                 break;
             case R.id.btnBack: //go back to the previous fragment
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
