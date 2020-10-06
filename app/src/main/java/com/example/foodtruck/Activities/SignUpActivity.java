@@ -1,10 +1,9 @@
 package com.example.foodtruck.Activities;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.Models.Customer;
@@ -26,31 +25,12 @@ public class SignUpActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
         }
 
+
     }
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder alertdialog = new AlertDialog.Builder(this);
-        alertdialog.setTitle("Warning");
-        alertdialog.setMessage("Are you sure you want to cancel sign up?");
-        alertdialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
-            }
-        });
-
-        alertdialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog alert = alertdialog.create();
-        alertdialog.show();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
 
     }
-
 }

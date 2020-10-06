@@ -63,12 +63,16 @@ public class CustomerAccountFragment extends Fragment implements MyAccountAdapte
         switch (card.getOption()) {
             case "Name":
                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new LoginFragment()).commit();
+                break;
             case "Email":
                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new LoginFragment()).commit();
+                break;
             case "Payments":
-                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new LoginFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new PaymentsFragment()).commit();
+                break;
             case "Sign Out":
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new LoginFragment()).commit();
+                break;
         }
     }
 }

@@ -23,8 +23,7 @@
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@id/ivPaymentCard"
             android:layout_marginStart="4dp"
-            android:text="Card Name"
-            android:textColor="@android:color/darker_gray" />
+            android:text="Card Name" />
 
         <TextView
             android:id="@+id/txtPaymentNumber"
@@ -34,8 +33,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="22dp"
             android:layout_toEndOf="@id/ivPaymentCard"
-            android:text="Card Number"
-            android:textColor="@android:color/darker_gray" />
+            android:text="Card Number" />
 
 
     </RelativeLayout>
