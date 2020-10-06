@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.PaymentsFragment">
+    tools:context=".Fragments.PaymentsFragment"
+    android:padding="20dp"
+    android:paddingEnd="10dp"
+    android:paddingStart="10dp">
 
 
     <androidx.recyclerview.widget.RecyclerView

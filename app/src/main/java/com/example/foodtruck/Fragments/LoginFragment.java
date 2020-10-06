@@ -85,6 +85,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btnLogin:
                 validateLogIn(spinner.getSelectedItem().toString()); //validate the log in
+
         }
     }
 
@@ -94,14 +95,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case "Customer":
                 if (checkForExistingCustomer()) { //login if the user exists in the database
                     saveKeyData(spinner, email);
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CustomerMainFragment()).commit();
                 } else
                     Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show(); // notify customer if the login was incorrect
                 break;
             case "Vendor":
                 if (checkForExistingVendor()) { //login if the user exists in the database
                     saveKeyData(spinner, email);
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VendorMainFragment()).commit();
                 } else
                     Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show(); // notify customer if the login was incorrect
                 break;
@@ -188,7 +189,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         if (account != null) {
             //BELOW UNCOMMENT AND REPLACE **new SignUpNameFragment()** with any fragment to switch to after successful google sign in
 
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CustomerMainFragment()).commit();
         }
     }
 }

@@ -93,5 +93,6 @@
     <string name="pick_at_truck">Pick at Truck</string>
     <string name="delivery_home">Delivery Home</string>
     <string name="see_menu"><u>See Menu</u></string>
+    <string name="order">order</string>
 
 </resources>

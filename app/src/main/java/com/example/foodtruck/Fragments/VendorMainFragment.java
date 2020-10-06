@@ -15,15 +15,16 @@ import androidx.fragment.app.Fragment;
 import com.example.foodtruck.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class VendorMainFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_main, container, false);
+        View v = inflater.inflate(R.layout.fragment_vendor_main, container, false);
 
         //reference to bottom navigation bar
         BottomNavigationView navigationView = v.findViewById(R.id.bottom_navigation);
+
         navigationView.setOnNavigationItemSelectedListener(this); //set a listener on the navigation bar
 
         return v;
@@ -37,7 +38,7 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
         SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
 
         switch (selectedItem) {
-            case "favorites":
+            case "menu":
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new FavoritesFragment()).commit();
                 break;
             case "search":
@@ -47,15 +48,10 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MapFragment()).commit();
                 break;
             case "account":
-                if (sharedPref.getString("UserType", " ").equals("Customer"))
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CustomerAccountFragment()).commit();
-                else if (sharedPref.getString("UserType", "Vendor").equals("Vendor"))
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new VendorAccountFragment()).commit();
-                else
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CustomerAccountFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new VendorAccountFragment()).commit();
                 break;
-            case "cart":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CartFragment()).commit();
+            case "order":
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new OrderFragment()).commit();
                 break;
         }
 

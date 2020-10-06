@@ -48,6 +48,7 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
     Button submit;
     Bitmap selectedImage;
 
+
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_add_food_truck, container, false);
@@ -59,6 +60,8 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
         spFoodType = v.findViewById(R.id.spnPaymentType);
         v.findViewById(R.id.btnSubmit).setOnClickListener(this);
         return v;
+
+
     }
 
     /*
@@ -96,4 +99,6 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new VendorAccountFragment()).commit();
     }
+
+
 }
