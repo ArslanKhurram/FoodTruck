@@ -11,3 +11,4 @@
 /captures
 .externalNativeBuild
 .cxx
+app/src/main/java/com/example/foodtruck/MainActivity.java
