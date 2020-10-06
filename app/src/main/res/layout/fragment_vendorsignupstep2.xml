@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/inputLayout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/etVenStreetNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Street Number"
+            android:inputType="textPersonName"
+            android:textSize="50px" />
+
+        <EditText
+            android:id="@+id/etVenStreetName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Street Name"
+            android:inputType="textPersonName"
+            android:textSize="50px" />
+
+        <EditText
+            android:id="@+id/etVenCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="City"
+            android:inputType="textPersonName"
+            android:textSize="50px" />
+
+        <EditText
+            android:id="@+id/etVenZip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Zip"
+            android:inputType="number"
+            android:textSize="50px" />
+
+        <EditText
+            android:id="@+id/etVenPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:textSize="50px" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/stateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputLayout"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/txtState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:height="24dp"
+            android:text="State:"
+            android:textSize="50px" />
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="1dp" />
+
+        <Spinner
+            android:id="@+id/spnState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/stateNames"
+            android:gravity="center"
+            android:minHeight="24dp"
+            android:spinnerMode="dialog" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btnLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/sOne"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_round"
+            android:text="Back" />
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="1dp" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_round"
+            android:text="Next" />
+
+    </LinearLayout>
+
+    <Space
+        android:id="@+id/sOne"
+        android:layout_width="1dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
