@@ -1,26 +1,27 @@
-package com.example.foodtruck;
+package com.example.foodtruck.Activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Spinner;
 
 import com.example.foodtruck.DataBase.CustomersContract;
-import com.example.foodtruck.models.Vendor;
+import com.example.foodtruck.Models.Customer;
+import com.example.foodtruck.Models.Vendor;
+import com.example.foodtruck.R;
+import com.example.foodtruck.Fragments.VendorsignupFragment;
 
-public class activity_signup extends AppCompatActivity {
+public class ManualSignUpActivity extends AppCompatActivity {
+    public Customer newCust = new Customer();
     public Vendor newVen = new Vendor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_manualsignup);
         getIntent().getSerializableExtra("SignupType");
         FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
         fragTransaction.add(R.id.Signup_container,new VendorsignupFragment());
@@ -56,7 +57,7 @@ public class activity_signup extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                activity_signup.this.finish();
+                ManualSignUpActivity.this.finish();
             }
         });
 

@@ -2,9 +2,13 @@ package com.example.foodtruck.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.foodtruck.R;
@@ -16,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Button b = findViewById(R.id.button);
-        final TextView tv1 = findViewById(R.id.textView1);
-        final ImageView image = findViewById(R.id.myImg);
+        setContentView(R.layout.activity_signup);
+       // Button b = findViewById(R.id.button);
+       // final TextView tv1 = findViewById(R.id.textView1);
+       // final ImageView image = findViewById(R.id.myImg);
 
 
         /*
@@ -101,6 +105,13 @@ public class MainActivity extends AppCompatActivity {
         });
         */
 
+    }
+
+    public void ToSignUp(View view) {
+        Spinner spinChoice = findViewById(R.id.spnLoginType);
+        // SharedPreferences sharePref;
+        // SharedPreferences.Editor editor = sharePref.edit();
+        Intent i = new Intent(MainActivity.this, ManualSignUpActivity.class);
     }
 
 }

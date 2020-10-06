@@ -6,13 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.foodtruck.Activities.ManualSignUpActivity;
+import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -49,7 +53,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
         SignInButton googleSignInBtn = v.findViewById(R.id.sign_in_button);
+        Button signUpButton = v.findViewById(R.id.btnSignUp);
+
         googleSignInBtn.setOnClickListener(this); //set onclick listener to google sign in button
+        signUpButton.setOnClickListener(this);
         return v;
     }
 
@@ -60,14 +67,49 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case R.id.sign_in_button:
                 signIn();
                 break;
+            case R.id.btnSignUp:
+                toManualSignup();
+                break;
         }
     }
+
+
 
     //method to execute google sign in process
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
+    private void toManualSignup() {
+        Intent i = new Intent(getActivity(), ManualSignUpActivity.class);
+        switch (getActivity().findViewById(R.id.spnLoginType).toString()) {
+            case "Customer":
+                i.putExtra("FragType", "Customer");
+                break;
+            case "Vendor":
+                i.putExtra("FragType", "Vendor");
+                break;
+        }
+        startActivity(i);
+
+        //  getSupportFragmentManager().beginTransaction().replace(R.id.fragSignUp)
+        //  var fragV =
+        //  switch(spinChoice.getSelectedItem().toString()){
+        //    case "User":
+        //         fragSignup = new UsersignupFragment();
+        //         break;
+        //    case "Vendor":
+        //         fragSignup = new VendorsignupFragment();
+        //         break;
+        //     default:
+        //         bun = error message
+        //         break;
+        // }
+        // if(fragSignup != null)
+        //     i.putExtra("SignUpMethod", (Parcelable) fragSignup);
+    }
+
 
     //method to sign user out
     public void signOut() {
