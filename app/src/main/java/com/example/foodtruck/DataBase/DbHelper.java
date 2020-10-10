@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.foodtruck.Models.FoodTruck;
+
 import static com.example.foodtruck.DataBase.CustomersContract.CustomersEntry;
 import static com.example.foodtruck.DataBase.FoodTrucksContract.FoodTrucksEntry;
 import static com.example.foodtruck.DataBase.ItemsContract.ItemsEntry;
@@ -85,6 +87,8 @@ public class DbHelper extends SQLiteOpenHelper {
             FoodTrucksEntry.COL_NAME + " TEXT NOT NULL, " +
             FoodTrucksEntry.COL_CATEGORY + " TEXT NOT NULL, " +
             FoodTrucksEntry.COL_IMAGE + " BLOB NOT NULL, " +
+            FoodTrucksEntry.COL_LATITUDE + " INTEGER NOT NULL, " +
+            FoodTrucksEntry.COL_LONGITUDE + " INTEGER NOT NULL, " +
             FoodTrucksEntry.COL_VENDOR_ID + " INTEGER NOT NULL" +
             "); ";
 

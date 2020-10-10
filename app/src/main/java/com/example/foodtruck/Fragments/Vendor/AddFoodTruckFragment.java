@@ -83,7 +83,7 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
         byte[] bitMapData = stream.toByteArray();
 
         //calling create function
-        ft.createFoodTruck(etName.getText().toString(), etCategory.getText().toString(), bitMapData, vendor.getM_Id());
+        ft.createFoodTruck(etName.getText().toString(), etCategory.getText().toString(), bitMapData, 89.9393, 93.939, vendor.getM_Id());
         Toast.makeText(getContext(), "Truck Added", Toast.LENGTH_SHORT).show();
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new VendorAccountFragment()).commit();

@@ -49,16 +49,20 @@ public final class FoodTrucksContract {
             FoodTrucksEntry.COL_NAME,
             FoodTrucksEntry.COL_CATEGORY,
             FoodTrucksEntry.COL_IMAGE,
+            FoodTrucksEntry.COL_LATITUDE,
+            FoodTrucksEntry.COL_LONGITUDE,
             FoodTrucksEntry.COL_VENDOR_ID
     };
 
     //add food truck into database
-    public FoodTruck createFoodTruck(String name, String category, byte[] image, long vendorID) {
+    public FoodTruck createFoodTruck(String name, String category, byte[] image, double latitude, double longitude, long vendorID) {
         open();
         ContentValues cv = new ContentValues();
         cv.put(FoodTrucksEntry.COL_NAME, name);
         cv.put(FoodTrucksEntry.COL_CATEGORY, category);
         cv.put(FoodTrucksEntry.COL_IMAGE, image);
+        cv.put(FoodTrucksEntry.COL_LATITUDE, latitude);
+        cv.put(FoodTrucksEntry.COL_LONGITUDE, longitude);
         cv.put(FoodTrucksEntry.COL_VENDOR_ID, vendorID);
 
         long insertId = mDb.insert(FoodTrucksEntry.TABLE_NAME, null, cv);
@@ -138,6 +142,8 @@ public final class FoodTrucksContract {
         foodTruck.setM_Name(cursor.getString(1));
         foodTruck.setM_Category(cursor.getString(2));
         foodTruck.setM_Image(cursor.getBlob(3));
+        foodTruck.setM_Latitude(cursor.getDouble(4));
+        foodTruck.setM_Longitude(cursor.getDouble(5));
 
         //get The Vendor by id
         VendorsContract contract = new VendorsContract(mContext);
@@ -154,6 +160,8 @@ public final class FoodTrucksContract {
         public static final String COL_NAME = "name";
         public static final String COL_CATEGORY = "category";
         public static final String COL_IMAGE = "image";
+        public static final String COL_LATITUDE = "latitude";
+        public static final String COL_LONGITUDE = "longitude";
         public static final String COL_VENDOR_ID = "vendor_id";
     }
 

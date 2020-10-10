@@ -6,12 +6,11 @@ public class FoodTruck {
     private String m_Name;
     private String m_Category;
     private byte[] m_Image;
+    private double m_Latitude;
+    private double m_Longitude;
     private Vendor m_Vendor;
 
-    public FoodTruck() {
-    }
-
-    ;
+    public FoodTruck() { }
 
     public long getM_ID() {
         return m_ID;
@@ -43,6 +42,22 @@ public class FoodTruck {
 
     public void setM_Image(byte[] m_Image) {
         this.m_Image = m_Image;
+    }
+
+    public double getM_Latitude() {
+        return m_Latitude;
+    }
+
+    public void setM_Latitude(double m_Latitude) {
+        this.m_Latitude = m_Latitude;
+    }
+
+    public double getM_Longitude() {
+        return m_Longitude;
+    }
+
+    public void setM_Longitude(double m_Longitude) {
+        this.m_Longitude = m_Longitude;
     }
 
     public Vendor getM_Vendor() {
