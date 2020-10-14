@@ -69,7 +69,7 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
         FoodTrucksContract ft = new FoodTrucksContract(getContext());
         VendorsContract vc = new VendorsContract(getContext());
 
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);//get the email from shared preference
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);//get the vendor email from shared preference
         String email = sharedPref.getString("Email", ""); //set email from SP to a variable
 
 
