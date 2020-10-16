@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="690dp"
+    android:layout_gravity="center">
+
+
+    <Space
+        android:id="@+id/sOne"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true" />
+
+
+    <RelativeLayout
+        android:id="@+id/chartLayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_below="@id/sOne"
+        >
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barOne"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    </RelativeLayout>
+
+
+    <Space
+        android:id="@+id/sTwo"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/chartLayout"
+   />
+
+
+    <RelativeLayout
+        android:id="@+id/chartLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/sTwo"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="-1dp"
+        android:layout_marginBottom="1dp"
+        android:orientation="vertical">
+
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieOne"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </RelativeLayout>
+
+    <Space
+        android:id="@+id/sThree"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/chartLayout2"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

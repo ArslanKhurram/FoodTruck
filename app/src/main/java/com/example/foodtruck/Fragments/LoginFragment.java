@@ -16,12 +16,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.foodtruck.Activities.SignUpActivity;
+import com.example.foodtruck.DataBase.AdminContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Fragments.Admin.AdminMainFragment;
 import com.example.foodtruck.Fragments.Customer.CustomerMainFragment;
 import com.example.foodtruck.Fragments.Customer.SignUpFragment;
 import com.example.foodtruck.Fragments.Vendor.VendorMainFragment;
 import com.example.foodtruck.Fragments.Vendor.VendorSignUpFragment;
+
 import com.example.foodtruck.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -38,6 +42,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     int RC_SIGN_IN = 0;
     Spinner spinner;
     EditText email, password;
+
+
+    SignUpActivity SignUpA;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,7 +99,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         }
     }
-
+        int num1 = 9;
     //process the login validation
     private void validateLogIn(String loginType) {
         switch (loginType) {
@@ -109,6 +116,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VendorMainFragment()).commit();
                 } else
                     Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show(); // notify customer if the login was incorrect
+            case "Admin":
+                if (num1 == 9) {//delete line 120 and un comment line 121
+                    //  if (checkForExistingAdmin()) {//login if admin exist in the database
+                    saveKeyData(spinner, email);
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AdminMainFragment()).commit();
+                } else
+                    Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show();//notify admin if they key did not match
+
                 break;
         }
     }
@@ -132,6 +147,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         } else
             return false;
     }
+
+    public boolean checkForExistingAdmin() {
+        AdminContract ac = new AdminContract(getContext());
+        if (ac.checkForEmptyTable()) {//check if table is empty
+            return false;
+        } else if (ac.validateAdmin(email.getText().toString(), password.getText().toString())) {
+            return true;
+        } else
+            return false;
+    }
+
 
     //method to execute google sign in process
     private void signIn() {
@@ -196,4 +222,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CustomerMainFragment()).commit();
         }
     }
+
+
 }
