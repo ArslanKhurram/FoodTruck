@@ -3,8 +3,8 @@
     <item
         android:id="@+id/page_1"
         android:enabled="true"
-        android:icon="@drawable/ic_menu"
-        android:title="@string/menu" />
+        android:icon="@drawable/bar_graph_icon_24"
+        android:title="Report" />
     <item
         android:id="@+id/page_2"
         android:enabled="true"
@@ -23,6 +23,6 @@
     <item
         android:id="@+id/page_5"
         android:enabled="true"
-        android:icon="@drawable/ic_orders"
-        android:title="@string/order" />
+        android:icon="@drawable/ic_cart"
+        android:title="@string/cart" />
 </menu>

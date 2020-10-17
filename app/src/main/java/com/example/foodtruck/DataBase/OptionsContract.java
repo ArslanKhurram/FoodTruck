@@ -39,6 +39,7 @@ public final class OptionsContract {
     //reference to table column names for queries
     private String[] mAllColumns = {
             OptionsEntry._ID,
+            OptionsEntry.COL_OPTION,
             OptionsEntry.COL_ITEM_ID
     };
 
@@ -53,9 +54,10 @@ public final class OptionsContract {
     }
 
     //add option into database
-    public Option createOption(long itemID) {
+    public Option createOption(String option, long itemID) {
         open();
         ContentValues cv = new ContentValues();
+        cv.put(OptionsEntry.COL_OPTION, option);
         cv.put(OptionsEntry.COL_ITEM_ID, itemID);
 
         long insertId = mDb.insert(OptionsEntry.TABLE_NAME, null, cv);
@@ -76,6 +78,8 @@ public final class OptionsContract {
 
         Cursor cursor = mDb.query(OptionsEntry.TABLE_NAME, mAllColumns, OptionsEntry.COL_ITEM_ID + " =?",
                 new String[]{String.valueOf(itemID)}, null, null, null);
+
+        Log.i("Cursor", cursor.toString());
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -100,6 +104,7 @@ public final class OptionsContract {
     protected Option cursorToOption(Cursor cursor, long id) {
         Option option = new Option();
         option.setM_Id(cursor.getLong(0));
+        option.setM_Option(cursor.getString(1));
 
         //get The Customer by id
         ItemsContract contract = new ItemsContract(mContext);
@@ -107,13 +112,13 @@ public final class OptionsContract {
         if (contract != null) {
             option.setM_Item(item);
         }
-        cursor.close();
         return option;
     }
 
     //column and table names
     public static final class OptionsEntry implements BaseColumns {
         public static final String TABLE_NAME = "options";
+        public static final String COL_OPTION = "option";
         public static final String COL_ITEM_ID = "item_ID";
     }
 }
