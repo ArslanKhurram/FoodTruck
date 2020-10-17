@@ -30,6 +30,7 @@ public class VendorMainFragment extends Fragment implements BottomNavigationView
 
         navigationView.setOnNavigationItemSelectedListener(this); //set a listener on the navigation bar
 
+        //navigationView.
         return v;
     }
 
@@ -42,7 +43,7 @@ public class VendorMainFragment extends Fragment implements BottomNavigationView
 
         switch (selectedItem) {
             case "menu":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new FavoritesFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MenuFragment()).commit();
                 break;
             case "search":
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new SearchFragment()).commit();

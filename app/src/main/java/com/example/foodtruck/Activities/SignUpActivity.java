@@ -39,7 +39,6 @@ public class SignUpActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
         }
 
-
         //add customer
         CustomersContract cc = new CustomersContract(this);
         cc.addCustomer("Arslan", "Khurram", "", "", "584-445-4434", "Eastwood Ave", "44", "11703", "Deer Lawn", "NY");
@@ -48,7 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
         //add payment
         PaymentsContract pc = new PaymentsContract(this);
         pc.createPayment("Debit", "Arslan Khurram", "1047381094857", "10/23", "391", "10/16/2020", cc.getCustomerIdByEmail("").getM_Id());
-        /*//pc.createPayment("Credit","Arslan Khurram","7592018573928","10/21","625","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
+        //pc.createPayment("Credit","Arslan Khurram","7592018573928","10/21","625","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
         //pc.createPayment("Credit","Arslan Khurram","0563921740674","10/22","026","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
 
         //add vendor
@@ -65,16 +64,6 @@ public class SignUpActivity extends AppCompatActivity {
         oc.createOrder("001", "10/15/2020", "Preparing", cc.getCustomerIdByEmail("").getM_Id(), vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
         oc.createOrder("002", "10/15/2020", "Preparing", cc.getCustomerIdByEmail("tyler@gmail.com").getM_Id(), vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
 
-        //test function works
-        ArrayList<Order> orders = oc.getOrdersList(vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
-        for (Order o : orders) {
-            Log.i("Order", "Order ID: " + String.valueOf(o.getM_Id()));
-            Log.i("Order", "Order Number: " + String.valueOf(o.getM_OrderNumber()));
-            Log.i("Order", "Order Date: " + o.getM_DateAdded());
-            Log.i("Order", "Order Customer ID: " + String.valueOf(o.getM_Customer().getM_Id()));
-            Log.i("Order", "Order Vendor ID: " + String.valueOf(o.getM_Vendor().getM_Id()));
-        }
-
         //add menu
         MenusContract mc = new MenusContract(this);
         mc.createMenu(fc.getFoodTruckByVendorId(vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id()).getM_ID());
@@ -88,17 +77,8 @@ public class SignUpActivity extends AppCompatActivity {
         OptionsContract opc = new OptionsContract(this);
         opc.createOption("Hot Sauce",ic.getItemById(1).getM_Id());
         opc.createOption("Buffalo Sauce",ic.getItemById(1).getM_Id());
-
-        //test function works
-        ArrayList<Option> options = opc.OptionsList(ic.getItemById(1).getM_Id());
-        for ( Option o: options) {
-            Log.i("Options", "Size : " + options.size());
-            Log.i("Options", "Option ID: " + String.valueOf(o.getM_Id()));
-            Log.i("Options", "Option : " + String.valueOf(o.getM_Option()));
-            Log.i("Options", "Option : " + String.valueOf(o.getM_Item()));
-        }
-*/
     }
+
 
     @Override
     public void onBackPressed() {
