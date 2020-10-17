@@ -16,7 +16,6 @@
         android:hint="Credit Card Number"
         android:maxLength="16"
         android:inputType="number"
-
         android:drawableRight="@drawable/credit_card" />
 
     <TextView

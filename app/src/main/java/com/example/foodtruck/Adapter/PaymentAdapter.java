@@ -29,6 +29,9 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
         mPaymentCardListener = pcl;
     }
 
+    public PaymentAdapter() {
+    }
+
     @NonNull
     @Override
     public PaymentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -52,16 +55,29 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
         return paymentCardList.size();
     }
 
+    //refresh view if payments are deleted or added
+    public void refresh(ArrayList<Payment> payments) {
+        if (paymentCardList != null) {
+            paymentCardList.clear();
+            paymentCardList.addAll(payments);
+        } else {
+            paymentCardList = payments;
+        }
+        notifyDataSetChanged();
+    }
+
     public static class PaymentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView ivCard;
-        public TextView txtName, txtNumber;
+        public TextView txtName, txtNumber, txtExpireDate, txtPaymentType;
         public onPaymentCardListener paymentCardListener;
 
         public PaymentViewHolder(@NonNull View itemView, onPaymentCardListener pcl) {
             super(itemView);
             ivCard = itemView.findViewById(R.id.ivPaymentCard);
-            txtName = itemView.findViewById(R.id.txtPaymentName);
-            txtNumber = itemView.findViewById(R.id.txtPaymentNumber);
+            txtName = itemView.findViewById(R.id.nameOnCard);
+            txtNumber = itemView.findViewById(R.id.creditCardNumber);
+            txtExpireDate = itemView.findViewById(R.id.expireDate);
+            txtPaymentType = itemView.findViewById(R.id.paymentType);
             paymentCardListener = pcl;
             itemView.setOnClickListener(this);
         }
@@ -69,7 +85,9 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
         public void BindData(Payment payment, Context context) {
             ivCard.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_creditcard));
             txtName.setText(payment.getM_NameOnCard());
-            txtNumber.setText(payment.getM_CreditCardNumber());
+            txtNumber.setText("************" + payment.getM_CreditCardNumber().substring((payment.getM_CreditCardNumber().length() - 4)));
+            txtExpireDate.setText(payment.getM_CCEXPDATE());
+            txtPaymentType.setText(payment.getM_PaymentType());
         }
 
         @Override

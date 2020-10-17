@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="4dp"
-        android:scrollbars="vertical">
+        tools:listitem="@layout/payment_card">
 
     </androidx.recyclerview.widget.RecyclerView>
 

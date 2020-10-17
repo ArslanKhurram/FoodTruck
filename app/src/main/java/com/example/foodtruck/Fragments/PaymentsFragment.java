@@ -1,21 +1,24 @@
 package com.example.foodtruck.Fragments;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,10 +27,8 @@ import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Payment;
-import com.example.foodtruck.Models.PaymentCard;
 import com.example.foodtruck.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +37,8 @@ import java.util.regex.Pattern;
 
 public class PaymentsFragment extends Fragment implements PaymentAdapter.onPaymentCardListener, View.OnClickListener {
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter paymentAdapter;
+    private RecyclerView.Adapter recyclerAdapter;
+    private PaymentAdapter paymentAdapter;
     private RecyclerView.LayoutManager paymentLayoutManager;
     private ArrayList<Payment> paymentsList = new ArrayList<>();
     private Pattern p;
@@ -44,21 +46,15 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
     private EditText cardNumber, nameOnCard, ccv;
     private Spinner month, year, paymentType;
     private SharedPreferences sharedPref;
+    private LayoutInflater dialogInflater;
+    private Payment paymentModel = new Payment();
+    View dV;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_payments, container, false);
 
-        //References to all dialog variables
-        LayoutInflater dialogInflater = getLayoutInflater();
-        View dV = dialogInflater.inflate(R.layout.dialog_addpayment, null);
-        cardNumber = dV.findViewById(R.id.creditCardNumber);
-        nameOnCard = dV.findViewById(R.id.nameOnCard);
-        ccv = dV.findViewById(R.id.ccv);
-        month = dV.findViewById(R.id.expMonth);
-        year = dV.findViewById(R.id.expYear);
-        paymentType = dV.findViewById(R.id.paymentType);
 
         FloatingActionButton btnAddACard = v.findViewById(R.id.btnAddCard);
         btnAddACard.setOnClickListener(this);
@@ -67,24 +63,41 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         String user = sharedPref.getString("UserType", "");
         String email = sharedPref.getString("Email", "");
 
+        //if user is a customer then import the payment list
         if (user.equals("Customer")) {
-            CustomersContract cc = new CustomersContract(getContext()); //initialize Customer Contract
-            Customer customer = cc.getCustomerIdByEmail(email); //set customer object to signed in customer by using email from SP
-
-            PaymentsContract pc = new PaymentsContract(getContext()); //initialize Payment Contract
-            paymentsList = pc.paymentsList(customer.getM_Id()); //set paymentList to payments of customer
-        } else if (paymentsList.size() < 1) {
+            paymentAdapter = new PaymentAdapter(getPaymentsList(), getContext(), this);
+        } else if (paymentsList.size() < 1) { //else show a message no payment methods
             showDialog();
         }
+
+        //recycler view setup
         recyclerView = v.findViewById(R.id.payments_recycler);
         recyclerView.setHasFixedSize(true);
         paymentLayoutManager = new LinearLayoutManager(getContext());
-        paymentAdapter = new PaymentAdapter(paymentsList, getContext(), this);
+        recyclerAdapter = paymentAdapter;
         recyclerView.setLayoutManager(paymentLayoutManager);
-        recyclerView.setAdapter(paymentAdapter);
+        recyclerView.setAdapter(recyclerAdapter);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Payment payment = paymentsList.get(viewHolder.getAdapterPosition());
+                PaymentsContract pc = new PaymentsContract(getContext());
+                pc.removePayment(payment.getM_ID());
+                paymentAdapter.refresh(getPaymentsList());
+                Toast.makeText(getContext(), "Payment Deleted", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(recyclerView);
+
         return v;
     }
 
+    //handel process when a card is clicked
     @Override
     public void onCardClick(int pos) {
         Payment payment = paymentsList.get(pos);
@@ -110,41 +123,61 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         dialog.show();
     }
 
+    //method to return updated payments list
+    public ArrayList<Payment> getPaymentsList() {
+        String email = sharedPref.getString("Email", "");
+
+        CustomersContract cc = new CustomersContract(getContext()); //initialize Customer Contract
+        Customer customer = cc.getCustomerIdByEmail(email); //set customer object to signed in customer by using email from SP
+
+        PaymentsContract pc = new PaymentsContract(getContext()); //initialize Payment Contract
+        paymentsList = pc.paymentsList(customer.getM_Id()); //set paymentList to payments of customer
+
+        return paymentsList;
+    }
+
     @Override
     public void onClick(View v) {
-        //Initialize Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        //get the Layout Inflator for premade layout
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
-        builder.setView(inflater.inflate(R.layout.dialog_addpayment, null));
-        //Setter for message and title
-        builder.setTitle("Add Payment Method");
+        addPaymentDialog();
+    }
 
-        //add buttons
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+    //dialog for customer to enter payment method
+    private void addPaymentDialog() {
+        dialogInflater = getLayoutInflater();
+        dV = dialogInflater.inflate(R.layout.dialog_addpayment, null);
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
+                .setPositiveButton(android.R.string.ok, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+
+        Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        b.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                Toast.makeText(getContext(), "Payment Added", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                if (addCardToDatabase()) {
+                    paymentAdapter.refresh(getPaymentsList());
+                    alertDialog.cancel();
+                    Toast.makeText(getContext(), "Payment Added", Toast.LENGTH_LONG).show();
+                } else
+                    Log.i("Card", "Failed regEx");
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        //create/show dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     //add card to DB after user enters dara and press OK on dialog
     private boolean addCardToDatabase() {
-        if (validateCardNumber(cardNumber) & validateName(nameOnCard) & validateCCV(ccv)) {
+        //References to all dialog variables
+
+        cardNumber = dV.findViewById(R.id.creditCardNumber);
+        nameOnCard = dV.findViewById(R.id.nameOnCard);
+        ccv = dV.findViewById(R.id.ccv);
+        month = dV.findViewById(R.id.expMonth);
+        year = dV.findViewById(R.id.expYear);
+        paymentType = dV.findViewById(R.id.paymentType);
+
+        if (validateName(nameOnCard) & validateCardNumber(cardNumber) & validateCCV(ccv)) {
             String email = sharedPref.getString("Email", ""); //get email from shared pref
 
             CustomersContract cc = new CustomersContract(getContext());
@@ -157,14 +190,16 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
                     ccv.getText().toString(),
                     (Calendar.getInstance().getTime()).toString(),
                     customer.getM_Id());
+            Log.i("Card", "added card");
             return true;
         } else
-            return false;
+            Log.i("Card", "added card failed");
+        return false;
     }
 
     //Validation For NameonCard
     private boolean validateName(EditText nameOnCard) {
-        p = Pattern.compile("^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$", Pattern.CASE_INSENSITIVE);
+        p = Pattern.compile("[a-zA-Z]", Pattern.CASE_INSENSITIVE);
         m = p.matcher(nameOnCard.getText().toString());
         boolean cv = m.find();
         String name = nameOnCard.getText().toString();
@@ -176,6 +211,7 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
             nameOnCard.setError("Invalid Entry");
             return false;
         }
+        Log.i("Card", "CardName regEx Passed");
         return true;
     }
 
@@ -193,6 +229,7 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
             cardNumber.setError("Invalid Entry");
             return false;
         }
+        Log.i("Card", "CardNumber regEx Passed");
         return true;
     }
 
@@ -210,6 +247,7 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
             ccv.setError("Invalid Entry");
             return false;
         }
+        Log.i("Card", "Cardccv regEx Passed");
         return true;
     }
 }

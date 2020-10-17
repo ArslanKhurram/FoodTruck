@@ -1,40 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="4dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="4dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/ivPaymentCard"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:padding="2dp" />
+            android:src="@drawable/ic_creditcard" />
 
         <TextView
-            android:id="@+id/txtPaymentName"
+            android:id="@+id/paymentType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="Payment Type"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+        <TextView
+            android:id="@+id/nameOnCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:layout_alignParentTop="true"
+            android:layout_toStartOf="@id/paymentType"
             android:layout_toEndOf="@id/ivPaymentCard"
-            android:layout_marginStart="4dp"
-            android:text="Card Name" />
+            android:layout_marginStart="5dp"
+            android:text="Name on Card" />
 
         <TextView
-            android:id="@+id/txtPaymentNumber"
+            android:id="@+id/creditCardNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/txtPaymentName"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="22dp"
             android:layout_toEndOf="@id/ivPaymentCard"
-            android:text="Card Number" />
+            android:layout_below="@id/nameOnCard"
+            android:layout_marginStart="5dp"
+            android:text="Credit Card Number" />
 
+        <TextView
+            android:id="@+id/expireDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ivPaymentCard"
+            android:layout_below="@id/creditCardNumber"
+            android:layout_marginStart="5dp"
+            android:text="Expire Date" />
 
     </RelativeLayout>
 
