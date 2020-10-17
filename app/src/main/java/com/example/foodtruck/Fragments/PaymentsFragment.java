@@ -64,11 +64,9 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         String email = sharedPref.getString("Email", "");
 
         //if user is a customer then import the payment list
-        if (user.equals("Customer")) {
-            paymentAdapter = new PaymentAdapter(getPaymentsList(), getContext(), this);
-        } else if (paymentsList.size() < 1) { //else show a message no payment methods
-            showDialog();
-        }
+        paymentAdapter = new PaymentAdapter(getContext(), this);
+        paymentAdapter.submitList(getPaymentsList());
+
 
         //recycler view setup
         recyclerView = v.findViewById(R.id.payments_recycler);
@@ -86,10 +84,10 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                Payment payment = paymentsList.get(viewHolder.getAdapterPosition());
+                Payment payment = paymentAdapter.getPaymentAt(viewHolder.getAdapterPosition());
                 PaymentsContract pc = new PaymentsContract(getContext());
                 pc.removePayment(payment.getM_ID());
-                paymentAdapter.refresh(getPaymentsList());
+                paymentAdapter.submitList(getPaymentsList());
                 Toast.makeText(getContext(), "Payment Deleted", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
@@ -129,7 +127,6 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
 
         CustomersContract cc = new CustomersContract(getContext()); //initialize Customer Contract
         Customer customer = cc.getCustomerIdByEmail(email); //set customer object to signed in customer by using email from SP
-
         PaymentsContract pc = new PaymentsContract(getContext()); //initialize Payment Contract
         paymentsList = pc.paymentsList(customer.getM_Id()); //set paymentList to payments of customer
 
@@ -157,11 +154,11 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
             @Override
             public void onClick(View view) {
                 if (addCardToDatabase()) {
-                    paymentAdapter.refresh(getPaymentsList());
+                    paymentAdapter.submitList(getPaymentsList());
                     alertDialog.cancel();
                     Toast.makeText(getContext(), "Payment Added", Toast.LENGTH_LONG).show();
-                } else
-                    Log.i("Card", "Failed regEx");
+                }
+
             }
         });
     }
@@ -190,11 +187,11 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
                     ccv.getText().toString(),
                     (Calendar.getInstance().getTime()).toString(),
                     customer.getM_Id());
-            Log.i("Card", "added card");
+
             return true;
         } else
-            Log.i("Card", "added card failed");
-        return false;
+
+            return false;
     }
 
     //Validation For NameonCard
@@ -211,7 +208,7 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
             nameOnCard.setError("Invalid Entry");
             return false;
         }
-        Log.i("Card", "CardName regEx Passed");
+
         return true;
     }
 
@@ -222,14 +219,14 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         boolean zp = m.find();
         String num = cardNumber.getText().toString();
 
-        if (TextUtils.isEmpty(num)) {
-            cardNumber.setError("Can Not Be Empty ");
+        if (num.length() != 16) {
+            cardNumber.setError("Wrong Length");
             return false;
         } else if (!zp) {
             cardNumber.setError("Invalid Entry");
             return false;
         }
-        Log.i("Card", "CardNumber regEx Passed");
+
         return true;
     }
 
@@ -247,7 +244,7 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
             ccv.setError("Invalid Entry");
             return false;
         }
-        Log.i("Card", "Cardccv regEx Passed");
+
         return true;
     }
 }

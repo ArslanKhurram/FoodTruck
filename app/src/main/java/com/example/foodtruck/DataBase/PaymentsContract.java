@@ -107,6 +107,20 @@ public final class PaymentsContract {
         return paymentsList;
     }
 
+    //check for empty table
+    public boolean checkForEmptyTable() {
+        open();
+        mDb = mDbHelper.getWritableDatabase();
+        String count = "SELECT count(*) FROM " + PaymentsEntry.TABLE_NAME;
+        Cursor cursor = mDb.rawQuery(count, null);
+        cursor.moveToFirst();
+        int icount = cursor.getInt(0);
+        mDb.close();
+        cursor.close();
+        close();
+        return icount <= 0;
+    }
+
     //remove item from database
     public void removePayment(long id) {
         open();

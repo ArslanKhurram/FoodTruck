@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.AsyncDifferConfig;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtruck.Models.Payment;
@@ -18,19 +21,31 @@ import com.example.foodtruck.R;
 
 import java.util.ArrayList;
 
-public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentViewHolder> {
-    private ArrayList<Payment> paymentCardList;
+public class PaymentAdapter extends ListAdapter<Payment, PaymentAdapter.PaymentViewHolder> {
     private Context paymentContext;
     private onPaymentCardListener mPaymentCardListener;
 
-    public PaymentAdapter(ArrayList<Payment> paymentList, Context context, onPaymentCardListener pcl) {
-        paymentCardList = paymentList;
+    public PaymentAdapter(Context context, onPaymentCardListener onPaymentCardListener) {
+        super(DIFF_CALLBACK);
         paymentContext = context;
-        mPaymentCardListener = pcl;
+        mPaymentCardListener = onPaymentCardListener;
     }
 
-    public PaymentAdapter() {
-    }
+    //comparison method to add animations to recycler view
+    private static DiffUtil.ItemCallback<Payment> DIFF_CALLBACK = new DiffUtil.ItemCallback<Payment>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Payment oldItem, @NonNull Payment newItem) {
+            return oldItem.getM_ID() == newItem.getM_ID();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Payment oldItem, @NonNull Payment newItem) {
+            return oldItem.getM_NameOnCard().equals(newItem.getM_CreditCardNumber()) &&
+                    oldItem.getM_CreditCardNumber().equals(newItem.getM_CreditCardNumber()) &&
+                    oldItem.getM_CCEXPDATE().equals(newItem.getM_CCEXPDATE()) &&
+                    oldItem.getM_PaymentType().equals(newItem.getM_PaymentType());
+        }
+    };
 
     @NonNull
     @Override
@@ -47,23 +62,11 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
     @Override
     public void onBindViewHolder(@NonNull PaymentViewHolder holder, int position) {
         //bind data for the item at position
-        holder.BindData(paymentCardList.get(position), paymentContext);
+        holder.BindData(getItem(position), paymentContext);
     }
 
-    @Override
-    public int getItemCount() {
-        return paymentCardList.size();
-    }
-
-    //refresh view if payments are deleted or added
-    public void refresh(ArrayList<Payment> payments) {
-        if (paymentCardList != null) {
-            paymentCardList.clear();
-            paymentCardList.addAll(payments);
-        } else {
-            paymentCardList = payments;
-        }
-        notifyDataSetChanged();
+    public Payment getPaymentAt(int position) {
+        return getItem(position);
     }
 
     public static class PaymentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
