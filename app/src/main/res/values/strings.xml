@@ -2,6 +2,7 @@
     <string name="app_name">Food Street</string>
 
     <string-array name="loginType">
+        <item>Admin</item>
         <item>Customer</item>
         <item>Vendor</item>
     </string-array>

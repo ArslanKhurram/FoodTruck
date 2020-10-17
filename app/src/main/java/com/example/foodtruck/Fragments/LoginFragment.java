@@ -3,6 +3,9 @@ package com.example.foodtruck.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,14 +17,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.foodtruck.Activities.SignUpActivity;
+import com.example.foodtruck.DataBase.AdminContract;
 import com.example.foodtruck.DataBase.CustomersContract;
+import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Fragments.Admin.AdminMainFragment;
 import com.example.foodtruck.Fragments.Customer.CustomerMainFragment;
 import com.example.foodtruck.Fragments.Customer.SignUpFragment;
 import com.example.foodtruck.Fragments.Vendor.VendorMainFragment;
 import com.example.foodtruck.Fragments.Vendor.VendorSignUpFragment;
+import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,6 +40,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.io.ByteArrayOutputStream;
+
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
@@ -38,6 +49,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     int RC_SIGN_IN = 0;
     Spinner spinner;
     EditText email, password;
+
+
+    SignUpActivity SignUpA;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +75,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
+        AdminContract ac = new AdminContract(getContext());
+        ac.addAdmin("","");
 
         email = v.findViewById(R.id.etEmail);
         password = v.findViewById(R.id.etPassword);
@@ -89,10 +107,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btnLogin:
                 validateLogIn(spinner.getSelectedItem().toString()); //validate the log in
-
+                break;
         }
     }
-
+        int num1 = 9;
     //process the login validation
     private void validateLogIn(String loginType) {
         switch (loginType) {
@@ -109,6 +127,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VendorMainFragment()).commit();
                 } else
                     Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show(); // notify customer if the login was incorrect
+            case "Admin":
+                if (checkForExistingAdmin()) {//login if admin exist in the database
+                    saveKeyData(spinner, email);
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AdminMainFragment()).commit();
+                } else
+                    Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show();//notify admin if they key did not match
+
                 break;
         }
     }
@@ -133,6 +158,36 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             return false;
     }
 
+    // Placeholder food truck data
+    private void GenerateTestData() {
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.test, null);
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] bitMapData = stream.toByteArray();
+
+       // VendorsContract vc = new VendorsContract(getActivity());
+       // FoodTrucksContract tc = new FoodTrucksContract(getActivity());
+       // vc.addVendor("Yvonne", "Stone", "ystone@foodsinternational.com", "A$df1234", "6317584559", "E Clinton Ave", "24", "11575", "Roosevelt", "New York");
+       // tc.createFoodTruck("Meridian Waffle","Breakfast", bitMapData, 40.683632, -73.592079, 1);
+       // tc.createFoodTruck("Presto Pretzel","Snack", bitMapData, 40.740791, -73.638207, 1);
+       // tc.createFoodTruck("HalaHolic","Halal", bitMapData, 40.669564, -73.715821, 1);
+       // tc.createFoodTruck("Wok and Roll on Wheels","Chinese", bitMapData, 40.738306, -73.733669, 1);
+       // tc.createFoodTruck("Ricky's Famoso","Italian", bitMapData, 40.828284, -73.164124, 1);
+       // tc.createFoodTruck("Cheesella Finest Grilled","Grilled Cheese", bitMapData, 40.758890, -73.366484, 1);
+       // tc.createFoodTruck("Funkin' Foshonuts","Snack", bitMapData, 40.813417, -73.002045, 1);
+    }
+
+    public boolean checkForExistingAdmin() {
+        AdminContract ac = new AdminContract(getContext());
+        if (ac.checkForEmptyTable()) {//check if table is empty
+            return false;
+        } else if (ac.validateAdmin(email.getText().toString(), password.getText().toString())) {
+            return true;
+        } else
+            return false;
+    }
+  
     //method to execute google sign in process
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -196,4 +251,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CustomerMainFragment()).commit();
         }
     }
+
+
 }

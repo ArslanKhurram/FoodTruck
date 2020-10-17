@@ -14,6 +14,7 @@ import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Fragments.LoginFragment;
+import com.example.foodtruck.Models.Admin;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Option;
@@ -27,7 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     public Customer customer = new Customer();
     public Vendor vendor = new Vendor();
-
+    public Admin admin = new Admin();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

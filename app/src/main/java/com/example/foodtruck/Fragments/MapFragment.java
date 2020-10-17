@@ -1,23 +1,38 @@
 package com.example.foodtruck.Fragments;
 
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.foodtruck.DataBase.FoodTrucksContract;
+import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 public class MapFragment extends Fragment {
 
@@ -46,18 +61,37 @@ public class MapFragment extends Fragment {
             public void onMapReady(final GoogleMap googleMap) {
 
                 mMap = googleMap;
-                // Add a marker in Sydney and move the camera
-                LatLng latLng = new LatLng(40.806404, -73.25934);
-                mMap.addMarker(new MarkerOptions().position(latLng).title("Marker at Your Moms House"));
+                FoodTrucksContract fc = new FoodTrucksContract(getActivity());
+                VendorsContract vc = new VendorsContract(getActivity());
+                Bitmap bitmap = onCreateBitmap();
+               // LatLng latLng = new LatLng(40.806404, -73.25934);
+
+                // Loop through each vendor
+                for(int c = 1; c <= vc.CountContracts(); c++) {
+                    fc.FoodTruckList(c).forEach((n) -> mMap.addMarker(new MarkerOptions().
+                                                                        position(new LatLng(n.getM_Latitude(), n.getM_Longitude())).
+                                                                        title(n.getM_Name()).
+                                                                        icon(BitmapDescriptorFactory.fromBitmap(bitmap)))); // Create bitmap definition with Map's BitmapDescriptorFactory class
+                }
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(12).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(40.79,-73.29)).zoom(9).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
             }
         });
 
         return v;
+    }
+
+    // Initialize a new bitmap with a canvas, which Google map markers require in order to customize their appearance (only needs to be called once when the fragment loads!)
+    private Bitmap onCreateBitmap() {
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_food_truck_icon_21, null);
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     //methods to help map fragment run
