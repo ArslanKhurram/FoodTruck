@@ -20,6 +20,7 @@ import static com.example.foodtruck.DataBase.VendorsContract.VendorsEntry;
 import static com.example.foodtruck.DataBase.AdminContract.AdminEntry;
 
 import static com.example.foodtruck.DataBase.OptionsContract.OptionsEntry;
+import static com.example.foodtruck.DataBase.OrdersContract.OrdersEntry;
 
 
 
@@ -87,7 +88,7 @@ public class DbHelper extends SQLiteOpenHelper {
             ItemsEntry.COL_PRICE + " TEXT NOT NULL, " +
             ItemsEntry.COL_AVAILABILITY + " TEXT NOT NULL, " +
             ItemsEntry.COL_IMAGE + " BLOB NOT NULL, " +
-            ItemsEntry.COL_MENU_ID + " INTEGER" +
+            ItemsEntry.COL_MENU_ID + " INTEGER NOT NULL" +
             "); ";
 
     //query to create food truck table
@@ -114,9 +115,19 @@ public class DbHelper extends SQLiteOpenHelper {
     //query to create options table
     public static final String SQL_CREATE_OPTIONS_TABLE = "CREATE TABLE " + OptionsEntry.TABLE_NAME + " (" +
             OptionsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            OptionsEntry.COL_OPTION + " TEXT NOT NULL, " +
             OptionsEntry.COL_ITEM_ID + " INTEGER NOT NULL " +
             "); ";
 
+    //query to create orders table
+    public static final String SQL_CREATE_ORDERS_TABLE = "CREATE TABLE " + OrdersEntry.TABLE_NAME + " (" +
+            OrdersEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            OrdersEntry.COL_ORDER_NUMBER + " TEXT NOT NULL, " +
+            OrdersEntry.COL_DATE_ADDED + " TEXT NOT NULL, " +
+            OrdersEntry.COL_STATUS + " TEXT NOT NULL, " +
+            OrdersEntry.COL_CUSTOMER_ID + " INTEGER NOT NULL, " +
+            OrdersEntry.COL_VENDOR_ID + " INTEGER NOT NULL " +
+            "); ";
 
 
     @Override
@@ -129,7 +140,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_FOOD_TRUCKS_TABLE);
         db.execSQL(SQL_CREATE_ADMIN_TABLE);
         db.execSQL(SQL_CREATE_OPTIONS_TABLE);
-
+        db.execSQL(SQL_CREATE_ORDERS_TABLE);
     }
 
     @Override
@@ -142,6 +153,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + FoodTrucksEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + AdminEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + OptionsEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + OrdersEntry.TABLE_NAME);
         onCreate(db);
     }
 }

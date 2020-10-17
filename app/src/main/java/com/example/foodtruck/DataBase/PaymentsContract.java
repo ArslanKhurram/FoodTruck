@@ -9,8 +9,10 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.example.foodtruck.Models.Customer;
+import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Payment;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 //class to add payment data to customer in database
@@ -79,6 +81,32 @@ public final class PaymentsContract {
         mDbHelper.close();
     }
 
+    //return array list of items from a particular menu
+    public ArrayList<Payment> paymentsList(long customerID) {
+        open();
+        ArrayList<Payment> paymentsList = new ArrayList<Payment>();
+
+        Cursor cursor = mDb.query(PaymentsEntry.TABLE_NAME, mAllColumns, PaymentsEntry.COL_CUSTOMER_ID + " =?",
+                new String[]{String.valueOf(customerID)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Payment payment = cursorToPayment(cursor, customerID);
+                paymentsList.add(payment);
+                if (cursor.isLast() || cursor.isClosed())
+                    break;
+                else
+                    cursor.moveToNext();
+            }
+
+        }
+        cursor.close();
+        mDb.close();
+        close();
+        return paymentsList;
+    }
+
     //check for empty table
     public boolean checkForEmptyTable() {
         open();
@@ -91,6 +119,18 @@ public final class PaymentsContract {
         cursor.close();
         close();
         return icount <= 0;
+    }
+
+    //remove item from database
+    public void removePayment(long id) {
+        open();
+        mDb = mDbHelper.getWritableDatabase();
+        String dlQuery = "DELETE FROM " + PaymentsEntry.TABLE_NAME + " WHERE " + PaymentsEntry._ID + " = " + id;
+        Cursor cursor = mDb.rawQuery(dlQuery, null);
+        cursor.moveToFirst();
+        cursor.close();
+        mDb.close();
+        close();
     }
 
     //column and table names
@@ -122,7 +162,6 @@ public final class PaymentsContract {
         if (contract != null) {
             payment.setmCustomer(customer);
         }
-        cursor.close();
         return payment;
     }
 }

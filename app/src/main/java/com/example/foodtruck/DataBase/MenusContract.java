@@ -92,7 +92,7 @@ public final class MenusContract {
         Menu menu = new Menu();
         menu.setM_Id(cursor.getLong(0));
 
-        //get The Customer by id
+        //get The FoodTruck by id
         FoodTrucksContract contract = new FoodTrucksContract(mContext);
         FoodTruck foodTruck = contract.getFoodTruckById(id);
         if (contract != null) {
