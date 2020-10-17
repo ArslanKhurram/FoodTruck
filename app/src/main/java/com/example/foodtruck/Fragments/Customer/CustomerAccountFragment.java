@@ -69,7 +69,7 @@ public class CustomerAccountFragment extends Fragment implements MyAccountAdapte
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new PaymentsFragment()).commit();
                 break;
             case "Sign Out":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new LoginFragment()).commit();
+                getActivity().onBackPressed();
                 break;
         }
     }
