@@ -123,5 +123,5 @@
     <string name="order">order</string>
     <string name="menu">menu</string>
     <string name="prompt_month">EXP Month</string>
-
+    <string name="prompt_nopayment"><b>No Payments Found</b>\n\nPlease Enter Payment Information \nBefore Placing Order</string>
 </resources>

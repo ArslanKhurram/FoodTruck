@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,8 @@ import com.example.foodtruck.Models.Payment;
 import com.example.foodtruck.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -40,6 +43,7 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
     private RecyclerView.Adapter recyclerAdapter;
     private PaymentAdapter paymentAdapter;
     private RecyclerView.LayoutManager paymentLayoutManager;
+    TextView tv;
     private ArrayList<Payment> paymentsList = new ArrayList<>();
     private Pattern p;
     private Matcher m;
@@ -66,10 +70,12 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         //if user is a customer then import the payment list
         paymentAdapter = new PaymentAdapter(getContext(), this);
         paymentAdapter.submitList(getPaymentsList());
+        tv = v.findViewById(R.id.noPaymentPrompt);
+        tv.setVisibility(View.INVISIBLE);
 
-        if (paymentsList.size() < 1)
-            showDialog();
-
+        if (paymentsList.size() < 1) {
+            tv.setVisibility(View.VISIBLE);
+        }
         //recycler view setup
         recyclerView = v.findViewById(R.id.payments_recycler);
         recyclerView.setHasFixedSize(true);
@@ -90,6 +96,9 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
                 PaymentsContract pc = new PaymentsContract(getContext());
                 pc.removePayment(payment.getM_ID());
                 paymentAdapter.submitList(getPaymentsList());
+                if (paymentsList.size() < 1) {
+                    tv.setVisibility(View.VISIBLE);
+                }
                 Toast.makeText(getContext(), "Payment Deleted", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
@@ -103,25 +112,6 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         Payment payment = paymentsList.get(pos);
     }
 
-    public void showDialog() {
-        //Initialize Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        //Setter for message and title
-        builder.setMessage("Please enter at least One Payment Method before ordering")
-                .setTitle("No Payment Methods Found");
-
-        //add button
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        //create/show dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
 
     //method to return updated payments list
     public ArrayList<Payment> getPaymentsList() {
@@ -159,6 +149,7 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
                     paymentAdapter.submitList(getPaymentsList());
                     alertDialog.cancel();
                     Toast.makeText(getContext(), "Payment Added", Toast.LENGTH_LONG).show();
+                    tv.setVisibility(View.INVISIBLE);
                 }
 
             }

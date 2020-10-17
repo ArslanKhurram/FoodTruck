@@ -20,13 +20,14 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
+        android:id="@+id/noPaymentPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No Payments Found \nPlease Enter A Payment Before Placing Order"
+        android:text="@string/prompt_nopayment"
         android:textAlignment="center"
         android:layout_centerInParent="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="" />
+        android:textColor="#481535E3" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/payments_recycler"
