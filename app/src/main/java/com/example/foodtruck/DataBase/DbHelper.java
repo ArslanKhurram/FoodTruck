@@ -4,7 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+
 import com.example.foodtruck.Models.FoodTruck;
+
+import java.util.ArrayDeque;
+
 
 import static com.example.foodtruck.DataBase.CustomersContract.CustomersEntry;
 import static com.example.foodtruck.DataBase.FoodTrucksContract.FoodTrucksEntry;
@@ -12,6 +16,11 @@ import static com.example.foodtruck.DataBase.ItemsContract.ItemsEntry;
 import static com.example.foodtruck.DataBase.MenusContract.MenusEntry;
 import static com.example.foodtruck.DataBase.PaymentsContract.PaymentsEntry;
 import static com.example.foodtruck.DataBase.VendorsContract.VendorsEntry;
+
+import static com.example.foodtruck.DataBase.AdminContract.AdminEntry;
+
+import static com.example.foodtruck.DataBase.OptionsContract.OptionsEntry;
+
 
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -93,6 +102,23 @@ public class DbHelper extends SQLiteOpenHelper {
             "); ";
 
 
+    //query to create admin table
+    public static final String SQL_CREATE_ADMIN_TABLE = "CREATE TABLE " + AdminEntry.TABLE_NAME + " (" +
+            AdminEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            AdminEntry.COL_EMAIL + " TEXT NOT NULL, " +
+            AdminEntry.COL_PASSWORD + " INTEGER NOT NULL " + 
+            "); ";
+
+
+
+    //query to create options table
+    public static final String SQL_CREATE_OPTIONS_TABLE = "CREATE TABLE " + OptionsEntry.TABLE_NAME + " (" +
+            OptionsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            OptionsEntry.COL_ITEM_ID + " INTEGER NOT NULL " +
+            "); ";
+
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_PAYMENTS_TABLE);
@@ -101,6 +127,9 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_MENUS_TABLE);
         db.execSQL(SQL_CREATE_ITEMS_TABLE);
         db.execSQL(SQL_CREATE_FOOD_TRUCKS_TABLE);
+        db.execSQL(SQL_CREATE_ADMIN_TABLE);
+        db.execSQL(SQL_CREATE_OPTIONS_TABLE);
+
     }
 
     @Override
@@ -111,6 +140,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + MenusEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ItemsEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FoodTrucksEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + AdminEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + OptionsEntry.TABLE_NAME);
         onCreate(db);
     }
 }
