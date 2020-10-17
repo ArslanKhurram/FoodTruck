@@ -61,15 +61,10 @@ public class MapFragment extends Fragment {
             public void onMapReady(final GoogleMap googleMap) {
 
                 mMap = googleMap;
-
                 FoodTrucksContract fc = new FoodTrucksContract(getActivity());
                 VendorsContract vc = new VendorsContract(getActivity());
-               // fc.FoodTruckList(1).get(2);
-
-
-               // LatLng latLng = new LatLng(40.806404, -73.25934);
-
                 Bitmap bitmap = onCreateBitmap();
+               // LatLng latLng = new LatLng(40.806404, -73.25934);
 
                 // Loop through each vendor
                 for(int c = 1; c <= vc.CountContracts(); c++) {
@@ -89,7 +84,7 @@ public class MapFragment extends Fragment {
         return v;
     }
 
-    // Initialize a new bitmap with a canvas, which Google map markers require in order to customize their appearance
+    // Initialize a new bitmap with a canvas, which Google map markers require in order to customize their appearance (only needs to be called once when the fragment loads!)
     private Bitmap onCreateBitmap() {
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_food_truck_icon_21, null);
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);

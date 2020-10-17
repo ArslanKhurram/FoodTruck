@@ -74,7 +74,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         spinner = v.findViewById(R.id.spnLoginType); //add reference to spinner so it can be used in the onclick method
         v.findViewById(R.id.btnSignUp).setOnClickListener(this); //set onclick listener to sign up button
         v.findViewById(R.id.btnLogin).setOnClickListener(this); //set onclick listener to login button
-        v.findViewById(R.id.btnTest).setOnClickListener(this);
         SignInButton googleSignInBtn = v.findViewById(R.id.sign_in_button);
         googleSignInBtn.setOnClickListener(this); //set onclick listener to google sign in button
         return v;
@@ -99,10 +98,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case R.id.btnLogin:
                 validateLogIn(spinner.getSelectedItem().toString()); //validate the log in
                 break;
-            case R.id.btnTest:
-                GenerateTestData();
-                break;
-
         }
     }
 
@@ -146,6 +141,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             return false;
     }
 
+    // Placeholder food truck data
     private void GenerateTestData() {
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.test, null);
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -153,16 +149,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] bitMapData = stream.toByteArray();
 
-        VendorsContract vc = new VendorsContract(getActivity());
-        vc.addVendor("Yvonne", "Stone", "ystone@foodsinternational.com", "A$df1234", "6317584559", "E Clinton Ave", "24", "11575", "Roosevelt", "New York");
-        FoodTrucksContract tc = new FoodTrucksContract(getActivity());
-        tc.createFoodTruck("Meridian Waffle","Breakfast", bitMapData, 40.683632, -73.592079, 1);
-        tc.createFoodTruck("Presto Pretzel","Snack", bitMapData, 40.740791, -73.638207, 1);
-        tc.createFoodTruck("HalaHolic","Halal", bitMapData, 40.669564, -73.715821, 1);
-        tc.createFoodTruck("Wok and Roll on Wheels","Chinese", bitMapData, 40.738306, -73.733669, 1);
-        tc.createFoodTruck("Ricky's Famoso","Italian", bitMapData, 40.828284, -73.164124, 1);
-        tc.createFoodTruck("Cheesella Finest Grilled","Grilled Cheese", bitMapData, 40.758890, -73.366484, 1);
-        tc.createFoodTruck("Funkin' Foshonuts","Snack", bitMapData, 40.813417, -73.002045, 1);
+       // VendorsContract vc = new VendorsContract(getActivity());
+       // FoodTrucksContract tc = new FoodTrucksContract(getActivity());
+       // vc.addVendor("Yvonne", "Stone", "ystone@foodsinternational.com", "A$df1234", "6317584559", "E Clinton Ave", "24", "11575", "Roosevelt", "New York");
+       // tc.createFoodTruck("Meridian Waffle","Breakfast", bitMapData, 40.683632, -73.592079, 1);
+       // tc.createFoodTruck("Presto Pretzel","Snack", bitMapData, 40.740791, -73.638207, 1);
+       // tc.createFoodTruck("HalaHolic","Halal", bitMapData, 40.669564, -73.715821, 1);
+       // tc.createFoodTruck("Wok and Roll on Wheels","Chinese", bitMapData, 40.738306, -73.733669, 1);
+       // tc.createFoodTruck("Ricky's Famoso","Italian", bitMapData, 40.828284, -73.164124, 1);
+       // tc.createFoodTruck("Cheesella Finest Grilled","Grilled Cheese", bitMapData, 40.758890, -73.366484, 1);
+       // tc.createFoodTruck("Funkin' Foshonuts","Snack", bitMapData, 40.813417, -73.002045, 1);
     }
 
     //method to execute google sign in process
