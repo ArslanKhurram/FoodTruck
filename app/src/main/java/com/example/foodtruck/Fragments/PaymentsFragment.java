@@ -237,8 +237,8 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         boolean zp = m.find();
         String num = ccv.getText().toString();
 
-        if (TextUtils.isEmpty(num)) {
-            ccv.setError("Can Not Be Empty ");
+        if (num.length() < 3) {
+            ccv.setError("Enter Full CCV");
             return false;
         } else if (!zp) {
             ccv.setError("Invalid Entry");
