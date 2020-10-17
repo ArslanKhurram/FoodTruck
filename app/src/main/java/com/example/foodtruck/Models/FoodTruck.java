@@ -77,4 +77,5 @@ public class FoodTruck {
                 ", m_Vendor=" + m_Vendor.getM_FirstName() + " " + m_Vendor.getM_LastName() +
                 '}';
     }
+
 }
