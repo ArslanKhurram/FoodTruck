@@ -67,6 +67,8 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         paymentAdapter = new PaymentAdapter(getContext(), this);
         paymentAdapter.submitList(getPaymentsList());
 
+        if (paymentsList.size() < 1)
+            showDialog();
 
         //recycler view setup
         recyclerView = v.findViewById(R.id.payments_recycler);

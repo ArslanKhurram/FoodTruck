@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -86,11 +87,33 @@ public class PaymentAdapter extends ListAdapter<Payment, PaymentAdapter.PaymentV
         }
 
         public void BindData(Payment payment, Context context) {
-            ivCard.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_creditcard));
+            ivCard.setImageDrawable(ContextCompat.getDrawable(context, getCreditCardBrand(payment)));
             txtName.setText(payment.getM_NameOnCard());
             txtNumber.setText("************" + payment.getM_CreditCardNumber().substring((payment.getM_CreditCardNumber().length() - 4)));
             txtExpireDate.setText(payment.getM_CCEXPDATE());
             txtPaymentType.setText(payment.getM_PaymentType());
+        }
+
+        //method to determine credit card brand for image placeholder
+        private int getCreditCardBrand(Payment payment) {
+            String creditCardNum = payment.getM_CreditCardNumber();
+
+            ArrayList<String> listOfPattern = new ArrayList<>();
+            String ptVisa = "^4[0-9]{6,}$";
+            listOfPattern.add(ptVisa);
+            String ptMasterCard = "^5[1-5][0-9]{5,}$";
+            listOfPattern.add(ptMasterCard);
+            String ptAmeExp = "^3[47][0-9]{5,}$";
+            listOfPattern.add(ptAmeExp);
+            String ptDinClb = "^3(?:0[0-5]|[68][0-9])[0-9]{4,}$";
+            listOfPattern.add(ptDinClb);
+            String ptDiscover = "^6(?:011|5[0-9]{2})[0-9]{3,}$";
+            listOfPattern.add(ptDiscover);
+            String ptJcb = "^(?:2131|1800|35[0-9]{3})[0-9]{3,}$";
+            listOfPattern.add(ptJcb);
+
+
+            return R.drawable.ic_creditcard;
         }
 
         @Override

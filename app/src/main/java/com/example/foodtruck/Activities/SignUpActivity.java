@@ -38,15 +38,16 @@ public class SignUpActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
         }
 
+
         //add customer
         CustomersContract cc = new CustomersContract(this);
         cc.addCustomer("Arslan", "Khurram", "", "", "584-445-4434", "Eastwood Ave", "44", "11703", "Deer Lawn", "NY");
-        cc.addCustomer("Tyler", "Homes", "tyler@gmail.com", "kjhgfverg4534", "584-445-4434", "Noble Ave", "323", "11704", "Bear Lawn", "NY");
+        //cc.addCustomer("Tyler", "Homes", "tyler@gmail.com", "kjhgfverg4534", "584-445-4434", "Noble Ave", "323", "11704", "Bear Lawn", "NY");
 
         //add payment
         PaymentsContract pc = new PaymentsContract(this);
         pc.createPayment("Debit", "Arslan Khurram", "1047381094857", "10/23", "391", "10/16/2020", cc.getCustomerIdByEmail("").getM_Id());
-        //pc.createPayment("Credit","Arslan Khurram","7592018573928","10/21","625","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
+        /*//pc.createPayment("Credit","Arslan Khurram","7592018573928","10/21","625","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
         //pc.createPayment("Credit","Arslan Khurram","0563921740674","10/22","026","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
 
         //add vendor
@@ -95,7 +96,7 @@ public class SignUpActivity extends AppCompatActivity {
             Log.i("Options", "Option : " + String.valueOf(o.getM_Option()));
             Log.i("Options", "Option : " + String.valueOf(o.getM_Item()));
         }
-
+*/
     }
 
     @Override

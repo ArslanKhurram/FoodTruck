@@ -19,12 +19,20 @@
         android:src="@android:drawable/ic_input_add"
         android:layout_alignParentEnd="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Payments Found \nPlease Enter A Payment Before Placing Order"
+        android:textAlignment="center"
+        android:layout_centerInParent="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/payments_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="4dp"
-        tools:listitem="@layout/payment_card">
+        android:padding="4dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
