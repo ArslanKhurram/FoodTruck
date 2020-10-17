@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodtruck.Fragments.LoginFragment;
+import com.example.foodtruck.Models.Admin;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
@@ -13,7 +14,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     public Customer customer = new Customer();
     public Vendor vendor = new Vendor();
-
+    public Admin admin = new Admin();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
