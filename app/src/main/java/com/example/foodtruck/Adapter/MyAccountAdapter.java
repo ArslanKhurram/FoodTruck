@@ -22,6 +22,7 @@ public class MyAccountAdapter extends RecyclerView.Adapter<MyAccountAdapter.MyVi
     private Context mContect;
     private OnCardListener onCardListener;
 
+    //constructor
     public MyAccountAdapter(List<Card> cardList, Context context, OnCardListener onCardListener) {
         mCardList = cardList;
         mContect = context;
@@ -32,7 +33,7 @@ public class MyAccountAdapter extends RecyclerView.Adapter<MyAccountAdapter.MyVi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        //Inflate out cars list item
+        //Inflate out card list item
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_recycler_view, parent, false);
 
         //return new view holder

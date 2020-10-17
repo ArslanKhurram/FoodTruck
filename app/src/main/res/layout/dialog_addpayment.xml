@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:id="@+id/creditCardNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="Credit Card Number"
+        android:maxLength="16"
+        android:inputType="number"
+
+        android:drawableRight="@drawable/credit_card" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:textSize="17dp"
+        android:text="EXPIRY DATE" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp">
+
+        <Spinner
+            android:id="@+id/expMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:spinnerMode="dropdown"
+            android:fadeScrollbars="true"
+            android:entries="@array/Month"
+            android:textAlignment="center"
+            android:dropDownWidth="120dp"
+            android:layout_gravity="center" />
+
+        <Spinner
+            android:id="@+id/expYear"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:spinnerMode="dropdown"
+            android:fadeScrollbars="true"
+            android:entries="@array/Year"
+            android:textAlignment="center"
+            android:dropDownWidth="100dp"
+            android:layout_gravity="center" />
+
+        <EditText
+            android:id="@+id/ccv"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:hint="CCV"
+            android:textSize="17dp"
+            android:inputType="number"
+            android:maxLength="4"
+            android:drawableRight="@drawable/ic_lock" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:textSize="17dp"
+        android:text="PAYMENT TYPE" />
+
+    <Spinner
+        android:id="@+id/paymentType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:spinnerMode="dropdown"
+        android:fadeScrollbars="true"
+        android:entries="@array/paymentType"
+        android:textAlignment="center"
+        android:dropDownWidth="100dp" />
+
+    <EditText
+        android:id="@+id/nameOnCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="Name on Card"
+        android:inputType="textPersonName" />
+
+
+</LinearLayout>

@@ -11,6 +11,7 @@ import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.OptionsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
+import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.Models.Customer;
@@ -36,29 +37,35 @@ public class SignUpActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
         }
-        /*
+
         //add customer
         CustomersContract cc = new CustomersContract(this);
-        cc.addCustomer("Arslan", "Khurram", "marslan@gmail.com", "hfjsdhfls", "584-445-4434", "Eastwood Ave","44","11703","Deer Lawn","NY");
-        cc.addCustomer("Tyler", "Homes", "tyler@gmail.com", "kjhgfverg4534", "584-445-4434", "Noble Ave","323","11704","Bear Lawn","NY");
+        cc.addCustomer("Arslan", "Khurram", "", "", "584-445-4434", "Eastwood Ave", "44", "11703", "Deer Lawn", "NY");
+        cc.addCustomer("Tyler", "Homes", "tyler@gmail.com", "kjhgfverg4534", "584-445-4434", "Noble Ave", "323", "11704", "Bear Lawn", "NY");
+
+        //add payment
+        PaymentsContract pc = new PaymentsContract(this);
+        pc.createPayment("Debit", "Arslan Khurram", "1047381094857", "10/23", "391", "10/16/2020", cc.getCustomerIdByEmail("").getM_Id());
+        //pc.createPayment("Credit","Arslan Khurram","7592018573928","10/21","625","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
+        //pc.createPayment("Credit","Arslan Khurram","0563921740674","10/22","026","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
 
         //add vendor
         VendorsContract vc = new VendorsContract(this);
-        vc.addVendor("James","Dillion","jDillion@yahoo.com","khjh#hfgjkf", "585-545-4444","Mohawk Dr","45","Dix Hills","11756","NY");
+        vc.addVendor("James", "Dillion", "jDillion@yahoo.com", "khjh#hfgjkf", "585-545-4444", "Mohawk Dr", "45", "Dix Hills", "11756", "NY");
 
         byte[] image = new byte[]{};
         //add Food Truck
         FoodTrucksContract fc = new FoodTrucksContract(this);
-        fc.createFoodTruck("J1 Pizza","Pizza", image , 34.55, 43.44, vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
+        fc.createFoodTruck("J1 Pizza", "Pizza", image, 34.55, 43.44, vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
 
         //add order
         OrdersContract oc = new OrdersContract(this);
-        oc.createOrder("001", "10/15/2020", "Preparing",cc.getCustomerIdByEmail("marslan@gmail.com").getM_Id(), vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
-        oc.createOrder("002", "10/15/2020", "Preparing",cc.getCustomerIdByEmail("tyler@gmail.com").getM_Id(), vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
+        oc.createOrder("001", "10/15/2020", "Preparing", cc.getCustomerIdByEmail("").getM_Id(), vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
+        oc.createOrder("002", "10/15/2020", "Preparing", cc.getCustomerIdByEmail("tyler@gmail.com").getM_Id(), vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
 
         //test function works
         ArrayList<Order> orders = oc.getOrdersList(vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
-        for ( Order o: orders) {
+        for (Order o : orders) {
             Log.i("Order", "Order ID: " + String.valueOf(o.getM_Id()));
             Log.i("Order", "Order Number: " + String.valueOf(o.getM_OrderNumber()));
             Log.i("Order", "Order Date: " + o.getM_DateAdded());
@@ -88,7 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
             Log.i("Options", "Option : " + String.valueOf(o.getM_Option()));
             Log.i("Options", "Option : " + String.valueOf(o.getM_Item()));
         }
-        */
+
     }
 
     @Override

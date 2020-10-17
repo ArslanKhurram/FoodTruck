@@ -9,6 +9,18 @@
     android:paddingEnd="10dp"
     android:paddingStart="10dp">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="bottom"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:src="@android:drawable/ic_input_add"
+        android:layout_alignParentEnd="true"
+        android:focusable="true"
+        android:contentDescription="AddCard" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/payments_recycler"
@@ -19,15 +31,6 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:foregroundGravity="bottom"
-        android:layout_margin="16dp"
-        android:enabled="true"
-        android:layout_alignParentBottom="true"
-        android:src="@android:drawable/ic_input_add"
-        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
 
