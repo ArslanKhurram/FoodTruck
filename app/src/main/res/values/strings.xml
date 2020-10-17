@@ -2,6 +2,7 @@
     <string name="app_name">Food Street</string>
 
     <string-array name="loginType">
+        <item>Admin</item>
         <item>Customer</item>
         <item>Vendor</item>
     </string-array>
@@ -70,6 +71,33 @@
         <item>Shakes</item>
     </string-array>
 
+    <string-array name="Month">
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="Year">
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+        <item>2027</item>
+        <item>2028</item>
+    </string-array>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -94,5 +122,7 @@
     <string name="delivery_home">Delivery Home</string>
     <string name="see_menu"><u>See Menu</u></string>
     <string name="order">order</string>
-
+    <string name="menu">menu</string>
+    <string name="prompt_month">EXP Month</string>
+    <string name="prompt_nopayment"><b>No Payments Found</b>\n\nPlease Enter Payment Information \nBefore Placing Order</string>
 </resources>

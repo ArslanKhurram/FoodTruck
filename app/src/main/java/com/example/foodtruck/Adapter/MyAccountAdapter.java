@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -22,6 +23,7 @@ public class MyAccountAdapter extends RecyclerView.Adapter<MyAccountAdapter.MyVi
     private Context mContect;
     private OnCardListener onCardListener;
 
+    //constructor
     public MyAccountAdapter(List<Card> cardList, Context context, OnCardListener onCardListener) {
         mCardList = cardList;
         mContect = context;
@@ -32,7 +34,7 @@ public class MyAccountAdapter extends RecyclerView.Adapter<MyAccountAdapter.MyVi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        //Inflate out cars list item
+        //Inflate out card list item
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_recycler_view, parent, false);
 
         //return new view holder
@@ -58,7 +60,7 @@ public class MyAccountAdapter extends RecyclerView.Adapter<MyAccountAdapter.MyVi
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView cardImageView;
-        public MaterialTextView cardTextView;
+        public TextView cardTextView;
         OnCardListener onCardListener;
 
         //holds reference to objects inside card
