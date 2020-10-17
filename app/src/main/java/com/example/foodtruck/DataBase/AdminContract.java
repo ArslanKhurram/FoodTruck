@@ -10,6 +10,9 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.example.foodtruck.Models.Admin;
+import com.example.foodtruck.Models.Customer;
+
+import static com.example.foodtruck.DataBase.CustomersContract.CustomersEntry.TABLE_NAME;
 
 ///class for admin login and report
 public final class AdminContract {
@@ -165,6 +168,9 @@ public final class AdminContract {
         public static final String COL_PASSWORD = "password";
 
     }
+
+
+
 }//end class
 
 

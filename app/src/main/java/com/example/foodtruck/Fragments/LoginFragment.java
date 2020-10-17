@@ -46,6 +46,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     SignUpActivity SignUpA;
 
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         // Configure sign-in to request the user's ID, email address, and basic
@@ -66,6 +68,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
+        AdminContract ac = new AdminContract(getContext());
+        ac.addAdmin("","");
 
         email = v.findViewById(R.id.etEmail);
         password = v.findViewById(R.id.etPassword);
@@ -117,8 +121,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 } else
                     Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show(); // notify customer if the login was incorrect
             case "Admin":
-                if (num1 == 9) {//delete line 120 and un comment line 121
-                    //  if (checkForExistingAdmin()) {//login if admin exist in the database
+                if (checkForExistingAdmin()) {//login if admin exist in the database
                     saveKeyData(spinner, email);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AdminMainFragment()).commit();
                 } else

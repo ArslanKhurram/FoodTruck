@@ -10,6 +10,8 @@ import android.util.Log;
 
 import com.example.foodtruck.Models.Customer;
 
+import static com.example.foodtruck.DataBase.CustomersContract.CustomersEntry.TABLE_NAME;
+
 //class to add customer data to database, foreign key to orders/payments
 public final class CustomersContract {
 
@@ -48,8 +50,8 @@ public final class CustomersContract {
         cv.put(CustomersEntry.COL_CITY, customer.getM_City());
         cv.put(CustomersEntry.COL_STATE, customer.getM_State());
 
-        long insertId = mDb.insert(CustomersEntry.TABLE_NAME, null, cv);
-        Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry._ID +
+        long insertId = mDb.insert(TABLE_NAME, null, cv);
+        Cursor cursor = mDb.query(TABLE_NAME, mAllColumns, CustomersEntry._ID +
                 " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
         Customer newCustomer = cursorToCustomer(cursor);
@@ -75,8 +77,8 @@ public final class CustomersContract {
         cv.put(CustomersEntry.COL_CITY, city);
         cv.put(CustomersEntry.COL_STATE, state);
 
-        long insertId = mDb.insert(CustomersEntry.TABLE_NAME, null, cv);
-        Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry._ID +
+        long insertId = mDb.insert(TABLE_NAME, null, cv);
+        Cursor cursor = mDb.query(TABLE_NAME, mAllColumns, CustomersEntry._ID +
                 " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
         Customer newCustomer = cursorToCustomer(cursor);
@@ -90,7 +92,7 @@ public final class CustomersContract {
     public boolean checkForEmptyTable() {
         open();
         mDb = mDbHelper.getWritableDatabase();
-        String count = "SELECT count(*) FROM " + CustomersEntry.TABLE_NAME;
+        String count = "SELECT count(*) FROM " + TABLE_NAME;
         Cursor cursor = mDb.rawQuery(count, null);
         cursor.moveToFirst();
         int icount = cursor.getInt(0);
@@ -105,7 +107,7 @@ public final class CustomersContract {
         open();
         String selection = CustomersEntry.COL_EMAIL + "=?" + " and " + CustomersEntry.COL_PASSWORD + "=?"; //where statement
         String[] selectionArgs = {email, password}; //columns to compare input to
-        Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, selection, selectionArgs, null, null, null);
+        Cursor cursor = mDb.query(TABLE_NAME, mAllColumns, selection, selectionArgs, null, null, null);
         int count = cursor.getCount();
         mDb.close();
         cursor.close();
@@ -130,7 +132,7 @@ public final class CustomersContract {
     //return Customer by searching by id
     public Customer getCustomerById(long id) {
         open();
-        Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry._ID + " = ?",
+        Cursor cursor = mDb.query(TABLE_NAME, mAllColumns, CustomersEntry._ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -146,7 +148,7 @@ public final class CustomersContract {
     //return Customer by searching by email
     public Customer getCustomerIdByEmail(String email) {
         open();
-        Cursor cursor = mDb.query(CustomersEntry.TABLE_NAME, mAllColumns, CustomersEntry.COL_EMAIL + " = ?",
+        Cursor cursor = mDb.query(TABLE_NAME, mAllColumns, CustomersEntry.COL_EMAIL + " = ?",
                 new String[]{String.valueOf(email)}, null, null, null);
         if (cursor == null) {
             return new Customer();
@@ -206,6 +208,25 @@ public final class CustomersContract {
         public static final String COL_CITY = "city";
         public static final String COL_STATE = "state";
     }
+
+    //GET COLUMN COUNT
+    public int getColumnCount(){
+        int customerCount = 0;
+        open();
+        mDb = mDbHelper.getWritableDatabase();
+        String count = "SELECT count(*) FROM " + TABLE_NAME;
+        Cursor cursor = mDb.rawQuery(count, null);
+        cursor.moveToFirst();
+        int icount = cursor.getInt(0);
+        customerCount = icount;
+        mDb.close();
+        cursor.close();
+        close();
+        return customerCount;
+
+    }
+
+
 
 
 }
