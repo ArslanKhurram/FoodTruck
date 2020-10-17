@@ -108,6 +108,16 @@ public final class FoodTrucksContract {
         return foodTruck;
     }
 
+    //return total number of foodtruckcontracts in the FoodTrucks table
+    public int CountContracts() {
+        open();
+        Cursor cursor = mDb.rawQuery("SELECT * FROM food_trucks", null);
+        int count = cursor.getCount();
+        cursor.close();
+        mDb.close();
+        close();
+        return count;
+    }
 
     //return array list of food trucks from a particular menu
     public ArrayList<FoodTruck> FoodTruckList(long vendorID) {
