@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.foodtruck.Fragments.Admin.AdminUserDataFragment;
 import com.example.foodtruck.Fragments.Customer.FavoritesFragment;
 import com.example.foodtruck.Fragments.MapFragment;
 import com.example.foodtruck.Fragments.SearchFragment;
@@ -27,7 +28,10 @@ public class VendorMainFragment extends Fragment implements BottomNavigationView
 
         //reference to bottom navigation bar
         BottomNavigationView navigationView = v.findViewById(R.id.bottom_navigation);
-
+        if (savedInstanceState == null) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MenuFragment()).commit();
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
         navigationView.setOnNavigationItemSelectedListener(this); //set a listener on the navigation bar
 
         //navigationView.

@@ -54,7 +54,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     SignUpActivity SignUpA;
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         // Configure sign-in to request the user's ID, email address, and basic
@@ -74,9 +73,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-
+        GenerateTestData();
         AdminContract ac = new AdminContract(getContext());
-        ac.addAdmin("","");
+        ac.addAdmin("1", "1");
 
         email = v.findViewById(R.id.etEmail);
         password = v.findViewById(R.id.etPassword);
@@ -110,7 +109,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-        int num1 = 9;
+
+    int num1 = 9;
+
     //process the login validation
     private void validateLogIn(String loginType) {
         switch (loginType) {
@@ -127,6 +128,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VendorMainFragment()).commit();
                 } else
                     Toast.makeText(getContext(), "Login Incorrect", Toast.LENGTH_SHORT).show(); // notify customer if the login was incorrect
+                break;
             case "Admin":
                 if (checkForExistingAdmin()) {//login if admin exist in the database
                     saveKeyData(spinner, email);
@@ -166,16 +168,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] bitMapData = stream.toByteArray();
 
-       // VendorsContract vc = new VendorsContract(getActivity());
-       // FoodTrucksContract tc = new FoodTrucksContract(getActivity());
-       // vc.addVendor("Yvonne", "Stone", "ystone@foodsinternational.com", "A$df1234", "6317584559", "E Clinton Ave", "24", "11575", "Roosevelt", "New York");
-       // tc.createFoodTruck("Meridian Waffle","Breakfast", bitMapData, 40.683632, -73.592079, 1);
-       // tc.createFoodTruck("Presto Pretzel","Snack", bitMapData, 40.740791, -73.638207, 1);
-       // tc.createFoodTruck("HalaHolic","Halal", bitMapData, 40.669564, -73.715821, 1);
-       // tc.createFoodTruck("Wok and Roll on Wheels","Chinese", bitMapData, 40.738306, -73.733669, 1);
-       // tc.createFoodTruck("Ricky's Famoso","Italian", bitMapData, 40.828284, -73.164124, 1);
-       // tc.createFoodTruck("Cheesella Finest Grilled","Grilled Cheese", bitMapData, 40.758890, -73.366484, 1);
-       // tc.createFoodTruck("Funkin' Foshonuts","Snack", bitMapData, 40.813417, -73.002045, 1);
+        VendorsContract vc = new VendorsContract(getActivity());
+        FoodTrucksContract tc = new FoodTrucksContract(getActivity());
+        vc.addVendor("Yvonne", "Stone", "ystone@foodsinternational.com", "A$df1234", "6317584559", "E Clinton Ave", "24", "11575", "Roosevelt", "New York");
+        tc.createFoodTruck("Meridian Waffle", "Breakfast", bitMapData, 40.683632, -73.592079, 1);
+        tc.createFoodTruck("Presto Pretzel", "Snack", bitMapData, 40.740791, -73.638207, 1);
+        tc.createFoodTruck("HalaHolic", "Halal", bitMapData, 40.669564, -73.715821, 1);
+        tc.createFoodTruck("Wok and Roll on Wheels", "Chinese", bitMapData, 40.738306, -73.733669, 1);
+        tc.createFoodTruck("Ricky's Famoso", "Italian", bitMapData, 40.828284, -73.164124, 1);
+        tc.createFoodTruck("Cheesella Finest Grilled", "Grilled Cheese", bitMapData, 40.758890, -73.366484, 1);
+        tc.createFoodTruck("Funkin' Foshonuts", "Snack", bitMapData, 40.813417, -73.002045, 1);
     }
 
     public boolean checkForExistingAdmin() {
@@ -187,7 +189,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         } else
             return false;
     }
-  
+
     //method to execute google sign in process
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
