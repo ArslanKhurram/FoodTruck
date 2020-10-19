@@ -73,6 +73,17 @@ public final class VendorsContract {
         return vendor;
     }
 
+    //return total number of vendorcontracts in the Vendors table
+    public int CountContracts() {
+        open();
+        Cursor cursor = mDb.rawQuery("SELECT * FROM vendors", null);
+        int count = cursor.getCount();
+        mDb.close();
+        cursor.close();
+        close();
+        return count;
+    }
+
     //return Vendor by searching by email
     public Vendor getVendorIdByEmail(String email) {
         open();
