@@ -35,7 +35,6 @@ public class VendorAccountFragment extends Fragment implements MyAccountAdapter.
         mRecyclerView = v.findViewById(R.id.accountRecycleView);
         cardList.add(new Card("Name"));
         cardList.add(new Card("Email"));
-        cardList.add(new Card("Payments"));
         cardList.add(new Card("Food Truck"));
         cardList.add(new Card("Sign Out"));
 
@@ -70,7 +69,7 @@ public class VendorAccountFragment extends Fragment implements MyAccountAdapter.
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new AddFoodTruckFragment()).commit();
                 break;
             case "Payments":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new PaymentsFragment()).commit();
+                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new PaymentsFragment()).commit();
                 break;
             case "Sign Out":
                 getActivity().onBackPressed();

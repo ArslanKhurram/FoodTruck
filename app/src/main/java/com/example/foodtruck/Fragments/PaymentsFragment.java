@@ -51,7 +51,6 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
     private Spinner month, year, paymentType;
     private SharedPreferences sharedPref;
     private LayoutInflater dialogInflater;
-    private Payment paymentModel = new Payment();
     View dV;
 
     @Override
@@ -64,8 +63,6 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         btnAddACard.setOnClickListener(this);
 
         sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
-        String user = sharedPref.getString("UserType", "");
-        String email = sharedPref.getString("Email", "");
 
         //if user is a customer then import the payment list
         paymentAdapter = new PaymentAdapter(getContext(), this);
@@ -108,8 +105,9 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
 
     //handel process when a card is clicked
     @Override
-    public void onCardClick(int pos) {
-        Payment payment = paymentsList.get(pos);
+    public void onCardClick(int position) {
+        Payment payment = paymentsList.get(position);
+        editPaymentDialog(payment);
     }
 
 
@@ -141,22 +139,81 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
                 .show();
 
         Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        b.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                if (addCardToDatabase()) {
-                    paymentAdapter.submitList(getPaymentsList());
-                    alertDialog.cancel();
-                    Toast.makeText(getContext(), "Payment Added", Toast.LENGTH_LONG).show();
-                    tv.setVisibility(View.INVISIBLE);
-                }
-
+        b.setOnClickListener(view -> {
+            if (addCardToDatabase()) {
+                paymentAdapter.submitList(getPaymentsList());
+                alertDialog.cancel();
+                Toast.makeText(getContext(), "Payment Added", Toast.LENGTH_LONG).show();
+                tv.setVisibility(View.INVISIBLE);
             }
+
         });
     }
 
-    //add card to DB after user enters dara and press OK on dialog
+    //dialog for customer to enter payment method
+    private void editPaymentDialog(Payment payment) {
+        dialogInflater = getLayoutInflater();
+        dV = dialogInflater.inflate(R.layout.dialog_addpayment, null);
+
+        cardNumber = dV.findViewById(R.id.creditCardNumber);
+        nameOnCard = dV.findViewById(R.id.nameOnCard);
+        ccv = dV.findViewById(R.id.ccv);
+        month = dV.findViewById(R.id.expMonth);
+        year = dV.findViewById(R.id.expYear);
+        paymentType = dV.findViewById(R.id.paymentType);
+
+
+        String[] monthArray = getResources().getStringArray(R.array.Month);
+        String[] yearArray = getResources().getStringArray(R.array.Year);
+        String monthString = payment.getM_CCEXPDATE().substring(0, 2);
+        String yearString = payment.getM_CCEXPDATE().substring(3, 7);
+
+        Log.i("Card", monthString);
+        Log.i("Card", yearString);
+        Log.i("Card", String.valueOf(payment.getM_CCEXPDATE().length()));
+
+        //set the spinners for month and year
+        for (int i = 0; i < monthArray.length; i++) {
+            if (monthString.equals(monthArray[i])) {
+                month.setSelection(i);
+                break;
+            } else
+                month.setSelection(0);
+        }
+
+        for (int i = 0; i < yearArray.length; i++) {
+            if (yearString.equals(yearArray[i])) {
+                year.setSelection(i);
+                break;
+            } else
+                year.setSelection(0);
+        }
+
+        int paymentSelection = ((payment.getM_PaymentType().equals("Credit")) ? 0 : 1);
+        cardNumber.setText(payment.getM_CreditCardNumber());
+        nameOnCard.setText(payment.getM_NameOnCard());
+        ccv.setText(payment.getM_CCV());
+        paymentType.setSelection(paymentSelection);
+
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
+                .setPositiveButton("Update", null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+
+        Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        b.setOnClickListener(view -> {
+            if (updateCardInDatabase(payment)) {
+                paymentAdapter.submitList(getPaymentsList());
+                alertDialog.cancel();
+                Toast.makeText(getContext(), "Payment Updated", Toast.LENGTH_LONG).show();
+                tv.setVisibility(View.INVISIBLE);
+            }
+
+        });
+    }
+
+    //add card to DB after user enters data and press OK on dialog
     private boolean addCardToDatabase() {
         //References to all dialog variables
 
@@ -180,6 +237,33 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
                     ccv.getText().toString(),
                     (Calendar.getInstance().getTime()).toString(),
                     customer.getM_Id());
+
+            return true;
+        } else
+
+            return false;
+    }
+
+    //add card to DB after user enters data and press OK on dialog
+    private boolean updateCardInDatabase(Payment payment) {
+        //References to all dialog variables
+
+        cardNumber = dV.findViewById(R.id.creditCardNumber);
+        nameOnCard = dV.findViewById(R.id.nameOnCard);
+        ccv = dV.findViewById(R.id.ccv);
+        month = dV.findViewById(R.id.expMonth);
+        year = dV.findViewById(R.id.expYear);
+        paymentType = dV.findViewById(R.id.paymentType);
+
+        if (validateName(nameOnCard) & validateCardNumber(cardNumber) & validateCCV(ccv)) {
+
+            PaymentsContract pc = new PaymentsContract(getContext());
+            pc.updatePayment(payment.getM_ID(),
+                    paymentType.getSelectedItem().toString(), nameOnCard.getText().toString(),
+                    cardNumber.getText().toString(),
+                    (month.getSelectedItem().toString() + "/" + year.getSelectedItem().toString()),
+                    ccv.getText().toString(),
+                    (Calendar.getInstance().getTime()).toString());
 
             return true;
         } else

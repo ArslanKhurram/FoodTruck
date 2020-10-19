@@ -20,6 +20,7 @@ import com.example.foodtruck.Fragments.Customer.CustomerAccountFragment;
 import com.example.foodtruck.Fragments.Customer.FavoritesFragment;
 import com.example.foodtruck.Fragments.MapFragment;
 import com.example.foodtruck.Fragments.SearchFragment;
+import com.example.foodtruck.Fragments.Vendor.VendorAccountFragment;
 import com.example.foodtruck.Models.Admin;
 import com.example.foodtruck.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -49,7 +50,7 @@ public class AdminMainFragment extends Fragment implements BottomNavigationView.
            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container,new AdminUserDataFragment()).commit();
             navigationView.getMenu().getItem(0).setChecked(true);
         }
-
+        navigationView.setOnNavigationItemSelectedListener(this); //set a listener on the navigation bar
         return v;
     }
 
@@ -71,10 +72,10 @@ public class AdminMainFragment extends Fragment implements BottomNavigationView.
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MapFragment()).commit();
                 break;
             case "account":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CustomerAccountFragment()).commit();
+                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new VendorAccountFragment()).commit();
                 break;
             case "cart":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CartFragment()).commit();
+                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CartFragment()).commit();
                 break;
         }
 
