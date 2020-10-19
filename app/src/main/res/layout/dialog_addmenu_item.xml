@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="Item Name"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:id="@+id/dl_itemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:drawableLeft="@drawable/ic_menu"
+        android:inputType="text" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/dl_itemPrice"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:drawableLeft="@drawable/ic_price"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="Available:"
+            android:textColor="@android:color/black" />
+
+        <Spinner
+            android:id="@+id/dl_spinnerAvailability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:dropDownWidth="120dp"
+            android:entries="@array/availability"
+            android:fadeScrollbars="true"
+            android:spinnerMode="dropdown"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/dl_btnAddItemImage"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="Add Image"
+        android:background="@drawable/btn_addimage"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center" />
+
+
+</LinearLayout>

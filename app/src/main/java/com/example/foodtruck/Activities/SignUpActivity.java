@@ -41,42 +41,42 @@ public class SignUpActivity extends AppCompatActivity {
 
         //add customer
         CustomersContract cc = new CustomersContract(this);
-        cc.addCustomer("Arslan", "Khurram", "", "", "584-445-4434", "Eastwood Ave", "44", "11703", "Deer Lawn", "NY");
+        cc.addCustomer("Arslan", "Khurram", "2", "2", "584-445-4434", "Eastwood Ave", "44", "11703", "Deer Lawn", "NY");
         //cc.addCustomer("Tyler", "Homes", "tyler@gmail.com", "kjhgfverg4534", "584-445-4434", "Noble Ave", "323", "11704", "Bear Lawn", "NY");
 
         //add payment
         PaymentsContract pc = new PaymentsContract(this);
-        pc.createPayment("Debit", "Arslan Khurram", "1047381094857", "10/23", "391", "10/16/2020", cc.getCustomerIdByEmail("").getM_Id());
+        pc.createPayment("Debit", "Arslan Khurram", "5453253253253515", "10/2023", "391", "10/16/2020", cc.getCustomerIdByEmail("2").getM_Id());
         //pc.createPayment("Credit","Arslan Khurram","7592018573928","10/21","625","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
         //pc.createPayment("Credit","Arslan Khurram","0563921740674","10/22","026","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
 
         //add vendor
         VendorsContract vc = new VendorsContract(this);
-        vc.addVendor("James", "Dillion", "jDillion@yahoo.com", "khjh#hfgjkf", "585-545-4444", "Mohawk Dr", "45", "Dix Hills", "11756", "NY");
+        vc.addVendor("James", "Dillion", "3", "3", "585-545-4444", "Mohawk Dr", "45", "Dix Hills", "11756", "NY");
 
         byte[] image = new byte[]{};
         //add Food Truck
         FoodTrucksContract fc = new FoodTrucksContract(this);
-        fc.createFoodTruck("J1 Pizza", "Pizza", image, 34.55, 43.44, vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
+        fc.createFoodTruck("J1 Pizza", "Pizza", image, 34.55, 43.44, vc.getVendorIdByEmail("3").getM_Id());
 
         //add order
         OrdersContract oc = new OrdersContract(this);
-        oc.createOrder("001", "10/15/2020", "Preparing", cc.getCustomerIdByEmail("").getM_Id(), vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
-        oc.createOrder("002", "10/15/2020", "Preparing", cc.getCustomerIdByEmail("tyler@gmail.com").getM_Id(), vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
+        oc.createOrder("001", "10/15/2020", "Preparing", cc.getCustomerIdByEmail("2").getM_Id(), vc.getVendorIdByEmail("3").getM_Id());
+        // oc.createOrder("002", "10/15/2020", "Preparing", cc.getCustomerIdByEmail("tyler@gmail.com").getM_Id(), vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
 
         //add menu
         MenusContract mc = new MenusContract(this);
-        mc.createMenu(fc.getFoodTruckByVendorId(vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id()).getM_ID());
+        mc.createMenu(fc.getFoodTruckByVendorId(vc.getVendorIdByEmail("3").getM_Id()).getM_ID());
 
         //add items
         ItemsContract ic = new ItemsContract(this);
-        ic.createItem("Pizza Roll","3.99","Y",image, mc.getMenuByFoodTruckId(fc.getFoodTruckByVendorId(vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id()).getM_ID()).getM_Id());
-        ic.createItem("BBQ Pizza","5.99","Y",image, mc.getMenuByFoodTruckId(fc.getFoodTruckByVendorId(vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id()).getM_ID()).getM_Id());
+        ic.createItem("Pizza Roll", "3.99", "Yes", image, mc.getMenuByFoodTruckId(fc.getFoodTruckByVendorId(vc.getVendorIdByEmail("3").getM_Id()).getM_ID()).getM_Id());
+        ic.createItem("BBQ Pizza", "5.99", "No", image, mc.getMenuByFoodTruckId(fc.getFoodTruckByVendorId(vc.getVendorIdByEmail("3").getM_Id()).getM_ID()).getM_Id());
 
         //add options
         OptionsContract opc = new OptionsContract(this);
-        opc.createOption("Hot Sauce",ic.getItemById(1).getM_Id());
-        opc.createOption("Buffalo Sauce",ic.getItemById(1).getM_Id());
+//        opc.createOption("Hot Sauce", ic.getItemById(1).getM_Id());
+        //       opc.createOption("Buffalo Sauce", ic.getItemById(1).getM_Id());
     }
 
 

@@ -130,6 +130,19 @@ public final class ItemsContract {
         return newItem;
     }
 
+    //update item
+    public void updateItem(long id, String name, String price, String available, byte[] image) {
+        open();
+        ContentValues cv = new ContentValues();
+        cv.put(ItemsEntry.COL_NAME, name);
+        cv.put(ItemsEntry.COL_PRICE, price);
+        cv.put(ItemsEntry.COL_AVAILABILITY, available);
+        cv.put(ItemsEntry.COL_IMAGE, image);
+
+        mDb.update(ItemsEntry.TABLE_NAME, cv, ItemsEntry._ID + " = " + id, null);
+        close();
+    }
+
 
     //set data to specific item object
     protected Item cursorToItem(Cursor cursor, long id) {
