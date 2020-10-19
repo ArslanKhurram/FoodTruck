@@ -195,6 +195,10 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         ccv.setText(payment.getM_CCV());
         paymentType.setSelection(paymentSelection);
 
+        cardNumber.setSelection(cardNumber.getText().length());
+        nameOnCard.setSelection(nameOnCard.getText().length());
+        ccv.setSelection(ccv.getText().length());
+
 
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
                 .setPositiveButton("Update", null)
