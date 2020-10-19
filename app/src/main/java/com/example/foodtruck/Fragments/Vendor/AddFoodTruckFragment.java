@@ -1,11 +1,17 @@
 package com.example.foodtruck.Fragments.Vendor;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +32,14 @@ import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static android.app.Activity.RESULT_OK;
 
 public class AddFoodTruckFragment extends Fragment implements View.OnClickListener {
 
+    private static final int GALLERY_REQUEST = '1';
     ImageView picView;
     Button picBttn;
     EditText etName;
@@ -48,21 +59,35 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
         etCategory = v.findViewById(R.id.etCategory);
         spFoodType = v.findViewById(R.id.spnPaymentType);
         v.findViewById(R.id.btnSubmit).setOnClickListener(this);
+        picBttn.setOnClickListener(new View.OnClickListener() {
+           //add a picture using photos/gallery
+            @Override
+            public void onClick(View view) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+            }
+        });
         return v;
-
-
     }
 
-    /*
     //result sets image to an image view
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && data != null) {
-            selectedImage = (Bitmap) data.getExtras().get("data");
-            picView.setImageBitmap(selectedImage);
-        }
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK)
+            switch (requestCode){
+                case GALLERY_REQUEST:
+                    Uri selectedImage = data.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                        picView.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        Log.i("TAG", "Some exception " + e);
+                    }
+                    break;
+            }
     }
-*/
     @Override
     public void onClick(View v) {
 
