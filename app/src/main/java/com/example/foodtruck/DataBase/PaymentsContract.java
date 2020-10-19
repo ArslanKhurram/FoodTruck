@@ -71,6 +71,21 @@ public final class PaymentsContract {
         return newPayment;
     }
 
+    public void updatePayment(long id, String paymentType, String name, String cardNumber, String exp, String ccv, String dateAdded) {
+        open();
+        ContentValues cv = new ContentValues();
+        cv.put(PaymentsEntry.COL_PAYMENT_TYPE, paymentType);
+        cv.put(PaymentsEntry.COL_NAME_ON_CARD, name);
+        cv.put(PaymentsEntry.COL_CARD_NUMBER, cardNumber);
+        cv.put(PaymentsEntry.COL_CC_EXP_DATE, exp);
+        cv.put(PaymentsEntry.COL_CCV, ccv);
+        cv.put(PaymentsEntry.COL_DATE_ADDED, dateAdded);
+
+        mDb.update(PaymentsEntry.TABLE_NAME, cv, PaymentsEntry._ID + " = " + id, null);
+        close();
+
+    }
+
     //open database
     public void open() throws SQLException {
         mDb = mDbHelper.getWritableDatabase();

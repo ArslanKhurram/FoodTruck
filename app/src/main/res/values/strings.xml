@@ -2,9 +2,14 @@
     <string name="app_name">Food Street</string>
 
     <string-array name="loginType">
-        <item>Admin</item>
         <item>Customer</item>
         <item>Vendor</item>
+        <item>Admin</item>
+    </string-array>
+
+    <string-array name="availability">
+        <item>Yes</item>
+        <item>No</item>
     </string-array>
 
     <string-array name="stateNames">
@@ -125,4 +130,5 @@
     <string name="menu">menu</string>
     <string name="prompt_month">EXP Month</string>
     <string name="prompt_nopayment"><b>No Payments Found</b>\n\nPlease Enter Payment Information \nBefore Placing Order</string>
+    <string name="prompt_nomenu"><b>No Menu Found</b>\n\nPlease Enter Menu Items \nSo Customer Can Place Orders</string>
 </resources>

@@ -13,8 +13,6 @@ public class Item {
     public Item() {
     }
 
-    ;
-
     public long getM_Id() {
         return m_Id;
     }

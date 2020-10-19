@@ -3,40 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="15dp">
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="4dp"
+    app:cardCornerRadius="4dp">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="77dp"
-        android:layout_margin="4dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/ivMenuItemPicture"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_image" />
 
         <TextView
-            android:id="@+id/nameTxt"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:gravity="center"
-            android:text="TextView"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/priceTxt"
-            android:layout_width="match_parent"
+            android:id="@+id/itemCount"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/nameTxt"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="TextView"
-            android:textStyle="italic" />
+            android:layout_alignParentEnd="true"
+            android:text="1" />
+
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/itemCount"
+            android:layout_toEndOf="@id/ivMenuItemPicture"
+            android:text="Menu Item"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/itemPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/itemName"
+            android:layout_toStartOf="@id/itemCount"
+            android:layout_toEndOf="@id/ivMenuItemPicture" />
 
         <TextView
             android:id="@+id/availableTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/priceTxt"
-            android:text="TextView"
-            android:gravity="center"
-            android:layout_marginTop="5dp"/>
+            android:layout_below="@id/itemPrice"
+            android:layout_toStartOf="@id/itemCount"
+            android:layout_toEndOf="@id/ivMenuItemPicture" />
 
     </RelativeLayout>
 
