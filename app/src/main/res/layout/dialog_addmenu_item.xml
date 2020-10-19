@@ -66,14 +66,14 @@
         android:id="@+id/dl_btnAddItemImage"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:text="Add Image"
         android:background="@drawable/btn_addimage"
-        android:textColor="@android:color/white"
-        android:layout_gravity="center" />
+        android:text="Add Image"
+        android:textColor="@android:color/white" />
 
 
 </LinearLayout>
