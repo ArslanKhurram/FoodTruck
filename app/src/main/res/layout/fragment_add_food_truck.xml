@@ -10,25 +10,33 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
+        <TextView
+            android:id="@+id/iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Add a Food Truck"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
         <ImageView
             android:id="@+id/picView"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_below="@id/iv"
             android:layout_centerInParent="true"
-            android:layout_alignParentTop="true"
-            app:srcCompat="@drawable/ic_delivery" />
+            android:layout_marginTop="8dp" />
 
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/picView"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="0dp"
             android:ems="10"
             android:hint="Food Truck Name"
-            android:inputType="textPersonName"
-            android:layout_below="@id/picView" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/etCategory"
@@ -41,13 +49,14 @@
 
         <Button
             android:id="@+id/btnImageUpload"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="35dp"
             android:layout_below="@id/etCategory"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
             android:text="Upload Image"
-            android:textColor="@android:color/black"
-            android:background="@android:color/white"
+            android:background="@drawable/btn_addimage"
+            android:textColor="@android:color/white"
             android:textSize="12sp" />
 
     </RelativeLayout>

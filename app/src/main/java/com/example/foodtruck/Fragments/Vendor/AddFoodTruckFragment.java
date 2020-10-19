@@ -30,6 +30,7 @@ import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -47,6 +48,7 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
     Spinner spFoodType;
     Bitmap bitmap;
 
+
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_add_food_truck, container, false);
@@ -58,7 +60,7 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
         spFoodType = v.findViewById(R.id.spnPaymentType);
         v.findViewById(R.id.btnSubmit).setOnClickListener(this);
         picBttn.setOnClickListener(new View.OnClickListener() {
-           //add a picture using photos/gallery
+            //add a picture using photos/gallery
             @Override
             public void onClick(View view) {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -73,8 +75,8 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK)
-            switch (requestCode){
+        if (resultCode == Activity.RESULT_OK)
+            switch (requestCode) {
                 case GALLERY_REQUEST:
                     Uri selectedImage = data.getData();
                     try {
@@ -86,6 +88,7 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
                     break;
             }
     }
+
     @Override
     public void onClick(View v) {
 
@@ -99,15 +102,19 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
         Vendor vendor = vc.getVendorIdByEmail(email);
 
         //convert image to byte to be able to pass int food truck database
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] bitMapData = stream.toByteArray();
+        if (picView.getDrawable() != null) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] bitMapData = stream.toByteArray();
+            //calling create function
+            ft.createFoodTruck(etName.getText().toString(), etCategory.getText().toString(), bitMapData, 89.9393, 93.939, vendor.getM_Id());
+            Toast.makeText(getContext(), "Truck Added", Toast.LENGTH_SHORT).show();
 
-        //calling create function
-        ft.createFoodTruck(etName.getText().toString(), etCategory.getText().toString(), bitMapData, 89.9393, 93.939, vendor.getM_Id());
-        Toast.makeText(getContext(), "Truck Added", Toast.LENGTH_SHORT).show();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new VendorAccountFragment()).commit();
+        } else {
+            Snackbar.make(v, "                         Please Upload an Image", Snackbar.LENGTH_LONG).show();
+        }
 
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new VendorAccountFragment()).commit();
     }
 
 
