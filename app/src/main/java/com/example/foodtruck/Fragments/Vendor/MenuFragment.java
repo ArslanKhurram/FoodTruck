@@ -124,7 +124,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
 
     @Override
     public void onItemClick(int position) {
-        Item item = itemList.get(position);
+        Item item = menuAdapter.getItemAt(position);
         editItemDialog(item);
     }
 

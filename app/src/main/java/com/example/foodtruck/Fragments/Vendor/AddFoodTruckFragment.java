@@ -45,9 +45,7 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
     EditText etName;
     EditText etCategory;
     Spinner spFoodType;
-    Button submit;
-    Bitmap selectedImage;
-
+    Bitmap bitmap;
 
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -80,7 +78,7 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
                 case GALLERY_REQUEST:
                     Uri selectedImage = data.getData();
                     try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
                         picView.setImageBitmap(bitmap);
                     } catch (IOException e) {
                         Log.i("TAG", "Some exception " + e);
@@ -101,8 +99,6 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
         Vendor vendor = vc.getVendorIdByEmail(email);
 
         //convert image to byte to be able to pass int food truck database
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.test, null);
-        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] bitMapData = stream.toByteArray();
