@@ -43,7 +43,7 @@ public class VendorMainFragment extends Fragment implements BottomNavigationView
 
         switch (selectedItem) {
             case "menu":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MenuFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MenuFragment()).commitNow();
                 break;
             case "search":
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new SearchFragment()).commit();
