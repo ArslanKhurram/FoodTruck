@@ -1,5 +1,6 @@
 package com.example.foodtruck.Activities;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,6 +11,7 @@ import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.OptionsContract;
+import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
@@ -17,8 +19,11 @@ import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.Models.Admin;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.FoodTruck;
+import com.example.foodtruck.Models.Item;
+import com.example.foodtruck.Models.Menu;
 import com.example.foodtruck.Models.Option;
 import com.example.foodtruck.Models.Order;
+import com.example.foodtruck.Models.OrderedItem;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 
@@ -29,6 +34,7 @@ public class SignUpActivity extends AppCompatActivity {
     public Customer customer = new Customer();
     public Vendor vendor = new Vendor();
     public Admin admin = new Admin();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,44 +45,60 @@ public class SignUpActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
         }
 
-        //add customer
-        CustomersContract cc = new CustomersContract(this);
-        cc.addCustomer("Arslan", "Khurram", "2", "2", "584-445-4434", "Eastwood Ave", "44", "11703", "Deer Lawn", "NY");
-        //cc.addCustomer("Tyler", "Homes", "tyler@gmail.com", "kjhgfverg4534", "584-445-4434", "Noble Ave", "323", "11704", "Bear Lawn", "NY");
+        CustomersContract customersContract = new CustomersContract(this);
+        customersContract.addCustomer("A", "K", "2", "2", "0", "0", "0", "0", "0", "0");
+        Customer customer = customersContract.getCustomerIdByEmail("2");
 
-        //add payment
-        PaymentsContract pc = new PaymentsContract(this);
-        pc.createPayment("Debit", "Arslan Khurram", "5453253253253515", "10/2023", "391", "10/16/2020", cc.getCustomerIdByEmail("2").getM_Id());
-        //pc.createPayment("Credit","Arslan Khurram","7592018573928","10/21","625","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
-        //pc.createPayment("Credit","Arslan Khurram","0563921740674","10/22","026","10/16/2020",cc.getCustomerIdByEmail("").getM_Id());
-
-        //add vendor
-        VendorsContract vc = new VendorsContract(this);
-        vc.addVendor("James", "Dillion", "3", "3", "585-545-4444", "Mohawk Dr", "45", "Dix Hills", "11756", "NY");
+        VendorsContract vendorsContract = new VendorsContract(this);
+        vendorsContract.addVendor("J", "C", "3", "3", "0", "0", "0", "0", "0", "0");
+        Vendor vendor = vendorsContract.getVendorIdByEmail("3");
 
         byte[] image = new byte[]{};
-        //add Food Truck
-        FoodTrucksContract fc = new FoodTrucksContract(this);
-        fc.createFoodTruck("J1 Pizza", "Pizza", image, 34.55, 43.44, vc.getVendorIdByEmail("3").getM_Id());
+        FoodTrucksContract foodTrucksContract = new FoodTrucksContract(this);
+        foodTrucksContract.createFoodTruck("Test", "Italian", image, 10.5, 10.5, vendor.getM_Id());
+        FoodTruck foodTruck = foodTrucksContract.getFoodTruckByVendorId(vendor.getM_Id());
 
-        //add order
-        OrdersContract oc = new OrdersContract(this);
-        oc.createOrder("001", "10/15/2020", "Preparing", cc.getCustomerIdByEmail("2").getM_Id(), vc.getVendorIdByEmail("3").getM_Id());
-        // oc.createOrder("002", "10/15/2020", "Preparing", cc.getCustomerIdByEmail("tyler@gmail.com").getM_Id(), vc.getVendorIdByEmail("jDillion@yahoo.com").getM_Id());
+        MenusContract menusContract = new MenusContract(this);
+        menusContract.createMenu(foodTruck.getM_ID());
+        Menu menu = menusContract.getMenuByFoodTruckId(foodTruck.getM_ID());
 
-        //add menu
-        MenusContract mc = new MenusContract(this);
-        mc.createMenu(fc.getFoodTruckByVendorId(vc.getVendorIdByEmail("3").getM_Id()).getM_ID());
+        /*FIXME: Fix adding ordered items
 
-        //add items
-        ItemsContract ic = new ItemsContract(this);
-        ic.createItem("Pizza Roll", "3.99", "Yes", image, mc.getMenuByFoodTruckId(fc.getFoodTruckByVendorId(vc.getVendorIdByEmail("3").getM_Id()).getM_ID()).getM_Id());
-        ic.createItem("BBQ Pizza", "5.99", "No", image, mc.getMenuByFoodTruckId(fc.getFoodTruckByVendorId(vc.getVendorIdByEmail("3").getM_Id()).getM_ID()).getM_Id());
+            Not sure how to fix the error yet.
 
-        //add options
-        OptionsContract opc = new OptionsContract(this);
-//        opc.createOption("Hot Sauce", ic.getItemById(1).getM_Id());
-        //       opc.createOption("Buffalo Sauce", ic.getItemById(1).getM_Id());
+            DESCRIPTION:
+            App compiles when executing first addOrderedItem
+            App crashed when executing both first and second addOrderedItem on a clean database with no previous entries
+                There is a cursor error in multiple files when adding an ordered item with the 2nd item
+
+         */
+
+        ItemsContract itemsContract = new ItemsContract(this);
+        itemsContract.createItem("test", "9.99", "Yes", image, menu.getM_Id());
+        itemsContract.createItem("test2", "1.99", "No", image, menu.getM_Id());
+        ArrayList<Item> itemArrayList = itemsContract.ItemsList(menu.getM_Id());
+
+        for (Item item : itemArrayList) {
+            Log.i("Test", "Item Name: " + item.getM_Name());
+            Log.i("Test", "Item Price: " + item.getM_Price());
+            Log.i("Test", "Item MenuID: " + item.getM_Menu().getM_Id());
+        }
+
+        OrdersContract ordersContract = new OrdersContract(this);
+        ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer.getM_Id(), vendor.getM_Id());
+        Order order = ordersContract.getOrderById(1);
+
+        OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
+        orderedItemsContract.addOrderedItem("1", itemArrayList.get(0).getM_Id(), order.getM_Id());
+        orderedItemsContract.addOrderedItem("2", itemArrayList.get(1).getM_Id(), order.getM_Id()); //error happens when running this line
+        ArrayList<OrderedItem> orderedItemArrayList = orderedItemsContract.getOrderedItems(order.getM_Id());
+
+        for (OrderedItem orderedItem : orderedItemArrayList) {
+            Log.i("Test", "Ordered Item Name: " + orderedItem.getM_Item().getM_Name());
+            Log.i("Test", "Ordered Item Quantity: " + orderedItem.getM_Quantity());
+            Log.i("Test", "Ordered Item Order ID: " + orderedItem.getM_Order().getM_Id());
+        }
+
     }
 
 

@@ -5,11 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-import com.example.foodtruck.Models.FoodTruck;
-
-import java.util.ArrayDeque;
-
-
 import static com.example.foodtruck.DataBase.CustomersContract.CustomersEntry;
 import static com.example.foodtruck.DataBase.FoodTrucksContract.FoodTrucksEntry;
 import static com.example.foodtruck.DataBase.ItemsContract.ItemsEntry;
@@ -21,6 +16,7 @@ import static com.example.foodtruck.DataBase.AdminContract.AdminEntry;
 
 import static com.example.foodtruck.DataBase.OptionsContract.OptionsEntry;
 import static com.example.foodtruck.DataBase.OrdersContract.OrdersEntry;
+import static com.example.foodtruck.DataBase.OrderedItemsContract.OrderedItemsEntry;
 
 
 
@@ -129,6 +125,13 @@ public class DbHelper extends SQLiteOpenHelper {
             OrdersEntry.COL_VENDOR_ID + " INTEGER NOT NULL " +
             "); ";
 
+    //query to create ordered items table
+    public static final String SQL_CREATE_ORDERED_ITEMS_TABLE = "CREATE TABLE " + OrderedItemsEntry.TABLE_NAME + " (" +
+            OrderedItemsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            OrderedItemsEntry.COL_QUANTITY + " TEXT NOT NULL, " +
+            OrderedItemsEntry.COL_ITEM_ID + " INTEGER NOT NULL, " +
+            OrderedItemsEntry.COL_ORDER_ID + " INTEGER NOT NULL " +
+            "); ";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -141,6 +144,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_ADMIN_TABLE);
         db.execSQL(SQL_CREATE_OPTIONS_TABLE);
         db.execSQL(SQL_CREATE_ORDERS_TABLE);
+        db.execSQL(SQL_CREATE_ORDERED_ITEMS_TABLE);
+
     }
 
     @Override
@@ -154,6 +159,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + AdminEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + OptionsEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + OrdersEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + OrderedItemsEntry.TABLE_NAME);
+
         onCreate(db);
     }
 }

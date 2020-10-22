@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.FoodTruck;
+import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Menu;
 import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.Vendor;
@@ -102,6 +103,22 @@ public final class OrdersContract {
         mDb.close();
         close();
         return ordersList;
+    }
+
+    //return Order by searching by id
+    public Order getOrderById(long id) {
+        open();
+        Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry._ID + " =? ",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_VENDOR_ID)));
+        cursor.close();
+        mDb.close();
+        close();
+        return order;
     }
 
     //column and table names

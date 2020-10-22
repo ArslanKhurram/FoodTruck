@@ -94,7 +94,7 @@ public final class MenusContract {
 
         //get The FoodTruck by id
         FoodTrucksContract contract = new FoodTrucksContract(mContext);
-        FoodTruck foodTruck = contract.getFoodTruckById(id);
+        FoodTruck foodTruck = contract.getFoodTruckById(cursor.getLong(cursor.getColumnIndex(MenusEntry.COL_FOOD_TRUCK_ID)));
         if (contract != null) {
             menu.setM_FoodTruck(foodTruck);
         }
