@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.example.foodtruck.Models.FoodTruck;
+import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Menu;
 
 import java.util.Objects;
@@ -59,11 +60,27 @@ public final class MenusContract {
         Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry._ID +
                 " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
-        Menu newMenu = cursorToMenu(cursor, foodTruckID);
+        Menu newMenu = cursorToMenu(cursor);
         cursor.close();
         mDb.close();
         close();
         return newMenu;
+    }
+
+    //return Menu by searching by id
+    public Menu getMenuById(long id) {
+        open();
+        Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry._ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Menu menu = cursorToMenu(cursor);
+        cursor.close();
+        mDb.close();
+        close();
+        return menu;
     }
 
     //return Menu by searching by id
@@ -74,7 +91,7 @@ public final class MenusContract {
         if (cursor != null) {
             cursor.moveToFirst();
         }
-        Menu menu = cursorToMenu(cursor, id);
+        Menu menu = cursorToMenu(cursor);
         cursor.close();
         mDb.close();
         close();
@@ -88,13 +105,13 @@ public final class MenusContract {
     }
 
     //set data to specific menu object
-    protected Menu cursorToMenu(Cursor cursor, long id) {
+    protected Menu cursorToMenu(Cursor cursor) {
         Menu menu = new Menu();
         menu.setM_Id(cursor.getLong(0));
 
         //get The FoodTruck by id
         FoodTrucksContract contract = new FoodTrucksContract(mContext);
-        FoodTruck foodTruck = contract.getFoodTruckById(id);
+        FoodTruck foodTruck = contract.getFoodTruckById(cursor.getLong(cursor.getColumnIndex(MenusEntry.COL_FOOD_TRUCK_ID)));
         if (contract != null) {
             menu.setM_FoodTruck(foodTruck);
         }
