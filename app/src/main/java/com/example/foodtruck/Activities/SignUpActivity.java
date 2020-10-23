@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.foodtruck.DataBase.AdminContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
@@ -49,6 +50,9 @@ public class SignUpActivity extends AppCompatActivity {
         customersContract.addCustomer("A", "K", "2", "2", "0", "0", "0", "0", "0", "0");
         Customer customer = customersContract.getCustomerIdByEmail("2");
 
+        AdminContract adminContract = new AdminContract(this);
+        adminContract.addAdmin("1", "1");
+
         VendorsContract vendorsContract = new VendorsContract(this);
         vendorsContract.addVendor("J", "C", "3", "3", "0", "0", "0", "0", "0", "0");
         Vendor vendor = vendorsContract.getVendorIdByEmail("3");
@@ -62,21 +66,11 @@ public class SignUpActivity extends AppCompatActivity {
         menusContract.createMenu(foodTruck.getM_ID());
         Menu menu = menusContract.getMenuByFoodTruckId(foodTruck.getM_ID());
 
-        /*FIXME: Fix adding ordered items
-
-            Not sure how to fix the error yet.
-
-            DESCRIPTION:
-            App compiles when executing first addOrderedItem
-            App crashed when executing both first and second addOrderedItem on a clean database with no previous entries
-                There is a cursor error in multiple files when adding an ordered item with the 2nd item
-
-         */
-
         ItemsContract itemsContract = new ItemsContract(this);
         itemsContract.createItem("test", "9.99", "Yes", image, menu.getM_Id());
         itemsContract.createItem("test2", "1.99", "No", image, menu.getM_Id());
-        ArrayList<Item> itemArrayList = itemsContract.ItemsList(menu.getM_Id());
+        itemsContract.createItem("test3", "6.99", "Yes", image, menu.getM_Id());
+   /*     ArrayList<Item> itemArrayList = itemsContract.ItemsList(menu.getM_Id());
 
         for (Item item : itemArrayList) {
             Log.i("Test", "Item Name: " + item.getM_Name());
@@ -86,11 +80,15 @@ public class SignUpActivity extends AppCompatActivity {
 
         OrdersContract ordersContract = new OrdersContract(this);
         ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer.getM_Id(), vendor.getM_Id());
+        ordersContract.createOrder("B01", "10/22/2020", "Preparing", customer.getM_Id(), vendor.getM_Id());
         Order order = ordersContract.getOrderById(1);
+        Order order2 = ordersContract.getOrderById(2);
 
         OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
         orderedItemsContract.addOrderedItem("1", itemArrayList.get(0).getM_Id(), order.getM_Id());
-        orderedItemsContract.addOrderedItem("2", itemArrayList.get(1).getM_Id(), order.getM_Id()); //error happens when running this line
+        orderedItemsContract.addOrderedItem("2", itemArrayList.get(1).getM_Id(), order.getM_Id());
+        orderedItemsContract.addOrderedItem("3", itemArrayList.get(2).getM_Id(), order2.getM_Id());
+        orderedItemsContract.addOrderedItem("3", itemArrayList.get(2).getM_Id(), order2.getM_Id());
         ArrayList<OrderedItem> orderedItemArrayList = orderedItemsContract.getOrderedItems(order.getM_Id());
 
         for (OrderedItem orderedItem : orderedItemArrayList) {
@@ -98,7 +96,7 @@ public class SignUpActivity extends AppCompatActivity {
             Log.i("Test", "Ordered Item Quantity: " + orderedItem.getM_Quantity());
             Log.i("Test", "Ordered Item Order ID: " + orderedItem.getM_Order().getM_Id());
         }
-
+*/
     }
 
 

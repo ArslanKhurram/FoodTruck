@@ -65,7 +65,7 @@ public final class ItemsContract {
         if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                Item item = cursorToItem(cursor, menuID);
+                Item item = cursorToItem(cursor);
                 itemList.add(item);
                 if (cursor.isLast() || cursor.isClosed())
                     break;
@@ -101,7 +101,7 @@ public final class ItemsContract {
             cursor.moveToFirst();
         }
 
-        Item item = cursorToItem(cursor, id);
+        Item item = cursorToItem(cursor);
         cursor.close();
         mDb.close();
         close();
@@ -123,7 +123,7 @@ public final class ItemsContract {
         Cursor cursor = mDb.query(ItemsEntry.TABLE_NAME, mAllColumns, ItemsEntry._ID +
                 " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
-        Item newItem = cursorToItem(cursor, menuID);
+        Item newItem = cursorToItem(cursor);
         cursor.close();
         mDb.close();
         close();
@@ -145,7 +145,7 @@ public final class ItemsContract {
 
 
     //set data to specific item object
-    protected Item cursorToItem(Cursor cursor, long id) {
+    protected Item cursorToItem(Cursor cursor) {
         Item item = new Item();
         item.setM_Id(cursor.getLong(0));
         item.setM_Name(cursor.getString(1));
@@ -155,7 +155,7 @@ public final class ItemsContract {
 
         //get The Vendor by id
         MenusContract contract = new MenusContract(mContext);
-        Menu menu = contract.getMenuByFoodTruckId(id);
+        Menu menu = contract.getMenuById(cursor.getLong(cursor.getColumnIndex(ItemsEntry.COL_MENU_ID)));
         if (contract != null) {
             item.setM_Menu(menu);
         }
