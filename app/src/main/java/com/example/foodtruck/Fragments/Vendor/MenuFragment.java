@@ -166,6 +166,8 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         itemName.setText(item.getM_Name());
         itemPrice.setText(item.getM_Price());
         itemAvailability.setSelection(selection);
+        itemName.setSelection(itemName.getText().length());
+        itemPrice.setSelection(itemPrice.getText().length());
 
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
                 .setPositiveButton("Update", null)
