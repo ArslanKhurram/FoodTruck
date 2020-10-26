@@ -80,7 +80,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
        switch (status)
        {
            case "Preparing":
-               pendingOrderList = oc.getOrderListByStatus(vendor.getM_Id(), status);
+               pendingOrderList = oc.getOrderListByStatus(vendor.getM_Id(), status); //vendor = 3  status = preparing
                return pendingOrderList;
            case "Completed":
                completedOrderList = oc.getOrderListByStatus(vendor.getM_Id(), status);
@@ -96,7 +96,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
 
     @Override
     public void onOrderClick(int position) {
-     pendingOrderAdapter.getOrder(position);
+        //pendingOrderAdapter.getOrder(position);
     }
 /*
     private void showOrderDialog()

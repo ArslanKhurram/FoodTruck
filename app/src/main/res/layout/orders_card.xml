@@ -14,31 +14,23 @@
         android:padding="8dp">
 
         <TextView
-            android:id="@+id/tvQuantity"
-            android:layout_width="50dp"
+            android:id="@+id/tvOrderNumber"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:text="1"
             android:textAlignment="center"
-            android:textSize="30sp"
-            android:gravity="center"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/tvName"
-            android:layout_width="289dp"
-            android:layout_height="50dp"
-            android:layout_toStartOf="@id/tvOrderNum"
-            android:layout_toEndOf="@id/tvQuantity"
-            android:text="Pizza Rolls"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/tvOrderNum"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/tvOrderNumber"
+            android:text="Customer Name"
             android:textAlignment="center"
-            android:gravity="center"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:gravity="center" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

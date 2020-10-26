@@ -110,8 +110,7 @@ public final class OrdersContract {
         open();
         ArrayList<Order> ordersList = new ArrayList<Order>();
 
-        Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry.COL_VENDOR_ID + " =" + vendorId + " AND " + OrdersEntry.COL_STATUS + "=" + status,
-                        null, null, null, null);
+        Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry.COL_STATUS + " =? " + " AND " + OrdersEntry.COL_VENDOR_ID + " =? ", new String[]{status, String.valueOf(vendorId)}, null, null, null);
 
         if (cursor != null) {
             cursor.moveToFirst();

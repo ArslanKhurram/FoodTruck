@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="35dp"
     android:paddingStart="10dp"
+    android:paddingTop="35dp"
     android:paddingEnd="10dp">
 
     <RelativeLayout
@@ -25,8 +26,7 @@
                 android:layout_alignParentStart="true"
                 android:padding="15dp"
                 android:text="Order #"
-                android:textColor="@android:color/black"
-                android:textSize="15dp" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <TextView
                 android:id="@+id/t1"
@@ -35,19 +35,7 @@
                 android:layout_centerHorizontal="true"
                 android:padding="15dp"
                 android:text="Pending Orders"
-                android:textColor="@android:color/black"
-                android:textSize="15dp" />
-
-            <TextView
-                android:id="@+id/t2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerHorizontal="true"
-                android:padding="15dp"
-                android:text="QTY"
-                android:textColor="@android:color/black"
-                android:textSize="15dp" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         </RelativeLayout>
 
@@ -55,7 +43,8 @@
             android:id="@+id/pendingRecycler"
             android:layout_width="match_parent"
             android:layout_height="290dp"
-            android:layout_below="@id/rl11" />
+            android:layout_below="@id/rl11"
+            tools:listitem="@layout/orders_card" />
     </RelativeLayout>
 
 
@@ -77,8 +66,7 @@
                 android:layout_alignParentStart="true"
                 android:padding="15dp"
                 android:text="Order #"
-                android:textColor="@android:color/black"
-                android:textSize="15dp" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <TextView
                 android:id="@+id/ttt1"
@@ -87,19 +75,7 @@
                 android:layout_centerHorizontal="true"
                 android:padding="15dp"
                 android:text="Completed Orders"
-                android:textColor="@android:color/black"
-                android:textSize="15dp" />
-
-            <TextView
-                android:id="@+id/ttt2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerHorizontal="true"
-                android:padding="15dp"
-                android:text="QTY"
-                android:textColor="@android:color/black"
-                android:textSize="15dp" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         </RelativeLayout>
 
@@ -107,7 +83,8 @@
             android:id="@+id/completedRecycler"
             android:layout_width="match_parent"
             android:layout_height="3000dp"
-            android:layout_below="@id/rl12" />
+            android:layout_below="@id/rl12"
+            tools:listitem="@layout/orders_card" />
 
     </RelativeLayout>
 

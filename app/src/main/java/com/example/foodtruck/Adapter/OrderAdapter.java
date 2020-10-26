@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.Models.Order;
+import com.example.foodtruck.Models.OrderedItem;
 import com.example.foodtruck.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderAdapter extends ListAdapter<Order, OrderAdapter.OrderViewHolder> {
@@ -57,20 +60,19 @@ public class OrderAdapter extends ListAdapter<Order, OrderAdapter.OrderViewHolde
     }
 
     public Order getOrder(int position) {
-        return getOrder(position);
+        return getItem(position);
     }
 
 
     //viewHolder class whose objects represent each list items
     public static class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView orderNum, orderName, orderQuantity;
-        private OnOrderListener onOrderListener;
+        public TextView orderNum, orderName;
+        public OnOrderListener onOrderListener;
 
         public OrderViewHolder(View view, OnOrderListener onOrderListener) {
             super(view);
-            orderNum.findViewById(R.id.tvOrderNum);
-            orderName.findViewById(R.id.tvName);
-            orderQuantity.findViewById(R.id.tvQuantity);
+            orderNum = view.findViewById(R.id.tvOrderNumber);
+            orderName = view.findViewById(R.id.tvName);
             this.onOrderListener = onOrderListener;
 
             view.setOnClickListener(this);
@@ -78,6 +80,12 @@ public class OrderAdapter extends ListAdapter<Order, OrderAdapter.OrderViewHolde
 
         public void BindData(Order order, Context context) {
             orderNum.setText(order.getM_OrderNumber());
+            orderName.setText(order.getM_Customer().getM_FirstName() + " " + order.getM_Customer().getM_LastName());
+//            OrderedItemsContract oc = new OrderedItemsContract(context);
+//            ArrayList<OrderedItem> orderedItems = oc.getOrderedItems(order.getM_Id());
+//            for (OrderedItem item :orderedItems) {
+//                orderName.setText(orderName.getText() + item.getM_Item().getM_Name() + "  ");
+//            }
         }
 
         @Override
