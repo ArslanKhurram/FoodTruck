@@ -1,12 +1,11 @@
 package com.example.foodtruck.Fragments.Vendor;
 
-import android.app.AlertDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,14 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodtruck.Adapter.MenuAdapter;
 import com.example.foodtruck.Adapter.OrderAdapter;
-import com.example.foodtruck.DataBase.FoodTrucksContract;
-import com.example.foodtruck.DataBase.ItemsContract;
-import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.VendorsContract;
-import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
@@ -33,62 +27,79 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
     private RecyclerView completedRecyclerView;
     private RecyclerView.Adapter recyclerAdapter;
     private RecyclerView.Adapter recyclerAdapter2;
-    private OrderAdapter orderAdapter;
-    private OrderAdapter orderAdapter2;
+    private OrderAdapter pendingOrderAdapter;
+    private OrderAdapter CompletedOrderAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.LayoutManager mLayoutManager2;
     private SharedPreferences sharedPref;
     private Order order;
-    private ArrayList<Order> orderList = new ArrayList<>();
+    private ArrayList<Order> pendingOrderList = new ArrayList<>();
+    private ArrayList<Order> completedOrderList = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_orders, container, false);
 
 
+        sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+
+        //first recycler
         pendingRecyclerView = v.findViewById(R.id.pendingRecycler);
         pendingRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext()); //use linear layout on cards
         pendingRecyclerView.setLayoutManager(mLayoutManager);
-        orderAdapter = new OrderAdapter(getContext(), this);
-        orderAdapter.submitList(orderList);
-        recyclerAdapter = orderAdapter;//specify adapter and pass in item list
+        pendingOrderAdapter = new OrderAdapter(getContext(), this);
+        pendingOrderAdapter.submitList(getOrderList("Preparing"));
+        recyclerAdapter = pendingOrderAdapter;//specify adapter and pass in item list
         pendingRecyclerView.setAdapter(recyclerAdapter);
 
+        //second recycler
         completedRecyclerView = v.findViewById(R.id.completedRecycler);
         completedRecyclerView.setHasFixedSize(true);
         mLayoutManager2 = new LinearLayoutManager(getContext());
         completedRecyclerView.setLayoutManager(mLayoutManager2);
-        orderAdapter2 = new OrderAdapter(getContext(), this);
-        recyclerAdapter2 = orderAdapter2;
+        CompletedOrderAdapter = new OrderAdapter(getContext(), this);
+        CompletedOrderAdapter.submitList(getOrderList("Completed"));
+        recyclerAdapter2 = CompletedOrderAdapter;
         completedRecyclerView.setAdapter(recyclerAdapter2);
 
 
         return v;
     }
-
+    //need two arrayList, orderPending and orderComplete
     //get order list from order database
-    public ArrayList<Order> getOrderList() {
+    public ArrayList<Order> getOrderList(String status) {
+
         String email = sharedPref.getString("Email", "");
 
         VendorsContract vc = new VendorsContract(getContext());
         OrdersContract oc = new OrdersContract(getContext());
 
         Vendor vendor = vc.getVendorIdByEmail(email);
-        orderList = oc.getOrdersList(vendor.getM_Id());
-        return orderList;
+        Order order = oc.getOrderById(vendor.getM_Id());
+
+       switch (status)
+       {
+           case "Preparing":
+               pendingOrderList = oc.getOrderListByStatus(vendor.getM_Id(), status);
+               return pendingOrderList;
+           case "Completed":
+               completedOrderList = oc.getOrderListByStatus(vendor.getM_Id(), status);
+               return completedOrderList;
+       }
+       return null;
     }
 
     @Override
     public void onClick(View v) {
-        //addOrderDialog();
+        //showOrderDialog();
     }
 
     @Override
     public void onOrderClick(int position) {
-     orderAdapter.getOrder(position);
+     pendingOrderAdapter.getOrder(position);
     }
 /*
-    private void addOrderDialog()
+    private void showOrderDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("OrderNum");

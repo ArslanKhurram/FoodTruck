@@ -37,6 +37,7 @@ public class OrderAdapter extends ListAdapter<Order, OrderAdapter.OrderViewHolde
         public boolean areContentsTheSame(@NonNull Order oldOrder, @NonNull Order newOrder) {
             return oldOrder.getM_OrderNumber().equals(newOrder.getM_OrderNumber());
 
+
         }
     };
 

@@ -70,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
         itemsContract.createItem("test", "9.99", "Yes", image, menu.getM_Id());
         itemsContract.createItem("test2", "1.99", "No", image, menu.getM_Id());
         itemsContract.createItem("test3", "6.99", "Yes", image, menu.getM_Id());
-   /*     ArrayList<Item> itemArrayList = itemsContract.ItemsList(menu.getM_Id());
+        ArrayList<Item> itemArrayList = itemsContract.ItemsList(menu.getM_Id());
 
         for (Item item : itemArrayList) {
             Log.i("Test", "Item Name: " + item.getM_Name());
@@ -80,10 +80,10 @@ public class SignUpActivity extends AppCompatActivity {
 
         OrdersContract ordersContract = new OrdersContract(this);
         ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer.getM_Id(), vendor.getM_Id());
-        ordersContract.createOrder("B01", "10/22/2020", "Preparing", customer.getM_Id(), vendor.getM_Id());
+        ordersContract.createOrder("B01", "10/22/2020", "Completed", customer.getM_Id(), vendor.getM_Id());
         Order order = ordersContract.getOrderById(1);
         Order order2 = ordersContract.getOrderById(2);
-
+/*
         OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
         orderedItemsContract.addOrderedItem("1", itemArrayList.get(0).getM_Id(), order.getM_Id());
         orderedItemsContract.addOrderedItem("2", itemArrayList.get(1).getM_Id(), order.getM_Id());
