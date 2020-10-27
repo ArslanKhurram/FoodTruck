@@ -83,10 +83,26 @@ public final class ItemsContract {
     //remove item from database
     public void removeItem(long id) {
         open();
+
         mDb = mDbHelper.getWritableDatabase();
         String dlQuery = "DELETE FROM " + ItemsEntry.TABLE_NAME + " WHERE " + ItemsEntry._ID + " = " + id;
         Cursor cursor = mDb.rawQuery(dlQuery, null);
         cursor.moveToFirst();
+        cursor.close();
+        mDb.close();
+        close();
+    }
+
+    public void removeItemsByMenuID(long id) {
+        open();
+//        ArrayList<Item> items = ItemsList(id);
+//        OptionsContract oc = new OptionsContract(mContext);
+//        for (Item item: items) {
+//            oc.removeOptionsByItemID(item.getM_Id());
+//        }
+        mDb = mDbHelper.getWritableDatabase();
+        String dlQuery = "DELETE FROM " + ItemsEntry.TABLE_NAME + " WHERE " + ItemsEntry.COL_MENU_ID + " = " + id;
+        Cursor cursor = mDb.rawQuery(dlQuery, null);
         cursor.close();
         mDb.close();
         close();

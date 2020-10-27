@@ -1,89 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:background="@color/backgroudPayment"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
 
-    <RelativeLayout
-        android:id="@+id/TruckLayout"
-        android:layout_width="300dp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddFoodTruck"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:foregroundGravity="bottom"
+        android:src="@android:drawable/ic_input_add" />
 
-        <TextView
-            android:id="@+id/iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Add a Food Truck"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    <TextView
+        android:id="@+id/noFoodTruckPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/prompt_notruck"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#481535E3" />
 
-        <ImageView
-            android:id="@+id/picView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@id/iv"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="8dp" />
-
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/picView"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="0dp"
-            android:ems="10"
-            android:hint="Food Truck Name"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/etCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/etName"
-            android:hint="Category"
-            android:inputType="text" />
-
-
-        <Button
-            android:id="@+id/btnImageUpload"
-            android:layout_width="150dp"
-            android:layout_height="35dp"
-            android:layout_below="@id/etCategory"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:text="Upload Image"
-            android:background="@drawable/btn_addimage"
-            android:textColor="@android:color/white"
-            android:textSize="12sp" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/btnLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/foodtruck_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/sOne"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="5dp">
+        android:layout_height="match_parent"
+        android:padding="4dp"
+        tools:listitem="@layout/foodtruck_card">
 
-        <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@drawable/btn_round"
-            android:text="Submit" />
-
-    </LinearLayout>
-
-    <Space
-        android:id="@+id/sOne"
-        android:layout_width="1dp"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true" />
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </RelativeLayout>

@@ -99,6 +99,17 @@ public final class OptionsContract {
         return optionsList;
     }
 
+    public void removeOptionsByItemID(long id) {
+        open();
+        mDb = mDbHelper.getWritableDatabase();
+        String dlQuery = "DELETE FROM " + OptionsEntry.TABLE_NAME + " WHERE " + OptionsEntry.COL_ITEM_ID + " = " + id;
+        Cursor cursor = mDb.rawQuery(dlQuery, null);
+
+        cursor.close();
+        mDb.close();
+        close();
+    }
+
 
     //set data to specific option object
     protected Option cursorToOption(Cursor cursor, long id) {

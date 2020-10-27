@@ -31,6 +31,7 @@ import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Menu;
 import com.example.foodtruck.Models.Vendor;
@@ -115,9 +116,13 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
 
         //get vendor id
         Vendor vendor = vc.getVendorIdByEmail(email);
+        //get FoodTruck by vendor id
+        FoodTruck foodTruck = fc.getFoodTruckByVendorId(vendor.getM_Id());
         //get menu id from foodTruck
-        menu = mc.getMenuByFoodTruckId(fc.getFoodTruckByVendorId(vendor.getM_Id()).getM_ID());
-        itemList = ic.ItemsList(menu.getM_Id());
+        if (foodTruck != null) {
+            menu = mc.getMenuByFoodTruckId(foodTruck.getM_ID());
+            itemList = ic.ItemsList(menu.getM_Id());
+        }
 
         return itemList;
     }

@@ -9,6 +9,8 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.example.foodtruck.Models.FoodTruck;
+import com.example.foodtruck.Models.Item;
+import com.example.foodtruck.Models.Menu;
 import com.example.foodtruck.Models.Vendor;
 
 import java.util.ArrayList;
@@ -81,15 +83,16 @@ public final class FoodTrucksContract {
         open();
         Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry.COL_VENDOR_ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor != null) {
+        if (cursor.getCount() > 1) {
             cursor.moveToFirst();
+            FoodTruck foodTruck = cursorToFoodTruck(cursor, id);
+            cursor.close();
+            mDb.close();
+            close();
+            return foodTruck;
         }
 
-        FoodTruck foodTruck = cursorToFoodTruck(cursor, id);
-        cursor.close();
-        mDb.close();
-        close();
-        return foodTruck;
+        return null;
     }
 
     //return FoodTruck by searching by id
@@ -106,6 +109,24 @@ public final class FoodTrucksContract {
         mDb.close();
         close();
         return foodTruck;
+    }
+
+    public void removeFoodTruckByID(long id) {
+        open();
+        MenusContract mc = new MenusContract(mContext);
+        Menu menu = mc.getMenuByFoodTruckId(id);
+//        if (menu != null){
+//            ItemsContract ic = new ItemsContract(mContext);
+//            ic.removeItemsByMenuID(menu.getM_Id());
+//        }
+        mc.removeMenusByFoodTruckID(id);
+        mDb = mDbHelper.getWritableDatabase();
+        String dlQuery = "DELETE FROM " + FoodTrucksEntry.TABLE_NAME + " WHERE " + FoodTrucksEntry._ID + " = " + id;
+        Cursor cursor = mDb.rawQuery(dlQuery, null);
+        cursor.moveToFirst();
+        cursor.close();
+        mDb.close();
+        close();
     }
 
     //return total number of foodtruckcontracts in the FoodTrucks table

@@ -19,55 +19,90 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodtruck.Adapter.MyFoodTruckAdapter;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
-public class AddFoodTruckFragment extends Fragment implements View.OnClickListener {
+public class AddFoodTruckFragment extends Fragment implements MyFoodTruckAdapter.onFoodTruckCardListener, View.OnClickListener {
 
     private static final int GALLERY_REQUEST = '1';
     ImageView picView;
-    Button picBttn;
-    EditText etName;
-    EditText etCategory;
-    Spinner spFoodType;
     Bitmap bitmap;
-
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter recyclerAdapter;
+    private MyFoodTruckAdapter foodTruckAdapter;
+    private RecyclerView.LayoutManager foodTruckLayoutManager;
+    private TextView tv;
+    private ArrayList<FoodTruck> foodTruckList = new ArrayList<>();
+    private SharedPreferences sharedPref;
 
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_add_food_truck, container, false);
 
-        picView = v.findViewById(R.id.picView);
-        picBttn = v.findViewById(R.id.btnImageUpload);
-        etName = v.findViewById(R.id.etName);
-        etCategory = v.findViewById(R.id.etCategory);
-        spFoodType = v.findViewById(R.id.spnPaymentType);
-        v.findViewById(R.id.btnSubmit).setOnClickListener(this);
-        picBttn.setOnClickListener(new View.OnClickListener() {
-            //add a picture using photos/gallery
+        FloatingActionButton btnAddFoodTruck = v.findViewById(R.id.btnAddFoodTruck);
+        btnAddFoodTruck.setOnClickListener(this);
+
+        sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+
+        foodTruckAdapter = new MyFoodTruckAdapter(getContext(), this);
+        foodTruckAdapter.submitList(getFoodTruckList());
+        tv = v.findViewById(R.id.noFoodTruckPrompt);
+        tv.setVisibility(View.INVISIBLE);
+
+        if (foodTruckList.size() < 1)
+            tv.setVisibility(View.VISIBLE);
+
+        recyclerView = v.findViewById(R.id.foodtruck_recycler);
+        recyclerView.setHasFixedSize(true);
+        foodTruckLayoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(foodTruckLayoutManager);
+        recyclerView.setAdapter(foodTruckAdapter);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
-            public void onClick(View view) {
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
             }
-        });
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                FoodTruck foodTruck = foodTruckAdapter.getFoodTruckat(viewHolder.getAdapterPosition());
+
+                Log.i("Current FoodTruck ID: ", String.valueOf(foodTruck.getM_ID()));
+
+                FoodTrucksContract fc = new FoodTrucksContract(getContext());
+                fc.removeFoodTruckByID(foodTruck.getM_ID());
+                foodTruckAdapter.submitList(getFoodTruckList());
+                if (foodTruckList.size() < 1)
+                    tv.setVisibility(View.VISIBLE);
+                Toast.makeText(getContext(), "Food Truck Deleted", Toast.LENGTH_LONG).show();
+            }
+        }).attachToRecyclerView(recyclerView);
+
         return v;
     }
 
@@ -92,30 +127,23 @@ public class AddFoodTruckFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
 
-        FoodTrucksContract ft = new FoodTrucksContract(getContext());
-        VendorsContract vc = new VendorsContract(getContext());
-
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);//get the vendor email from shared preference
-        String email = sharedPref.getString("Email", ""); //set email from SP to a variable
-
-
-        Vendor vendor = vc.getVendorIdByEmail(email);
-
-        //convert image to byte to be able to pass int food truck database
-        if (picView.getDrawable() != null) {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] bitMapData = stream.toByteArray();
-            //calling create function
-            ft.createFoodTruck(etName.getText().toString(), etCategory.getText().toString(), bitMapData, 89.9393, 93.939, vendor.getM_Id());
-            Toast.makeText(getContext(), "Truck Added", Toast.LENGTH_SHORT).show();
-
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new VendorAccountFragment()).commit();
-        } else {
-            Snackbar.make(v, "                         Please Upload an Image", Snackbar.LENGTH_LONG).show();
-        }
 
     }
 
+    @Override
+    public void onCardClick(int pos) {
 
+    }
+
+    public ArrayList<FoodTruck> getFoodTruckList() {
+        String email = sharedPref.getString("Email", "");
+
+        VendorsContract vc = new VendorsContract(getContext());
+        Vendor vendor = vc.getVendorIdByEmail(email);
+
+        FoodTrucksContract fc = new FoodTrucksContract(getContext());
+        foodTruckList = fc.FoodTruckList(vendor.getM_Id());
+
+        return foodTruckList;
+    }
 }

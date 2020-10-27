@@ -1,10 +1,17 @@
 package com.example.foodtruck.Activities;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Surface;
+import android.view.SurfaceControl;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.foodtruck.DataBase.AdminContract;
 import com.example.foodtruck.DataBase.CustomersContract;
@@ -28,6 +35,7 @@ import com.example.foodtruck.Models.OrderedItem;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -36,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
     public Vendor vendor = new Vendor();
     public Admin admin = new Admin();
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,19 +66,31 @@ public class SignUpActivity extends AppCompatActivity {
         vendorsContract.addVendor("J", "C", "3", "3", "0", "0", "0", "0", "0", "0");
         Vendor vendor = vendorsContract.getVendorIdByEmail("3");
 
-        byte[] image = new byte[]{};
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck, null);
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] bitMapData = stream.toByteArray();
+
+        drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck1, null);
+        bitmap = ((BitmapDrawable) drawable).getBitmap();
+        stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] bitMapData1 = stream.toByteArray();
+
         FoodTrucksContract foodTrucksContract = new FoodTrucksContract(this);
-        foodTrucksContract.createFoodTruck("Test", "Italian", image, 10.5, 10.5, vendor.getM_Id());
-        FoodTruck foodTruck = foodTrucksContract.getFoodTruckByVendorId(vendor.getM_Id());
+        foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", bitMapData, 10.5, 10.5, vendor.getM_Id());
+        foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", bitMapData1, 10.5, 10.5, vendor.getM_Id());
+        FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(1);
 
         MenusContract menusContract = new MenusContract(this);
-        menusContract.createMenu(foodTruck.getM_ID());
-        Menu menu = menusContract.getMenuByFoodTruckId(foodTruck.getM_ID());
+        menusContract.createMenu(foodTruck1.getM_ID());
+        Menu menu = menusContract.getMenuByFoodTruckId(foodTruck1.getM_ID());
 
         ItemsContract itemsContract = new ItemsContract(this);
-        itemsContract.createItem("test", "9.99", "Yes", image, menu.getM_Id());
-        itemsContract.createItem("test2", "1.99", "No", image, menu.getM_Id());
-        itemsContract.createItem("test3", "6.99", "Yes", image, menu.getM_Id());
+        itemsContract.createItem("test", "9.99", "Yes", bitMapData, menu.getM_Id());
+        itemsContract.createItem("test2", "1.99", "No", bitMapData, menu.getM_Id());
+        itemsContract.createItem("test3", "6.99", "Yes", bitMapData, menu.getM_Id());
    /*     ArrayList<Item> itemArrayList = itemsContract.ItemsList(menu.getM_Id());
 
         for (Item item : itemArrayList) {

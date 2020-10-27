@@ -3,6 +3,7 @@ package com.example.foodtruck.DataBase;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
@@ -11,6 +12,7 @@ import android.util.Log;
 import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Menu;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.Objects;
 
@@ -83,19 +85,46 @@ public final class MenusContract {
         return menu;
     }
 
+    //check if menu exists before deleting
+    public boolean checkIfMenuExists(long foodTruckID) {
+        open();
+        Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry.COL_FOOD_TRUCK_ID + " =? ",
+                new String[]{String.valueOf(foodTruckID)}, null, null, null);
+
+        return cursor != null;
+    }
+
+    public void removeMenusByFoodTruckID(long id) {
+        open();
+        mDb = mDbHelper.getWritableDatabase();
+        boolean check = checkIfMenuExists(id);
+        if (check) {
+            String dlQuery = "DELETE FROM " + MenusEntry.TABLE_NAME + " WHERE " + MenusEntry.COL_FOOD_TRUCK_ID + " = " + id;
+            Cursor cursor = mDb.rawQuery(dlQuery, null);
+            cursor.moveToNext();
+        }
+        mDb.close();
+        close();
+    }
+
     //return Menu by searching by id
     public Menu getMenuByFoodTruckId(long id) {
         open();
-        Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry._ID + " = ?",
-                new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
+        boolean check = checkIfMenuExists(id);
+        if (check) {
+            Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry._ID + " = ?",
+                    new String[]{String.valueOf(id)}, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                Menu menu = cursorToMenu(cursor);
+                cursor.close();
+                mDb.close();
+                close();
+                return menu;
+            }
         }
-        Menu menu = cursorToMenu(cursor);
-        cursor.close();
-        mDb.close();
-        close();
-        return menu;
+
+        return null;
     }
 
     //column and table names
@@ -107,12 +136,14 @@ public final class MenusContract {
     //set data to specific menu object
     protected Menu cursorToMenu(Cursor cursor) {
         Menu menu = new Menu();
-        menu.setM_Id(cursor.getLong(0));
+        Log.i("Test", DatabaseUtils.dumpCursorToString(cursor));
+        Log.i("Test", String.valueOf(cursor.getCount()));
 
-        //get The FoodTruck by id
-        FoodTrucksContract contract = new FoodTrucksContract(mContext);
-        FoodTruck foodTruck = contract.getFoodTruckById(cursor.getLong(cursor.getColumnIndex(MenusEntry.COL_FOOD_TRUCK_ID)));
-        if (contract != null) {
+        if (cursor.getCount() > 1) { //check if cursor is empty
+            menu.setM_Id(cursor.getLong(0));
+            //get The FoodTruck by id
+            FoodTrucksContract contract = new FoodTrucksContract(mContext);
+            FoodTruck foodTruck = contract.getFoodTruckById(cursor.getLong(cursor.getColumnIndex(MenusEntry.COL_FOOD_TRUCK_ID)));
             menu.setM_FoodTruck(foodTruck);
         }
         cursor.close();
