@@ -1,14 +1,10 @@
 package com.example.foodtruck.Activities;
 
 import android.annotation.SuppressLint;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Surface;
-import android.view.SurfaceControl;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
@@ -19,9 +15,6 @@ import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.OptionsContract;
-import com.example.foodtruck.DataBase.OrderedItemsContract;
-import com.example.foodtruck.DataBase.OrdersContract;
-import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.Models.Admin;
@@ -29,9 +22,6 @@ import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Menu;
-import com.example.foodtruck.Models.Option;
-import com.example.foodtruck.Models.Order;
-import com.example.foodtruck.Models.OrderedItem;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 
@@ -91,9 +81,17 @@ public class SignUpActivity extends AppCompatActivity {
         itemsContract.createItem("test", "9.99", "Yes", bitMapData, menu.getM_Id());
         itemsContract.createItem("test2", "1.99", "No", bitMapData, menu.getM_Id());
         itemsContract.createItem("test3", "6.99", "Yes", bitMapData, menu.getM_Id());
-   /*     ArrayList<Item> itemArrayList = itemsContract.ItemsList(menu.getM_Id());
+        ArrayList<Item> itemArrayList = itemsContract.getItemListByMenuID(menu.getM_Id());
 
-        for (Item item : itemArrayList) {
+        OptionsContract oc = new OptionsContract(this);
+        if (itemArrayList != null) {
+            for (Item i : itemArrayList) {
+                oc.createOption("Something", i.getM_Id());
+                oc.createOption("Something", i.getM_Id());
+                oc.createOption("Something", i.getM_Id());
+            }
+        }
+       /* for (Item item : itemArrayList) {
             Log.i("Test", "Item Name: " + item.getM_Name());
             Log.i("Test", "Item Price: " + item.getM_Price());
             Log.i("Test", "Item MenuID: " + item.getM_Menu().getM_Id());

@@ -78,14 +78,45 @@ public final class FoodTrucksContract {
         return newFoodTruck;
     }
 
-    //return FoodTruck by searching by id
-    public FoodTruck getFoodTruckByVendorId(long id) {
+    //check if foodtruck exists for a vendor
+    public boolean checkIfFoodTruckExist(long vendorID) {
         open();
-        Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry.COL_VENDOR_ID + " = ?",
-                new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor.getCount() > 1) {
+        Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry.COL_VENDOR_ID + " =? ",
+                new String[]{String.valueOf(vendorID)}, null, null, null);
+
+
+        boolean check = cursor.getCount() > 0;
+        cursor.close();
+        return check;
+    }
+
+    //return FoodTruck by searching by vendor id
+    public FoodTruck getFoodTruckByVendorId(long vendorID) {
+        open();
+        if (checkIfFoodTruckExist(vendorID)) {
+            Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry.COL_VENDOR_ID + " = ?",
+                    new String[]{String.valueOf(vendorID)}, null, null, null);
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                FoodTruck foodTruck = cursorToFoodTruck(cursor, vendorID);
+                cursor.close();
+                mDb.close();
+                close();
+                return foodTruck;
+            }
+        }
+        return null;
+    }
+
+    //return FoodTruck by searching by id
+    public FoodTruck getFoodTruckById(long foodTruckID) {
+        open();
+
+        Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry._ID + " = ?",
+                new String[]{String.valueOf(foodTruckID)}, null, null, null);
+        if (cursor != null) {
             cursor.moveToFirst();
-            FoodTruck foodTruck = cursorToFoodTruck(cursor, id);
+            FoodTruck foodTruck = cursorToFoodTruck(cursor, foodTruckID);
             cursor.close();
             mDb.close();
             close();
@@ -95,36 +126,26 @@ public final class FoodTrucksContract {
         return null;
     }
 
-    //return FoodTruck by searching by id
-    public FoodTruck getFoodTruckById(long id) {
+    public void deleteFoodTruckByID(long foodTruckID) {
         open();
-        Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry.COL_VENDOR_ID + " = ?",
-                new String[]{String.valueOf(id)}, null, null, null);
+        //Check if food truck exits before trying to delete
+        Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry._ID + " = ?",
+                new String[]{String.valueOf(foodTruckID)}, null, null, null);
+
         if (cursor != null) {
+            MenusContract mc = new MenusContract(mContext);
+            Menu menu = mc.getMenuByFoodTruckId(foodTruckID);
+            if (menu != null) {
+                ItemsContract ic = new ItemsContract(mContext);
+                ic.removeItemsByMenuID(menu.getM_Id());
+            }
+            mc.removeMenusByFoodTruckID(foodTruckID);
+            mDb = mDbHelper.getWritableDatabase();
+            String dlQuery = "DELETE FROM " + FoodTrucksEntry.TABLE_NAME + " WHERE " + FoodTrucksEntry._ID + " = " + foodTruckID;
+            cursor = mDb.rawQuery(dlQuery, null);
             cursor.moveToFirst();
+            cursor.close();
         }
-
-        FoodTruck foodTruck = cursorToFoodTruck(cursor, id);
-        cursor.close();
-        mDb.close();
-        close();
-        return foodTruck;
-    }
-
-    public void removeFoodTruckByID(long id) {
-        open();
-        MenusContract mc = new MenusContract(mContext);
-        Menu menu = mc.getMenuByFoodTruckId(id);
-//        if (menu != null){
-//            ItemsContract ic = new ItemsContract(mContext);
-//            ic.removeItemsByMenuID(menu.getM_Id());
-//        }
-        mc.removeMenusByFoodTruckID(id);
-        mDb = mDbHelper.getWritableDatabase();
-        String dlQuery = "DELETE FROM " + FoodTrucksEntry.TABLE_NAME + " WHERE " + FoodTrucksEntry._ID + " = " + id;
-        Cursor cursor = mDb.rawQuery(dlQuery, null);
-        cursor.moveToFirst();
-        cursor.close();
         mDb.close();
         close();
     }
@@ -143,27 +164,27 @@ public final class FoodTrucksContract {
     //return array list of food trucks from a particular menu
     public ArrayList<FoodTruck> FoodTruckList(long vendorID) {
         open();
-        ArrayList<FoodTruck> foodTruckArrayListList = new ArrayList<FoodTruck>();
+        if (checkIfFoodTruckExist(vendorID)) {
+            ArrayList<FoodTruck> foodTrucks = new ArrayList<>();
 
-        Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry.COL_VENDOR_ID + " =?",
-                new String[]{String.valueOf(vendorID)}, null, null, null);
+            Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry.COL_VENDOR_ID + " =?",
+                    new String[]{String.valueOf(vendorID)}, null, null, null);
 
-        if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 FoodTruck foodTruck = cursorToFoodTruck(cursor, vendorID);
-                foodTruckArrayListList.add(foodTruck);
+                foodTrucks.add(foodTruck);
                 if (cursor.isLast() || cursor.isClosed())
                     break;
                 else
                     cursor.moveToNext();
             }
-
+            cursor.close();
+            return foodTrucks;
         }
-        cursor.close();
         mDb.close();
         close();
-        return foodTruckArrayListList;
+        return null;
     }
 
     //set data to specific FoodTruck object
@@ -179,9 +200,8 @@ public final class FoodTrucksContract {
         //get The Vendor by id
         VendorsContract contract = new VendorsContract(mContext);
         Vendor vendor = contract.getVendorById(id);
-        if (contract != null) {
-            foodTruck.setM_Vendor(vendor);
-        }
+        foodTruck.setM_Vendor(vendor);
+
         return foodTruck;
     }
 

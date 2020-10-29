@@ -8,9 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Item;
-import com.example.foodtruck.Models.Menu;
 import com.example.foodtruck.Models.Option;
 
 import java.util.ArrayList;
@@ -72,16 +70,16 @@ public final class OptionsContract {
     }
 
     //return array list of options for a particular item
-    public ArrayList<Option> OptionsList(long itemID) {
+    public ArrayList<Option> getOptionsListByItemID(long itemID) {
         open();
-        ArrayList<Option> optionsList = new ArrayList<Option>();
+        boolean check = checkIfOptionsExist(itemID);
 
-        Cursor cursor = mDb.query(OptionsEntry.TABLE_NAME, mAllColumns, OptionsEntry.COL_ITEM_ID + " =?",
-                new String[]{String.valueOf(itemID)}, null, null, null);
+        if (check) {
+            ArrayList<Option> optionsList = new ArrayList<Option>();
 
-        Log.i("Cursor", cursor.toString());
+            Cursor cursor = mDb.query(OptionsEntry.TABLE_NAME, mAllColumns, OptionsEntry.COL_ITEM_ID + " =?",
+                    new String[]{String.valueOf(itemID)}, null, null, null);
 
-        if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Option option = cursorToOption(cursor, itemID);
@@ -91,21 +89,37 @@ public final class OptionsContract {
                 else
                     cursor.moveToNext();
             }
-
+            cursor.close();
+            return optionsList;
         }
-        cursor.close();
         mDb.close();
         close();
-        return optionsList;
+        return null;
     }
 
-    public void removeOptionsByItemID(long id) {
+    //check is options exist for an item
+    public boolean checkIfOptionsExist(long ItemID) {
         open();
-        mDb = mDbHelper.getWritableDatabase();
-        String dlQuery = "DELETE FROM " + OptionsEntry.TABLE_NAME + " WHERE " + OptionsEntry.COL_ITEM_ID + " = " + id;
-        Cursor cursor = mDb.rawQuery(dlQuery, null);
+        Cursor cursor = mDb.query(OptionsEntry.TABLE_NAME, mAllColumns, OptionsEntry.COL_ITEM_ID + "=? ",
+                new String[]{String.valueOf(ItemID)}, null, null, null);
 
+        boolean check = cursor.getCount() > 0;
         cursor.close();
+        return check;
+    }
+
+    //remove options of an item
+    public void removeOptionsByItemID(long ItemID) {
+        open();
+        boolean check = checkIfOptionsExist(ItemID);
+
+        if (check) {
+            mDb = mDbHelper.getWritableDatabase();
+            String dlQuery = "DELETE FROM " + OptionsEntry.TABLE_NAME + " WHERE " + OptionsEntry.COL_ITEM_ID + " = " + ItemID;
+            Cursor cursor = mDb.rawQuery(dlQuery, null);
+            cursor.moveToNext();
+            cursor.close();
+        }
         mDb.close();
         close();
     }

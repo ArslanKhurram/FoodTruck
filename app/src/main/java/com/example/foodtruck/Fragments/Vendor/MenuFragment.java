@@ -121,7 +121,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         //get menu id from foodTruck
         if (foodTruck != null) {
             menu = mc.getMenuByFoodTruckId(foodTruck.getM_ID());
-            itemList = ic.ItemsList(menu.getM_Id());
+            itemList = ic.getItemListByMenuID(menu.getM_Id());
         }
 
         return itemList;

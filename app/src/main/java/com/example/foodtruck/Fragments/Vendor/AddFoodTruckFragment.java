@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,16 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -37,14 +30,9 @@ import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-
-import static android.app.Activity.RESULT_OK;
 
 public class AddFoodTruckFragment extends Fragment implements MyFoodTruckAdapter.onFoodTruckCardListener, View.OnClickListener {
 
@@ -69,11 +57,13 @@ public class AddFoodTruckFragment extends Fragment implements MyFoodTruckAdapter
         sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
 
         foodTruckAdapter = new MyFoodTruckAdapter(getContext(), this);
-        foodTruckAdapter.submitList(getFoodTruckList());
         tv = v.findViewById(R.id.noFoodTruckPrompt);
-        tv.setVisibility(View.INVISIBLE);
 
-        if (foodTruckList.size() < 1)
+        //check is list is null(empty)
+        if (getFoodTruckList() != null) {
+            foodTruckAdapter.submitList(getFoodTruckList());
+            tv.setVisibility(View.INVISIBLE);
+        } else
             tv.setVisibility(View.VISIBLE);
 
         recyclerView = v.findViewById(R.id.foodtruck_recycler);
@@ -95,9 +85,9 @@ public class AddFoodTruckFragment extends Fragment implements MyFoodTruckAdapter
                 Log.i("Current FoodTruck ID: ", String.valueOf(foodTruck.getM_ID()));
 
                 FoodTrucksContract fc = new FoodTrucksContract(getContext());
-                fc.removeFoodTruckByID(foodTruck.getM_ID());
+                fc.deleteFoodTruckByID(foodTruck.getM_ID());
                 foodTruckAdapter.submitList(getFoodTruckList());
-                if (foodTruckList.size() < 1)
+                if (foodTruckList == null)
                     tv.setVisibility(View.VISIBLE);
                 Toast.makeText(getContext(), "Food Truck Deleted", Toast.LENGTH_LONG).show();
             }

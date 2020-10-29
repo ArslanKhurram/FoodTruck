@@ -91,7 +91,9 @@ public final class MenusContract {
         Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry.COL_FOOD_TRUCK_ID + " =? ",
                 new String[]{String.valueOf(foodTruckID)}, null, null, null);
 
-        return cursor != null;
+        boolean check = cursor.getCount() > 0;
+        cursor.close();
+        return check;
     }
 
     public void removeMenusByFoodTruckID(long id) {
@@ -102,6 +104,7 @@ public final class MenusContract {
             String dlQuery = "DELETE FROM " + MenusEntry.TABLE_NAME + " WHERE " + MenusEntry.COL_FOOD_TRUCK_ID + " = " + id;
             Cursor cursor = mDb.rawQuery(dlQuery, null);
             cursor.moveToNext();
+            cursor.close();
         }
         mDb.close();
         close();
@@ -112,7 +115,7 @@ public final class MenusContract {
         open();
         boolean check = checkIfMenuExists(id);
         if (check) {
-            Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry._ID + " = ?",
+            Cursor cursor = mDb.query(MenusEntry.TABLE_NAME, mAllColumns, MenusEntry.COL_FOOD_TRUCK_ID + " = ?",
                     new String[]{String.valueOf(id)}, null, null, null);
             if (cursor != null) {
                 cursor.moveToFirst();
@@ -139,7 +142,7 @@ public final class MenusContract {
         Log.i("Test", DatabaseUtils.dumpCursorToString(cursor));
         Log.i("Test", String.valueOf(cursor.getCount()));
 
-        if (cursor.getCount() > 1) { //check if cursor is empty
+        if (cursor.getCount() > 0) { //check if cursor is empty
             menu.setM_Id(cursor.getLong(0));
             //get The FoodTruck by id
             FoodTrucksContract contract = new FoodTrucksContract(mContext);
