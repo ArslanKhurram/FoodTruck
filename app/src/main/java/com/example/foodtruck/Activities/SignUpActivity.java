@@ -92,13 +92,13 @@ public class SignUpActivity extends AppCompatActivity {
         Order order = ordersContract.getOrderById(1);
         Order order2 = ordersContract.getOrderById(2);
 
-/*        OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
+       OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
         orderedItemsContract.addOrderedItem("1", itemArrayList.get(0).getM_Id(), order.getM_Id());
         orderedItemsContract.addOrderedItem("2", itemArrayList.get(1).getM_Id(), order.getM_Id());
         orderedItemsContract.addOrderedItem("3", itemArrayList.get(2).getM_Id(), order2.getM_Id());
         orderedItemsContract.addOrderedItem("3", itemArrayList.get(2).getM_Id(), order2.getM_Id());
         ArrayList<OrderedItem> orderedItemArrayList = orderedItemsContract.getOrderedItems(order.getM_Id());
-
+/*
         for (OrderedItem orderedItem : orderedItemArrayList) {
             Log.i("Test", "Ordered Item Name: " + orderedItem.getM_Item().getM_Name());
             Log.i("Test", "Ordered Item Quantity: " + orderedItem.getM_Quantity());

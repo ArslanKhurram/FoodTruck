@@ -56,10 +56,10 @@ public class OrderAdapter extends ListAdapter<Order, OrderAdapter.OrderViewHolde
     //Bind data to position
     @Override
     public void onBindViewHolder(OrderViewHolder holder, int position) {
-        holder.BindData(getOrder(position), orderContext);
+        holder.BindData(getItem(position), orderContext);
     }
 
-    public Order getOrder(int position) {
+    public Order getOrderAt(int position) {
         return getItem(position);
     }
 

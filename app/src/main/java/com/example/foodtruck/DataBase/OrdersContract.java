@@ -179,5 +179,14 @@ public final class OrdersContract {
 
         return order;
     }
+
+    public void updateOrder(long id, String status) {
+        open();
+        ContentValues cv = new ContentValues();
+        cv.put(OrdersEntry.COL_STATUS, status);
+
+        mDb.update(OrdersContract.OrdersEntry.TABLE_NAME, cv, OrdersContract.OrdersEntry._ID + " = " + id, null);
+        close();
+    }
 }
 
