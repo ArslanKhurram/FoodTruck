@@ -1,7 +1,9 @@
 package com.example.foodtruck.Fragments.Vendor;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,16 +83,8 @@ public class AddFoodTruckFragment extends Fragment implements MyFoodTruckAdapter
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                FoodTruck foodTruck = foodTruckAdapter.getFoodTruckat(viewHolder.getAdapterPosition());
-
-                Log.i("Current FoodTruck ID: ", String.valueOf(foodTruck.getM_ID()));
-
-                FoodTrucksContract fc = new FoodTrucksContract(getContext());
-                fc.deleteFoodTruckByID(foodTruck.getM_ID());
-                foodTruckAdapter.submitList(getFoodTruckList());
-                if (foodTruckList == null)
-                    tv.setVisibility(View.VISIBLE);
-                Toast.makeText(getContext(), "Food Truck Deleted", Toast.LENGTH_LONG).show();
+                FoodTruck foodTruck = foodTruckAdapter.getFoodTruckAt(viewHolder.getAdapterPosition()); //get foodtruck that is being swiped
+                deleteDialog(foodTruck, viewHolder.getAdapterPosition()); //open dialog to prompt vendor
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -135,5 +130,39 @@ public class AddFoodTruckFragment extends Fragment implements MyFoodTruckAdapter
         foodTruckList = fc.FoodTruckList(vendor.getM_Id());
 
         return foodTruckList;
+    }
+
+    //dialog to handle if vendors wants to delete a food truck. Will be prompted with message and has to confirm delete
+    public void deleteDialog(FoodTruck foodTruck, int position) {
+        LayoutInflater dialogInflater = getLayoutInflater();
+        View dv = dialogInflater.inflate(R.layout.dialog_delete, null);
+
+        //create Alert Dialog
+        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dv)
+                .setPositiveButton(R.string.delete, null)
+                .setNegativeButton("Cancel", null)
+                .show();
+
+        //set DELETE buttons text to red
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.delete, null));
+
+        //DELETE button is pressed
+        Button positive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positive.setOnClickListener(v -> {
+            FoodTrucksContract fc = new FoodTrucksContract(getContext());
+            fc.deleteFoodTruckByID(foodTruck.getM_ID());
+            foodTruckAdapter.submitList(getFoodTruckList());
+            if (foodTruckList == null)
+                tv.setVisibility(View.VISIBLE);
+            alertDialog.cancel();
+        });
+
+        //CANCEL button is pressed
+        Button negative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        negative.setOnClickListener(v -> {
+            foodTruckAdapter.notifyItemChanged(position + 1); //notify recycler view which item was being swiped
+            foodTruckAdapter.notifyItemRangeChanged(position, foodTruckAdapter.getItemCount()); //restore the item being swiped and will not remove
+            alertDialog.cancel();
+        });
     }
 }

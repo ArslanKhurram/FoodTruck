@@ -61,7 +61,7 @@ public class MyFoodTruckAdapter extends ListAdapter<FoodTruck, MyFoodTruckAdapte
         holder.BindData(getItem(position), foodTruckContext);
     }
 
-    public FoodTruck getFoodTruckat(int position) {
+    public FoodTruck getFoodTruckAt(int position) {
         return getItem(position);
     }
 
