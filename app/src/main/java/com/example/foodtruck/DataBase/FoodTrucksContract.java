@@ -71,7 +71,7 @@ public final class FoodTrucksContract {
         Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry._ID +
                 " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
-        FoodTruck newFoodTruck = cursorToFoodTruck(cursor, vendorID);
+        FoodTruck newFoodTruck = cursorToFoodTruck(cursor);
         cursor.close();
         mDb.close();
         close();
@@ -98,7 +98,7 @@ public final class FoodTrucksContract {
                     new String[]{String.valueOf(vendorID)}, null, null, null);
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
-                FoodTruck foodTruck = cursorToFoodTruck(cursor, vendorID);
+                FoodTruck foodTruck = cursorToFoodTruck(cursor);
                 cursor.close();
                 mDb.close();
                 close();
@@ -116,7 +116,7 @@ public final class FoodTrucksContract {
                 new String[]{String.valueOf(foodTruckID)}, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
-            FoodTruck foodTruck = cursorToFoodTruck(cursor, foodTruckID);
+            FoodTruck foodTruck = cursorToFoodTruck(cursor);
             cursor.close();
             mDb.close();
             close();
@@ -172,7 +172,7 @@ public final class FoodTrucksContract {
 
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                FoodTruck foodTruck = cursorToFoodTruck(cursor, vendorID);
+                FoodTruck foodTruck = cursorToFoodTruck(cursor);
                 foodTrucks.add(foodTruck);
                 if (cursor.isLast() || cursor.isClosed())
                     break;
@@ -188,7 +188,7 @@ public final class FoodTrucksContract {
     }
 
     //set data to specific FoodTruck object
-    protected FoodTruck cursorToFoodTruck(Cursor cursor, long id) {
+    protected FoodTruck cursorToFoodTruck(Cursor cursor) {
         FoodTruck foodTruck = new FoodTruck();
         foodTruck.setM_ID(cursor.getLong(0));
         foodTruck.setM_Name(cursor.getString(1));
@@ -199,7 +199,7 @@ public final class FoodTrucksContract {
 
         //get The Vendor by id
         VendorsContract contract = new VendorsContract(mContext);
-        Vendor vendor = contract.getVendorById(id);
+        Vendor vendor = contract.getVendorById(cursor.getLong(cursor.getColumnIndex(FoodTrucksEntry.COL_VENDOR_ID)));
         foodTruck.setM_Vendor(vendor);
 
         return foodTruck;

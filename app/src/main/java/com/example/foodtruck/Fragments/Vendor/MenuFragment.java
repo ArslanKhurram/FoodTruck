@@ -73,7 +73,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         menuAdapter.submitList(getMenuList());
         tv.setVisibility(View.INVISIBLE);
 
-        if (itemList.size() < 1)
+        if (itemList == null)
             tv.setVisibility(View.VISIBLE);
 
         recyclerView = v.findViewById(R.id.ItemsRecyclerView);
@@ -95,7 +95,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
                 ItemsContract ic = new ItemsContract(getContext());
                 ic.removeItem(item.getM_Id());
                 menuAdapter.submitList(getMenuList());
-                if (itemList.size() < 1)
+                if (itemList == null)
                     tv.setVisibility(View.VISIBLE);
 
                 Toast.makeText(getContext(), "Item Deleted", Toast.LENGTH_SHORT).show();
@@ -121,7 +121,8 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         //get menu id from foodTruck
         if (foodTruck != null) {
             menu = mc.getMenuByFoodTruckId(foodTruck.getM_ID());
-            itemList = ic.getItemListByMenuID(menu.getM_Id());
+            if (menu != null)
+                itemList = ic.getItemListByMenuID(menu.getM_Id());
         }
 
         return itemList;

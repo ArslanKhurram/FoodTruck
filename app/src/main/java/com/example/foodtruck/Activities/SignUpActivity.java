@@ -73,24 +73,25 @@ public class SignUpActivity extends AppCompatActivity {
         foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", bitMapData1, 10.5, 10.5, vendor.getM_Id());
         FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(1);
 
-        MenusContract menusContract = new MenusContract(this);
-        menusContract.createMenu(foodTruck1.getM_ID());
-        Menu menu = menusContract.getMenuByFoodTruckId(foodTruck1.getM_ID());
+        if (foodTruck1 != null) {
+            MenusContract menusContract = new MenusContract(this);
+            menusContract.createMenu(foodTruck1.getM_ID());
+            Menu menu = menusContract.getMenuByFoodTruckId(foodTruck1.getM_ID());
 
-        ItemsContract itemsContract = new ItemsContract(this);
-        itemsContract.createItem("test", "9.99", "Yes", bitMapData, menu.getM_Id());
-        itemsContract.createItem("test2", "1.99", "No", bitMapData, menu.getM_Id());
-        itemsContract.createItem("test3", "6.99", "Yes", bitMapData, menu.getM_Id());
-        ArrayList<Item> itemArrayList = itemsContract.getItemListByMenuID(menu.getM_Id());
+            ItemsContract itemsContract = new ItemsContract(this);
+            itemsContract.createItem("test", "9.99", "Yes", bitMapData, menu.getM_Id());
+            itemsContract.createItem("test2", "1.99", "No", bitMapData, menu.getM_Id());
+            itemsContract.createItem("test3", "6.99", "Yes", bitMapData, menu.getM_Id());
+            ArrayList<Item> itemArrayList = itemsContract.getItemListByMenuID(menu.getM_Id());
 
-        OptionsContract oc = new OptionsContract(this);
-        if (itemArrayList != null) {
-            for (Item i : itemArrayList) {
-                oc.createOption("Something", i.getM_Id());
-                oc.createOption("Something", i.getM_Id());
-                oc.createOption("Something", i.getM_Id());
+            OptionsContract oc = new OptionsContract(this);
+            if (itemArrayList != null) {
+                for (Item i : itemArrayList) {
+                    oc.createOption("Something", i.getM_Id());
+                    oc.createOption("Something", i.getM_Id());
+                    oc.createOption("Something", i.getM_Id());
+                }
             }
-        }
        /* for (Item item : itemArrayList) {
             Log.i("Test", "Item Name: " + item.getM_Name());
             Log.i("Test", "Item Price: " + item.getM_Price());
@@ -116,6 +117,7 @@ public class SignUpActivity extends AppCompatActivity {
             Log.i("Test", "Ordered Item Order ID: " + orderedItem.getM_Order().getM_Id());
         }
 */
+        }
     }
 
 

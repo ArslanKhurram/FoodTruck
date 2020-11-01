@@ -64,13 +64,14 @@ public final class VendorsContract {
                 new String[]{String.valueOf(id)}, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
+            Vendor vendor = cursorToVendor(cursor);
+            cursor.close();
+            return vendor;
         }
 
-        Vendor vendor = cursorToVendor(cursor);
-        cursor.close();
         mDb.close();
         close();
-        return vendor;
+        return null;
     }
 
     //return total number of vendorcontracts in the Vendors table

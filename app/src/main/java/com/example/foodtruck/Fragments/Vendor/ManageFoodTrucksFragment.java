@@ -3,7 +3,6 @@ package com.example.foodtruck.Fragments.Vendor;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +35,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class AddFoodTruckFragment extends Fragment implements MyFoodTruckAdapter.onFoodTruckCardListener, View.OnClickListener {
+public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAdapter.onFoodTruckCardListener, View.OnClickListener {
 
     private static final int GALLERY_REQUEST = '1';
     ImageView picView;
@@ -52,7 +50,7 @@ public class AddFoodTruckFragment extends Fragment implements MyFoodTruckAdapter
 
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_add_food_truck, container, false);
+        View v = inflater.inflate(R.layout.fragment_manage_foodtrucks, container, false);
 
         FloatingActionButton btnAddFoodTruck = v.findViewById(R.id.btnAddFoodTruck);
         btnAddFoodTruck.setOnClickListener(this);
@@ -130,6 +128,10 @@ public class AddFoodTruckFragment extends Fragment implements MyFoodTruckAdapter
         foodTruckList = fc.FoodTruckList(vendor.getM_Id());
 
         return foodTruckList;
+    }
+
+    public void addFoodTruckDialog() {
+
     }
 
     //dialog to handle if vendors wants to delete a food truck. Will be prompted with message and has to confirm delete
