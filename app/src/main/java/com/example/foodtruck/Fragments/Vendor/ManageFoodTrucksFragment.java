@@ -14,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,21 +32,34 @@ import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAdapter.onFoodTruckCardListener, View.OnClickListener {
 
     private static final int GALLERY_REQUEST = '1';
-    ImageView picView;
     Bitmap bitmap;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerAdapter;
     private MyFoodTruckAdapter foodTruckAdapter;
     private RecyclerView.LayoutManager foodTruckLayoutManager;
     private TextView tv;
+    EditText name, category, location;
+    LatLng latLng;
+    ImageView imageView;
     private ArrayList<FoodTruck> foodTruckList = new ArrayList<>();
     private SharedPreferences sharedPref;
 
@@ -93,23 +108,37 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK)
-            switch (requestCode) {
-                case GALLERY_REQUEST:
-                    Uri selectedImage = data.getData();
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
-                        picView.setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        Log.i("TAG", "Some exception " + e);
-                    }
-                    break;
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+            //When Success Intialize Places
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            //Set address on Edit Text
+            location.setText(place.getAddress());
+            latLng = place.getLatLng();
+            Log.i("Address", place.getAddress());
+            Log.i("Address", String.valueOf(latLng));
+        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+            //When error Initialize Status
+            Status status = Autocomplete.getStatusFromIntent(data);
+            //Display Message
+            Toast.makeText(getActivity(), status.getStatusMessage(), Toast.LENGTH_LONG).show();
+        }
+        if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
+            if (requestCode == 10) {
+                Uri selectedImage = data.getData();
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                    imageView.setImageBitmap(bitmap);
+                    Log.i("Image", String.valueOf(bitmap));
+                } catch (IOException e) {
+                    Log.i("TAG", "Some exception " + e);
+                }
             }
+        }
     }
 
     @Override
     public void onClick(View v) {
-
+        addFoodTruckDialog();
 
     }
 
@@ -130,9 +159,68 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
         return foodTruckList;
     }
 
+    //dialog to allow vendor to add a foodtruck
     public void addFoodTruckDialog() {
+        LayoutInflater dialogInflater = getLayoutInflater();
+        View dv = dialogInflater.inflate(R.layout.dialog_add_foodtruck, null);
 
+
+        name = dv.findViewById(R.id.foodTruckName);
+        category = dv.findViewById(R.id.foodTruckCategory);
+        location = dv.findViewById(R.id.foodTruckLocation);
+        Button image = dv.findViewById(R.id.foodTruckImage);
+        imageView = dv.findViewById(R.id.foodTruckLoadImage);
+
+        //Initialize Places
+        Places.initialize(getActivity().getApplicationContext(), "AIzaSyCHwgmjQP5u0LAtT4D7ZJ_W3YdhwqEDJHY");
+
+        //Set EditText Location no focusable
+        location.setFocusable(false);
+        location.setOnClickListener(v -> {
+            //Initialize place field list
+            List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS
+                    , Place.Field.LAT_LNG, Place.Field.NAME);
+            //Create intent
+            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY
+                    , fieldList).build(getActivity());
+
+            //Start activity result
+            startActivityForResult(intent, 100);
+        });
+
+        image.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, 10);
+        });
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dv)
+                .setPositiveButton("Add", null)
+                .setNegativeButton("Cancel", null)
+                .show();
+
+        Button add = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        add.setOnClickListener(v -> {
+            if (imageView.getDrawable() != null) {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] bitMapData = stream.toByteArray();
+
+                VendorsContract vc = new VendorsContract(getActivity());
+                Vendor vendor = vc.getVendorIdByEmail(sharedPref.getString("Email", ""));
+
+                if (vendor != null) {
+                    FoodTrucksContract fc = new FoodTrucksContract(getActivity());
+                    fc.createFoodTruck(name.getText().toString(), category.getText().toString(), bitMapData, latLng.latitude, latLng.longitude, vendor.getM_Id());
+                    foodTruckAdapter.submitList(getFoodTruckList());
+                    alertDialog.cancel();
+                }
+            } else
+                Snackbar.make(v, "                         Please Upload an Image", Snackbar.LENGTH_LONG).show();
+
+        });
     }
+
 
     //dialog to handle if vendors wants to delete a food truck. Will be prompted with message and has to confirm delete
     public void deleteDialog(FoodTruck foodTruck, int position) {
