@@ -73,7 +73,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-        //GenerateTestData();
+        GenerateTestData();
         AdminContract ac = new AdminContract(getContext());
         ac.addAdmin("1", "1");
 

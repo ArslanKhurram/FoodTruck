@@ -68,11 +68,14 @@ public class MapFragment extends Fragment {
 
                 // Loop through each vendor
                 for(int c = 1; c <= vc.CountContracts(); c++) {
-                    fc.FoodTruckList(c).forEach((n) -> mMap.addMarker(new MarkerOptions().
-                                                                        position(new LatLng(n.getM_Latitude(), n.getM_Longitude())).
-                                                                        title(n.getM_Name()).
-                                                                        icon(BitmapDescriptorFactory.fromBitmap(bitmap)))); // Create bitmap definition with Map's BitmapDescriptorFactory class
+                    if (fc.FoodTruckList(c) != null) {
+                        fc.FoodTruckList(c).forEach((n) -> mMap.addMarker(new MarkerOptions().
+                                position(new LatLng(n.getM_Latitude(), n.getM_Longitude())).
+                                title(n.getM_Name()).
+                                icon(BitmapDescriptorFactory.fromBitmap(bitmap)))); // Create bitmap definition with Map's BitmapDescriptorFactory class
+                    }
                 }
+
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(40.79,-73.29)).zoom(9).build();
