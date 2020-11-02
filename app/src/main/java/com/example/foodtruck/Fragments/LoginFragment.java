@@ -164,7 +164,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     // Placeholder food truck data
     private void GenerateTestData(FoodTrucksContract tc) {
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.test, null);
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.testruck, null);
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);

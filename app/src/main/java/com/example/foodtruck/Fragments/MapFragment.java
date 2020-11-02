@@ -2,19 +2,14 @@ package com.example.foodtruck.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,9 +43,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.CancellationToken;
 import com.google.android.gms.tasks.OnTokenCanceledListener;
-
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
@@ -120,10 +112,12 @@ public class MapFragment extends Fragment {
 
                 // Loop through each vendor
                 for(int c = 1; c <= vc.CountContracts(); c++) {
-                    fc.FoodTruckList(c).forEach((n) -> mMap.addMarker(new MarkerOptions().
-                                                                        position(new LatLng(n.getM_Latitude(), n.getM_Longitude())).
-                                                                        title(n.getM_Name()).
-                                                                        icon(BitmapDescriptorFactory.fromBitmap(bitmap)))); // Create bitmap definition with Map's BitmapDescriptorFactory class
+                    if(fc.FoodTruckList(c) != null) {
+                        fc.FoodTruckList(c).forEach((n) -> mMap.addMarker(new MarkerOptions().
+                                position(new LatLng(n.getM_Latitude(), n.getM_Longitude())).
+                                title(n.getM_Name()).
+                                icon(BitmapDescriptorFactory.fromBitmap(bitmap)))); // Create bitmap definition with Map's BitmapDescriptorFactory class
+                    }
                 }
 
                 // For zooming automatically to the location of the marker
