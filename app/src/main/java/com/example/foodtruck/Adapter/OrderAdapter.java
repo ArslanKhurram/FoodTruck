@@ -90,11 +90,11 @@ public class OrderAdapter extends ListAdapter<Order, OrderAdapter.OrderViewHolde
 
         @Override
         public void onClick(View v) {
-            onOrderListener.onOrderClick(getAdapterPosition());
+            onOrderListener.onOrderClick(v, getAdapterPosition());
         }
     }
 
         public interface OnOrderListener {
-            void onOrderClick(int position);
+            void onOrderClick(View view, int position);
         }
 }

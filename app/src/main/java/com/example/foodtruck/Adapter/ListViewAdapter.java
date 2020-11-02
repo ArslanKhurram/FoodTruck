@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.foodtruck.DataBase.OrderedItemsContract;
+import com.example.foodtruck.Fragments.Vendor.OrderFragment;
 import com.example.foodtruck.Models.OrderedItem;
 import com.example.foodtruck.R;
 
@@ -22,10 +23,10 @@ public class ListViewAdapter extends ArrayAdapter<OrderedItem>{
 
     ArrayList<OrderedItem> orderedItems;
 
-    public ListViewAdapter(Context context, ArrayList<OrderedItem> items)
+    public ListViewAdapter(Context context, ArrayList<OrderedItem> mOrderedItems)
     {
         super(context, 0);
-        orderedItems = items;
+        orderedItems = mOrderedItems;
     }
 
     static class LayoutHandler{
@@ -62,7 +63,7 @@ public class ListViewAdapter extends ArrayAdapter<OrderedItem>{
         }
 
         OrderedItem orderedItem = (OrderedItem) this.getItem(position);
-        layoutHandler.items.setText(orderedItem.getM_Item().toString());
+        layoutHandler.items.setText(orderedItem.getM_Item().getM_Name());
         layoutHandler.quantity.setText(orderedItem.getM_Quantity());
         return mview;
     }

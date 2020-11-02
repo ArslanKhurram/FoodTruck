@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodtruck.Adapter.ListViewAdapter;
 import com.example.foodtruck.Adapter.OrderAdapter;
 import com.example.foodtruck.DataBase.ItemsContract;
+import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Models.Item;
@@ -60,10 +61,10 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
     private ArrayList<Order> pendingOrderList = new ArrayList<>();
     private ArrayList<Order> completedOrderList = new ArrayList<>();
     private ListView listView;
+    private ArrayList<OrderedItem> mOrderedItems;
     private ListViewAdapter listAdapter;
     View dv;
     private TextView customerName;
-    private RadioGroup options;
     private Spinner statusSpinner;
     private Pattern p;
     private Matcher m;
@@ -125,13 +126,19 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
     }
 
     @Override
-    public void onOrderClick(int position) {
-        Order pendingOrder = pendingOrderAdapter.getOrderAt(position);
-        Order completedOrder = CompletedOrderAdapter.getOrderAt(position);
-
-        showOrderDialog(pendingOrder);
-        showOrderDialog(completedOrder);
+    public void onOrderClick(View v, int position) {
+        Order order;
+        if(v.getParent() == pendingRecyclerView)
+        {
+            order = pendingOrderAdapter.getOrderAt(position);
+        }
+        else
+        {
+            order = CompletedOrderAdapter.getOrderAt(position);
+        }
+        showOrderDialog(order);
     }
+
     //show order dialog
     private void showOrderDialog(Order order)
     {
@@ -139,6 +146,11 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         dv = dialogInflater.inflate(R.layout.dialog_show_order, null);
         //ListView
         listView = dv.findViewById(R.id.itemsInOrder);
+
+        OrderedItemsContract oic = new OrderedItemsContract(getContext());
+        mOrderedItems = oic.getOrderedItems(order.getM_Id());
+
+        listAdapter =  new ListViewAdapter(getContext(), mOrderedItems);
         listView.setAdapter(listAdapter);
 
         customerName = dv.findViewById(R.id.tvCustomerName);
