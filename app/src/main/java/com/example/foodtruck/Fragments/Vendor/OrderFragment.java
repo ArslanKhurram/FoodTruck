@@ -125,6 +125,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
     public void onClick(View v) {
     }
 
+    //call showOrderDialog based on what recyclerView is clicked
     @Override
     public void onOrderClick(View v, int position) {
         Order order;
@@ -147,9 +148,11 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         //ListView
         listView = dv.findViewById(R.id.itemsInOrder);
 
+        //calls items from orderedItemsContract
         OrderedItemsContract oic = new OrderedItemsContract(getContext());
         mOrderedItems = oic.getOrderedItems(order.getM_Id());
 
+        //submits list and sets adapter
         listAdapter =  new ListViewAdapter(getContext(), mOrderedItems);
         listView.setAdapter(listAdapter);
 
@@ -157,15 +160,17 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         statusSpinner = dv.findViewById(R.id.statusSpinner);
 
         int selection = ((order.getM_Status().equals("Preparing")) ? 0 : 1);
-
+        //set customer name and status
         customerName.setText(order.getM_Customer().getM_FirstName()+order.getM_Customer().getM_LastName());
         statusSpinner.setSelection(selection);
 
+        //update and cancel buttons
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dv)
                 .setPositiveButton("Update", null)
                 .setNegativeButton("Cancel", null)
                 .show();
 
+        //sets what happens if status is changed
         Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         b.setOnClickListener(v -> {
             if (updateOrderInDatabase(order)) {
@@ -176,6 +181,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
             }
         });
     }
+    //method to update order
     private boolean updateOrderInDatabase(Order order) {
         //references to all Dialog views
         customerName = dv.findViewById(R.id.tvCustomerName);
@@ -189,6 +195,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         return false;
     }
 
+    //method to validate customer
     private boolean validateCustomerName(TextView customerName) {
         p = Pattern.compile("[a-zA-Z]", Pattern.CASE_INSENSITIVE);
         m = p.matcher(customerName.getText().toString());

@@ -9,6 +9,7 @@
         android:layout_alignRight="@id/tvQuantity"
         android:layout_alignParentLeft="true"
         android:text="TextView"
+        android:paddingLeft="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
 
@@ -18,5 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:text="TextView"
+        android:paddingRight="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 </RelativeLayout>
