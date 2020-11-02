@@ -82,7 +82,7 @@ public class MySearchAdapter extends ListAdapter<FoodTruck, MySearchAdapter.Food
 
         @Override
         public void onClick(View v) {
-
+            onCardClickListener.onCardClick(getAdapterPosition());
         }
     }
 }

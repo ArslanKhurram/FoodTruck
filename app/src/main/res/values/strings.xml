@@ -65,6 +65,15 @@
         <item>WY</item>
     </string-array>
 
+    <string-array name="mapRadius">
+        <item>3</item>
+        <item>5</item>
+        <item>7</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+    </string-array>
+
 
     <string-array name="paymentType">
         <item>Credit</item>
