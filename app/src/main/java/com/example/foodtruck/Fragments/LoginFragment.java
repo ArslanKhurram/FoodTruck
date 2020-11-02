@@ -73,7 +73,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-        //GenerateTestData();
+        GenerateTestData();
         AdminContract ac = new AdminContract(getContext());
         ac.addAdmin("1", "1");
 
@@ -162,7 +162,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     // Placeholder food truck data
     private void GenerateTestData() {
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.test, null);
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck, null);
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);

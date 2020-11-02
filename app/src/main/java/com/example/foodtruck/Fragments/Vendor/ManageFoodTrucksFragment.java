@@ -89,6 +89,7 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
 
         recyclerView = v.findViewById(R.id.foodtruck_recycler);
         recyclerView.setHasFixedSize(true);
+        foodTruckAdapter.setHasStableIds(true);
         foodTruckLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(foodTruckLayoutManager);
         recyclerView.setAdapter(foodTruckAdapter);
