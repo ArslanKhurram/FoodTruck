@@ -41,19 +41,6 @@
         android:drawableLeft="@drawable/ic_place"
         android:hint="Truck Location" />
 
-    <Button
-        android:id="@+id/foodTruckImage"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:background="@drawable/btn_addimage"
-        android:text="Food Truck Image"
-        android:textColor="@android:color/white" />
-
     <ImageView
         android:id="@+id/foodTruckLoadImage"
         android:layout_width="150dp"
@@ -64,4 +51,16 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp" />
 
+    <Button
+        android:id="@+id/foodTruckImage"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/btn_addimage"
+        android:text="Food Truck Image"
+        android:textColor="@android:color/white" />
 </LinearLayout>

@@ -78,6 +78,22 @@ public final class FoodTrucksContract {
         return newFoodTruck;
     }
 
+    //update food truck
+    public void updateFoodTruck(long id, String name, String category, byte[] image, double latitude, double longitude) {
+        open();
+        ContentValues cv = new ContentValues();
+        cv.put(FoodTrucksEntry.COL_NAME, name);
+        cv.put(FoodTrucksEntry.COL_CATEGORY, category);
+        cv.put(FoodTrucksEntry.COL_IMAGE, image);
+        cv.put(FoodTrucksEntry.COL_LATITUDE, latitude);
+        cv.put(FoodTrucksEntry.COL_LONGITUDE, longitude);
+
+        mDb.update(FoodTrucksEntry.TABLE_NAME, cv, FoodTrucksEntry._ID + " = " + id, null);
+        mDb.close();
+        close();
+
+    }
+
     //check if foodtruck exists for a vendor
     public boolean checkIfFoodTruckExist(long vendorID) {
         open();

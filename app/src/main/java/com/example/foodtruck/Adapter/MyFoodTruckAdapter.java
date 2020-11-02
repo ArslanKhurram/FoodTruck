@@ -18,7 +18,12 @@ import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Payment;
 import com.example.foodtruck.R;
 
+import java.io.IOException;
+
 public class MyFoodTruckAdapter extends ListAdapter<FoodTruck, MyFoodTruckAdapter.FoodTruckViewHolder> {
+
+    private Context foodTruckContext;
+    private onFoodTruckCardListener mFoodTruckCardListener;
 
     //comparison method to add animations to recycler view
     private static DiffUtil.ItemCallback<FoodTruck> DIFF_CALLBACK = new DiffUtil.ItemCallback<FoodTruck>() {
@@ -35,8 +40,6 @@ public class MyFoodTruckAdapter extends ListAdapter<FoodTruck, MyFoodTruckAdapte
                     oldItem.getM_Name().equals(newItem.getM_Name());
         }
     };
-    private Context foodTruckContext;
-    private onFoodTruckCardListener mFoodTruckCardListener;
 
     public MyFoodTruckAdapter(Context context, onFoodTruckCardListener onFoodTruckCardListener) {
         super(DIFF_CALLBACK);
@@ -91,7 +94,7 @@ public class MyFoodTruckAdapter extends ListAdapter<FoodTruck, MyFoodTruckAdapte
 
         @Override
         public void onClick(View v) {
-
+            onFoodTruckCardListener.onCardClick(getAdapterPosition());
         }
     }
 }
