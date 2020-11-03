@@ -55,14 +55,16 @@ public final class ItemsContract {
     };
 
     //return array list of items from a particular menu
-    public ArrayList<Item> ItemsList(long menuID) {
+    public ArrayList<Item> getItemListByMenuID(long menuID) {
         open();
-        ArrayList<Item> itemList = new ArrayList<Item>();
+        boolean check = checkIfItemsExist(menuID);
 
-        Cursor cursor = mDb.query(ItemsEntry.TABLE_NAME, mAllColumns, ItemsEntry.COL_MENU_ID + " =?",
-                new String[]{String.valueOf(menuID)}, null, null, null);
+        if (check) {
+            ArrayList<Item> itemList = new ArrayList<Item>();
 
-        if (cursor != null) {
+            Cursor cursor = mDb.query(ItemsEntry.TABLE_NAME, mAllColumns, ItemsEntry.COL_MENU_ID + " =?",
+                    new String[]{String.valueOf(menuID)}, null, null, null);
+
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Item item = cursorToItem(cursor);
@@ -72,22 +74,57 @@ public final class ItemsContract {
                 else
                     cursor.moveToNext();
             }
-
+            cursor.close();
+            return itemList;
         }
-        cursor.close();
+
         mDb.close();
         close();
-        return itemList;
+        return null;
     }
 
     //remove item from database
     public void removeItem(long id) {
         open();
+
         mDb = mDbHelper.getWritableDatabase();
         String dlQuery = "DELETE FROM " + ItemsEntry.TABLE_NAME + " WHERE " + ItemsEntry._ID + " = " + id;
         Cursor cursor = mDb.rawQuery(dlQuery, null);
         cursor.moveToFirst();
         cursor.close();
+        mDb.close();
+        close();
+    }
+
+    //check is items exist for a menu
+    public boolean checkIfItemsExist(long menuID) {
+        open();
+        Cursor cursor = mDb.query(ItemsEntry.TABLE_NAME, mAllColumns, ItemsEntry.COL_MENU_ID + " =? ",
+                new String[]{String.valueOf(menuID)}, null, null, null);
+
+        boolean check = cursor.getCount() > 0;
+        cursor.close();
+        return check;
+    }
+
+    //remove all items associated with a menu
+    public void removeItemsByMenuID(long menuID) {
+        open();
+
+        boolean check = checkIfItemsExist(menuID);
+        if (check) {
+            ArrayList<Item> items = getItemListByMenuID(menuID);
+            OptionsContract oc = new OptionsContract(mContext);
+            for (Item item : items) {
+                oc.removeOptionsByItemID(item.getM_Id());
+            }
+
+            mDb = mDbHelper.getWritableDatabase();
+            String dlQuery = "DELETE FROM " + ItemsEntry.TABLE_NAME + " WHERE " + ItemsEntry.COL_MENU_ID + " = " + menuID;
+            Cursor cursor = mDb.rawQuery(dlQuery, null);
+            cursor.moveToNext();
+            cursor.close();
+        }
         mDb.close();
         close();
     }
@@ -140,6 +177,7 @@ public final class ItemsContract {
         cv.put(ItemsEntry.COL_IMAGE, image);
 
         mDb.update(ItemsEntry.TABLE_NAME, cv, ItemsEntry._ID + " = " + id, null);
+        mDb.close();
         close();
     }
 
