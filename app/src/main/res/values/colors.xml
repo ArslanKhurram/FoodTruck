@@ -6,4 +6,5 @@
     <color name="gray">#95B5BFBF</color>
     <color name="backgroudPayment">#95DAF3F3</color>
     <color name="promptColor">#9CCD8681</color>
+    <color name="delete">#FD1100</color>
 </resources>

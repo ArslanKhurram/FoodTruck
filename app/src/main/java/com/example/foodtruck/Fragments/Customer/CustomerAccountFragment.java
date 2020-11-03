@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtruck.Adapter.MyAccountAdapter;
-import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.Fragments.PaymentsFragment;
 import com.example.foodtruck.Models.Card;
 import com.example.foodtruck.R;
@@ -36,6 +35,7 @@ public class CustomerAccountFragment extends Fragment implements MyAccountAdapte
         cardList.add(new Card("Name"));
         cardList.add(new Card("Email"));
         cardList.add(new Card("Payments"));
+        cardList.add(new Card("Orders"));
         cardList.add(new Card("Sign Out"));
 
         //improve performance of app by setting fixed size
@@ -67,6 +67,9 @@ public class CustomerAccountFragment extends Fragment implements MyAccountAdapte
                 break;
             case "Payments":
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new PaymentsFragment()).commit();
+                break;
+            case "Orders":
+               getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CheckOutCart()).commit();
                 break;
             case "Sign Out":
                 getActivity().onBackPressed();
