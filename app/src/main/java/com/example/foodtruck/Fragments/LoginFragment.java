@@ -73,7 +73,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-        GenerateTestData();
+        FoodTrucksContract contract = new FoodTrucksContract(getActivity());
+        if(contract.CountContracts() <= 3)
+            GenerateTestData(contract);
         AdminContract ac = new AdminContract(getContext());
         ac.addAdmin("1", "1");
 
@@ -161,15 +163,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     // Placeholder food truck data
-    private void GenerateTestData() {
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.test, null);
+    private void GenerateTestData(FoodTrucksContract tc) {
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.testruck, null);
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] bitMapData = stream.toByteArray();
 
         VendorsContract vc = new VendorsContract(getActivity());
-        FoodTrucksContract tc = new FoodTrucksContract(getActivity());
         vc.addVendor("Yvonne", "Stone", "ystone@foodsinternational.com", "A$df1234", "6317584559", "E Clinton Ave", "24", "11575", "Roosevelt", "New York");
         tc.createFoodTruck("Meridian Waffle", "Breakfast", bitMapData, 40.683632, -73.592079, 1);
         tc.createFoodTruck("Presto Pretzel", "Snack", bitMapData, 40.740791, -73.638207, 1);
