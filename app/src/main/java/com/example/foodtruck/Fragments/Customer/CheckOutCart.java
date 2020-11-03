@@ -80,7 +80,7 @@ public class CheckOutCart extends Fragment implements View.OnClickListener {
         boxOne = dv.findViewById(R.id.boxOne);
         boxTwo = dv.findViewById(R.id.boxTwo);
         boxThree = dv.findViewById(R.id.boxThree);
-        options = op.OptionsList(1);
+        options = op.getOptionsListByItemID(1);
         item = ic.getItemById(1);
 
         currentCustomer = cC.getCustomerById(1);
