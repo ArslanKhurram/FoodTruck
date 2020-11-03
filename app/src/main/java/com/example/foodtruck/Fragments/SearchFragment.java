@@ -110,8 +110,8 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
         ftList.clear();
       // Loop through each vendor for every food truck in database
         for(int c = 1; c <= vc.CountContracts(); c++) {
-            ftList.addAll(fc.FoodTruckList(c));
-            //fc.FoodTruckList(c).forEach((n) ->  ftList.add(n) );
+            if (fc.FoodTruckList(c) != null)
+                ftList.addAll(fc.FoodTruckList(c));
         }
     }
 

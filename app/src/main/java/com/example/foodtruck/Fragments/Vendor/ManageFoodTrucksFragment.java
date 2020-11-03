@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -119,8 +120,6 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
             //Set address on Edit Text
             location.setText(place.getAddress());
             latLng = place.getLatLng();
-            Log.i("Address", place.getAddress());
-            Log.i("Address", String.valueOf(latLng));
         } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             //When error Initialize Status
             Status status = Autocomplete.getStatusFromIntent(data);
@@ -292,20 +291,22 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
         add.setOnClickListener(v -> {
             if (imageView.getDrawable() != null) {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+                drawable.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] bitMapData = stream.toByteArray();
 
                 VendorsContract vc = new VendorsContract(getActivity());
                 Vendor vendor = vc.getVendorIdByEmail(sharedPref.getString("Email", ""));
 
-                if (vendor != null) {
+                if (latLng != null) {
                     FoodTrucksContract fc = new FoodTrucksContract(getActivity());
                     fc.updateFoodTruck(foodTruck.getM_ID(), name.getText().toString(), category.getText().toString(), bitMapData, latLng.latitude, latLng.longitude);
                     foodTruckAdapter.submitList(getFoodTruckList());
                     alertDialog.cancel();
-                }
+                } else
+                    Snackbar.make(v, "                      Please Enter Address", Snackbar.LENGTH_LONG).show();
             } else
-                Snackbar.make(v, "                         Please Upload an Image", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(v, "                       Please Upload an Image", Snackbar.LENGTH_LONG).show();
 
         });
     }
