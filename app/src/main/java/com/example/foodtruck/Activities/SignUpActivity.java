@@ -80,7 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
         FoodTrucksContract foodTrucksContract = new FoodTrucksContract(this);
         foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", bitMapData, 10.5, 10.5, vendor.getM_Id());
         foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", bitMapData1, 10.5, 10.5, vendor.getM_Id());
-        FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(1);
+        FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(vendor.getM_Id());
 
         if (foodTruck1 != null) {
             MenusContract menusContract = new MenusContract(this);
@@ -103,25 +103,20 @@ public class SignUpActivity extends AppCompatActivity {
             }
 
             OrdersContract ordersContract = new OrdersContract(this);
-            ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), vendor.getM_Id());
-            ordersContract.createOrder("A03", "10/22/2020", "Preparing", customer2.getM_Id(), vendor.getM_Id());
-            ordersContract.createOrder("B03", "10/22/2020", "Completed", customer3.getM_Id(), vendor.getM_Id());
-            Order order = ordersContract.getOrderById(1);
-            Order order2 = ordersContract.getOrderById(2);
-            Order order3 = ordersContract.getOrderById(3);
+            ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
+            ordersContract.createOrder("A03", "10/22/2020", "Preparing", customer2.getM_Id(), foodTruck1.getM_ID());
+            ordersContract.createOrder("B03", "10/22/2020", "Completed", customer3.getM_Id(), foodTruck1.getM_ID());
+            ArrayList<Order> orderArrayList = ordersContract.getOrdersList(foodTruck1.getM_ID());
 
             OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
 
-            if (itemArrayList != null) {
+            if (itemArrayList != null && orderArrayList != null) {
 
-                orderedItemsContract.addOrderedItem("1", itemArrayList.get(0).getM_Id(), order.getM_Id());
-                orderedItemsContract.addOrderedItem("2", itemArrayList.get(1).getM_Id(), order.getM_Id());
-                orderedItemsContract.addOrderedItem("3", itemArrayList.get(0).getM_Id(), order2.getM_Id());
-                orderedItemsContract.addOrderedItem("3", itemArrayList.get(2).getM_Id(), order2.getM_Id());
-                orderedItemsContract.addOrderedItem("1", itemArrayList.get(1).getM_Id(), order3.getM_Id());
-                orderedItemsContract.addOrderedItem("2", itemArrayList.get(2).getM_Id(), order3.getM_Id());
-                ArrayList<OrderedItem> orderedItemArrayList = orderedItemsContract.getOrderedItems(order.getM_Id());
+                for (int i = 0; i < orderArrayList.size(); i++) {
+                    orderedItemsContract.addOrderedItem("1", itemArrayList.get(1).getM_Id(), orderArrayList.get(i).getM_Id());
+                    orderedItemsContract.addOrderedItem("2", itemArrayList.get(2).getM_Id(), orderArrayList.get(i).getM_Id());
 
+                }
             }
         }
     }

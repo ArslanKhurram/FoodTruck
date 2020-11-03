@@ -32,8 +32,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtruck.Adapter.MyFoodTruckAdapter;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
+import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Models.FoodTruck;
+import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 import com.google.android.gms.common.api.Status;
@@ -304,9 +306,9 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
                     foodTruckAdapter.submitList(getFoodTruckList());
                     alertDialog.cancel();
                 } else
-                    Snackbar.make(v, "                      Please Enter Address", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, "Please Enter Address", Snackbar.LENGTH_LONG).show();
             } else
-                Snackbar.make(v, "                       Please Upload an Image", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(v, "Please Upload an Image", Snackbar.LENGTH_LONG).show();
 
         });
     }
@@ -329,12 +331,19 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
         //DELETE button is pressed
         Button positive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         positive.setOnClickListener(v -> {
-            FoodTrucksContract fc = new FoodTrucksContract(getContext());
-            fc.deleteFoodTruckByID(foodTruck.getM_ID());
-            foodTruckAdapter.submitList(getFoodTruckList());
-            if (foodTruckList == null)
-                tv.setVisibility(View.VISIBLE);
-            alertDialog.cancel();
+            OrdersContract oc = new OrdersContract(getContext());
+            ArrayList<Order> ordersList = oc.getOrdersList(foodTruck.getM_ID());
+
+            if (ordersList.size() > 0) {
+                Snackbar.make(v, "Their Are Pending Orders Cannot Delete Food Truck", Snackbar.LENGTH_LONG).show();
+            } else {
+                FoodTrucksContract fc = new FoodTrucksContract(getContext());
+                fc.deleteFoodTruckByID(foodTruck.getM_ID());
+                foodTruckAdapter.submitList(getFoodTruckList());
+                if (foodTruckList == null)
+                    tv.setVisibility(View.VISIBLE);
+                alertDialog.cancel();
+            }
         });
 
         //CANCEL button is pressed

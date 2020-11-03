@@ -29,10 +29,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtruck.Adapter.ListViewAdapter;
 import com.example.foodtruck.Adapter.OrderAdapter;
+import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.OrderedItem;
@@ -108,16 +110,17 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         OrdersContract oc = new OrdersContract(getContext());
 
         Vendor vendor = vc.getVendorIdByEmail(email);
+        FoodTrucksContract fc = new FoodTrucksContract(getContext());
+        FoodTruck foodTruck = fc.getFoodTruckByVendorId(vendor.getM_Id());
 
-       switch (status)
-       {
-           case "Preparing":
-               pendingOrderList = oc.getOrderListByStatus(vendor.getM_Id(), status); //vendor = 3  status = preparing
-               return pendingOrderList;
-           case "Completed":
-               completedOrderList = oc.getOrderListByStatus(vendor.getM_Id(), status);
-               return completedOrderList;
-       }
+        switch (status) {
+            case "Preparing":
+                pendingOrderList = oc.getOrderListByStatus(foodTruck.getM_ID(), status);
+                return pendingOrderList;
+            case "Completed":
+                completedOrderList = oc.getOrderListByStatus(foodTruck.getM_ID(), status);
+                return completedOrderList;
+        }
        return null;
     }
 

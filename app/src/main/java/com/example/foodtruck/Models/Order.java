@@ -6,7 +6,7 @@ public class Order {
     private String m_DateAdded;
     private String m_Status;
     private Customer m_Customer;
-    private Vendor m_Vendor;
+    private FoodTruck m_FoodTruck;
 
     //default constructor
     public Order() {
@@ -52,11 +52,11 @@ public class Order {
         this.m_Customer = m_Customer;
     }
 
-    public Vendor getM_Vendor() {
-        return m_Vendor;
+    public FoodTruck getM_FoodTruck() {
+        return m_FoodTruck;
     }
 
-    public void setM_Vendor(Vendor m_Vendor) {
-        this.m_Vendor = m_Vendor;
+    public void setM_FoodTruck(FoodTruck m_FoodTruck) {
+        this.m_FoodTruck = m_FoodTruck;
     }
 }
