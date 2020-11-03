@@ -65,12 +65,6 @@ public class SignUpActivity extends AppCompatActivity {
         vendorsContract.addVendor("J", "C", "3", "3", "0", "0", "0", "0", "0", "0");
         Vendor vendor = vendorsContract.getVendorIdByEmail("3");
 
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck, null);
-        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] bitMapData = stream.toByteArray();
-
         drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck1, null);
         bitmap = ((BitmapDrawable) drawable).getBitmap();
         stream = new ByteArrayOutputStream();

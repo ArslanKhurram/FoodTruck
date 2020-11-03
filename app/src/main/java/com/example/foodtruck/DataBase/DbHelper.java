@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
+import com.example.foodtruck.DataBase.CheckOutContract.CartEntry;
+
 import static com.example.foodtruck.DataBase.CustomersContract.CustomersEntry;
 import static com.example.foodtruck.DataBase.FoodTrucksContract.FoodTrucksEntry;
 import static com.example.foodtruck.DataBase.ItemsContract.ItemsEntry;
@@ -133,6 +135,16 @@ public class DbHelper extends SQLiteOpenHelper {
             OrderedItemsEntry.COL_ORDER_ID + " INTEGER NOT NULL " +
             "); ";
 
+    //query to create checkout table
+    public static final String SQL_CREATE_CHECKOUT_CART_TABLE = "CREATE TABLE " + CartEntry.TABLE_NAME + " (" +
+            CartEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            CartEntry.COL_CUST_ID + " INTEGER NOT NULL, " +
+            CartEntry.COL_ITEM + " TEXT NOT NULL, " +
+            CartEntry.COL_PRICE + " TEXT NOT NULL, " +
+            CartEntry.COL_QUANTITY + " TEXT NOT NULL " +
+            ");";
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_PAYMENTS_TABLE);
@@ -145,6 +157,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_OPTIONS_TABLE);
         db.execSQL(SQL_CREATE_ORDERS_TABLE);
         db.execSQL(SQL_CREATE_ORDERED_ITEMS_TABLE);
+        db.execSQL(SQL_CREATE_CHECKOUT_CART_TABLE);
 
     }
 

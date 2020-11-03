@@ -95,7 +95,7 @@ public class MapFragment extends Fragment {
                 FoodTrucksContract fc = new FoodTrucksContract(getActivity());
                 VendorsContract vc = new VendorsContract(getActivity());
                 Bitmap bitmap = onCreateBitmap();
-                    Toast.makeText(getContext(), "Location succeess", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Location succeess", Toast.LENGTH_SHORT).show();
 
                     // Instantiates a new CircleOptions object and defines the center and radius, required to create a circle visible on the map
 //                     circleOptions = new CircleOptions()
@@ -121,7 +121,7 @@ public class MapFragment extends Fragment {
                 }
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(40.79,-73.29)).zoom(9).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(40.79, -73.29)).zoom(9).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
             }
