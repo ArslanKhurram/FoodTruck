@@ -36,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
     public Vendor vendor = new Vendor();
     public Admin admin = new Admin();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +71,11 @@ public class SignUpActivity extends AppCompatActivity {
         itemsContract.createItem("test", "9.99", "Yes", image, menu.getM_Id());
         itemsContract.createItem("test2", "1.99", "No", image, menu.getM_Id());
         itemsContract.createItem("test3", "6.99", "Yes", image, menu.getM_Id());
+
+        OptionsContract optionsContract = new OptionsContract(this);
+        optionsContract.createOption("test1",1);
+        optionsContract.createOption("test2",2);
+        optionsContract.createOption("test3",3);
    /*     ArrayList<Item> itemArrayList = itemsContract.ItemsList(menu.getM_Id());
 
         for (Item item : itemArrayList) {
