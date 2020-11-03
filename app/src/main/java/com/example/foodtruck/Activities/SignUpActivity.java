@@ -46,8 +46,12 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         CustomersContract customersContract = new CustomersContract(this);
-        customersContract.addCustomer("A", "K", "2", "2", "0", "0", "0", "0", "0", "0");
-        Customer customer = customersContract.getCustomerIdByEmail("2");
+        customersContract.addCustomer("Bob", "Marley", "2", "2", "0", "0", "0", "0", "0", "0");
+        customersContract.addCustomer("John", "Hopkins", "22", "", "0", "0", "0", "0", "0", "0");
+        customersContract.addCustomer("Adam", "Jack", "33", "", "0", "0", "0", "0", "0", "0");
+        Customer customer1 = customersContract.getCustomerIdByEmail("2");
+        Customer customer2 = customersContract.getCustomerIdByEmail("22");
+        Customer customer3 = customersContract.getCustomerIdByEmail("33");
 
         AdminContract adminContract = new AdminContract(this);
         adminContract.addAdmin("1", "1");
@@ -79,9 +83,9 @@ public class SignUpActivity extends AppCompatActivity {
             Menu menu = menusContract.getMenuByFoodTruckId(foodTruck1.getM_ID());
 
             ItemsContract itemsContract = new ItemsContract(this);
-            itemsContract.createItem("test", "9.99", "Yes", bitMapData, menu.getM_Id());
-            itemsContract.createItem("test2", "1.99", "No", bitMapData, menu.getM_Id());
-            itemsContract.createItem("test3", "6.99", "Yes", bitMapData, menu.getM_Id());
+            itemsContract.createItem("Cheese Burger", "9.99", "Yes", image, menu.getM_Id());
+            itemsContract.createItem("Apple Pie", "1.99", "Yes", image, menu.getM_Id());
+            itemsContract.createItem("Hot Dog", "6.99", "Yes", image, menu.getM_Id());
             ArrayList<Item> itemArrayList = itemsContract.getItemListByMenuID(menu.getM_Id());
 
             OptionsContract oc = new OptionsContract(this);
@@ -99,18 +103,22 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         OrdersContract ordersContract = new OrdersContract(this);
-        ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer.getM_Id(), vendor.getM_Id());
-        ordersContract.createOrder("B01", "10/22/2020", "Preparing", customer.getM_Id(), vendor.getM_Id());
+        ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), vendor.getM_Id());
+        ordersContract.createOrder("A02", "10/22/2020", "Completed", customer1.getM_Id(), vendor.getM_Id());
+        ordersContract.createOrder("A03", "10/22/2020", "Preparing", customer2.getM_Id(), vendor.getM_Id());
+        ordersContract.createOrder("B01", "10/22/2020", "Completed", customer2.getM_Id(), vendor.getM_Id());
+        ordersContract.createOrder("B02", "10/22/2020", "Preparing", customer3.getM_Id(), vendor.getM_Id());
+        ordersContract.createOrder("B03", "10/22/2020", "Completed", customer3.getM_Id(), vendor.getM_Id());
         Order order = ordersContract.getOrderById(1);
         Order order2 = ordersContract.getOrderById(2);
 
-        OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
+       OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
         orderedItemsContract.addOrderedItem("1", itemArrayList.get(0).getM_Id(), order.getM_Id());
         orderedItemsContract.addOrderedItem("2", itemArrayList.get(1).getM_Id(), order.getM_Id());
         orderedItemsContract.addOrderedItem("3", itemArrayList.get(2).getM_Id(), order2.getM_Id());
         orderedItemsContract.addOrderedItem("3", itemArrayList.get(2).getM_Id(), order2.getM_Id());
         ArrayList<OrderedItem> orderedItemArrayList = orderedItemsContract.getOrderedItems(order.getM_Id());
-
+/*
         for (OrderedItem orderedItem : orderedItemArrayList) {
             Log.i("Test", "Ordered Item Name: " + orderedItem.getM_Item().getM_Name());
             Log.i("Test", "Ordered Item Quantity: " + orderedItem.getM_Quantity());

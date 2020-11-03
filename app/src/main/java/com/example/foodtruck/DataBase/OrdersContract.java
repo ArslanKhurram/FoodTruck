@@ -105,6 +105,30 @@ public final class OrdersContract {
         return ordersList;
     }
 
+    //return array List of orders for vendor
+    public ArrayList<Order> getOrderListByStatus(long vendorId, String status) {
+        open();
+        ArrayList<Order> ordersList = new ArrayList<Order>();
+
+        Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry.COL_STATUS + " =? " + " AND " + OrdersEntry.COL_VENDOR_ID + " =? ", new String[]{status, String.valueOf(vendorId)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), vendorId);
+                ordersList.add(order);
+                if (cursor.isLast() || cursor.isClosed())
+                    break;
+                else
+                    cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        mDb.close();
+        close();
+        return ordersList;
+    }
+
     //return Order by searching by id
     public Order getOrderById(long id) {
         open();
@@ -154,6 +178,15 @@ public final class OrdersContract {
         }
 
         return order;
+    }
+
+    public void updateOrder(long id, String status) {
+        open();
+        ContentValues cv = new ContentValues();
+        cv.put(OrdersEntry.COL_STATUS, status);
+
+        mDb.update(OrdersContract.OrdersEntry.TABLE_NAME, cv, OrdersContract.OrdersEntry._ID + " = " + id, null);
+        close();
     }
 }
 

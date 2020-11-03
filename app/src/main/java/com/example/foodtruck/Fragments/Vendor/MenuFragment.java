@@ -159,6 +159,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         });
     }
 
+    //update
     private void editItemDialog(Item item) {
         dialogInflater = getLayoutInflater();
         dV = dialogInflater.inflate(R.layout.dialog_addmenu_item, null);
