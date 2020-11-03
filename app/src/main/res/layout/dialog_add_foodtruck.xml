@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/foodTruckName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:drawableLeft="@drawable/ic_food_truck_icon_21"
+        android:drawablePadding="8dp"
+        android:hint="Food Truck Name"
+        android:inputType="text"
+        android:maxLength="30" />
+
+    <EditText
+        android:id="@+id/foodTruckCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:drawableLeft="@drawable/ic_category"
+        android:drawablePadding="4dp"
+        android:hint="Category" />
+
+    <EditText
+        android:id="@+id/foodTruckLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:drawableLeft="@drawable/ic_place"
+        android:hint="Truck Location" />
+
+    <ImageView
+        android:id="@+id/foodTruckLoadImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp" />
+
+    <Button
+        android:id="@+id/foodTruckImage"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/btn_addimage"
+        android:text="Food Truck Image"
+        android:textColor="@android:color/white" />
+</LinearLayout>

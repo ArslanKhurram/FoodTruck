@@ -8,5 +8,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <TextView
+        android:id="@+id/txtMapRadius"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/spnMapSpinner"
+        android:layout_alignBottom="@id/spnMapSpinner"
+        android:text="Radius" />
+
+    <Spinner
+        android:id="@+id/spnMapSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginLeft="12dp" />
+
 
 </RelativeLayout>
