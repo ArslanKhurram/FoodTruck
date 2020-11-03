@@ -98,15 +98,15 @@ public class MapFragment extends Fragment {
                     Toast.makeText(getContext(), "Location succeess", Toast.LENGTH_SHORT).show();
 
                     // Instantiates a new CircleOptions object and defines the center and radius, required to create a circle visible on the map
-                    circleOptions = new CircleOptions()
-                            .center(new LatLng(40.806404, -73.25934)) // TOOD: have circle center on device's location (getMyMapLocation methods deprecated & doesn't actually work) GEOFENCE??
-                            .radius(10000)
-                            .strokeWidth(2)
-                            .strokeColor(Color.argb(155, 52, 189, 235))
-                            .fillColor(Color.argb(44, 52, 189, 235)); // In meters
+//                     circleOptions = new CircleOptions()
+//                             .center(new LatLng(40.806404, -73.25934)) // TOOD: have circle center on device's location (getMyMapLocation methods deprecated & doesn't actually work) GEOFENCE??
+//                             .radius(10000)
+//                             .strokeWidth(2)
+//                             .strokeColor(Color.argb(155, 52, 189, 235))
+//                             .fillColor(Color.argb(44, 52, 189, 235)); // In meters
 
                     // Draw circle on map
-                    mapCircle = mMap.addCircle(circleOptions);
+                    //mapCircle = mMap.addCircle(circleOptions);
 
                // LatLng latLng = new LatLng(40.806404, -73.25934);
 

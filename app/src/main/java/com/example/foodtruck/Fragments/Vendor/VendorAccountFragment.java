@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtruck.Adapter.MyAccountAdapter;
-import com.example.foodtruck.Fragments.LoginFragment;
-import com.example.foodtruck.Fragments.PaymentsFragment;
 import com.example.foodtruck.Models.Card;
 import com.example.foodtruck.R;
 
@@ -66,7 +64,7 @@ public class VendorAccountFragment extends Fragment implements MyAccountAdapter.
                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new LoginFragment()).commit();
                 break;
             case "Food Truck":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new AddFoodTruckFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new ManageFoodTrucksFragment()).commit();
                 break;
             case "Payments":
                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new PaymentsFragment()).commit();
