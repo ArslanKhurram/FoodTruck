@@ -30,10 +30,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtruck.Adapter.CustomerMenuAdapter;
 import com.example.foodtruck.Adapter.MenuAdapter;
+import com.example.foodtruck.DataBase.CheckOutContract;
+import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Menu;
 import com.example.foodtruck.Models.Vendor;
@@ -52,7 +55,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Item> itemList = new ArrayList<>();
     private EditText itemName, itemPrice;
-    private TextView tv;
+    private TextView tv, itemNameDb, priceDb;
     private HorizontalScrollView hsv;
     private Spinner itemAvailability;
     private SharedPreferences sharedPref;
@@ -61,6 +64,12 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     View dV;
     private Pattern p;
     private Matcher m;
+    private Spinner spnQnty;
+    private CheckOutContract cart;
+
+    //hardcoded
+    private Customer currentCustomer;
+    private CustomersContract cC;
 
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -86,6 +95,10 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerAdapter = cMenuAdapter;
         recyclerView.setAdapter(recyclerAdapter);
+
+        //hardcoded
+        cart = new CheckOutContract(getContext());
+        cC = new CustomersContract(getContext());
 
         return v;
     }
@@ -126,10 +139,38 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         dV = dialogInflater.inflate(R.layout.dialog_checkout_cart, null);
         itemName = dV.findViewById(R.id.dl_itemName);
         itemPrice = dV.findViewById(R.id.dl_itemPrice);
+        itemNameDb = dV.findViewById(R.id.itemNameDb);
+        priceDb = dV.findViewById(R.id.priceDb);
+        spnQnty = dV.findViewById(R.id.spnQnty);
+        //hardcoded
+        currentCustomer = cC.getCustomerById(1);
+        itemNameDb.setText(item.getM_Name());
+        priceDb.setText("$"+item.getM_Price());
+        spnQnty.getSelectedItem().toString();
 
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
                 .setPositiveButton("Add to Cart", null)
                 .setNegativeButton("Cancel", null)
                 .show();
+
+        Button btnAdd = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        btnAdd.setOnClickListener(v -> {
+            addCartToDb(item);
+           clearCheckoutDatabase();
+            alertDialog.cancel();
+        });
+    }//end itemOptionDialog
+
+    //Add Cart To CheckOut Cart Db
+    private void addCartToDb(Item item){
+        cart.addCart(item.getM_Name(),item.getM_Price(),spnQnty.getSelectedItem().toString(),currentCustomer.getM_Id());
     }
+
+    //Empty Database
+    private void clearCheckoutDatabase(){
+        cart.clearTable(1);
+
+    }
+
+
 }
