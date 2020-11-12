@@ -106,7 +106,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     @Override
     public void onItemClick(int position) {
         Item itemPos = cMenuAdapter.getItemAt(position);
-        //openOptions(itemPos);
+        openOptions(itemPos);
 
     }
 
@@ -117,13 +117,13 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
 
     // TODO: Add dialog code for item's options from Brian's branch
     private void openOptions(Item i) {
-        //itemOptionsDialog(i);
+        itemOptionsDialog(i);
 
     }
 
     private void itemOptionsDialog(Item item) {
         dialogInflater = getLayoutInflater();
-        //dV = dialogInflater.inflate(R.layout.dialog_options, null);
+        dV = dialogInflater.inflate(R.layout.dialog_checkout_cart, null);
         itemName = dV.findViewById(R.id.dl_itemName);
         itemPrice = dV.findViewById(R.id.dl_itemPrice);
 

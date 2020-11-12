@@ -28,9 +28,10 @@ import com.example.foodtruck.Models.Option;
 import com.example.foodtruck.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CheckOutCart extends Fragment implements View.OnClickListener {
-
+// Used for hard codding
     CheckOutContract cart;
     CustomersContract cC;
     MenusContract m;
@@ -38,6 +39,7 @@ public class CheckOutCart extends Fragment implements View.OnClickListener {
     OptionsContract op;
     Item item;
     ArrayList<Option> options;
+    ArrayList<Option> options2 = new ArrayList<Option>(); //create arraylist object
     Customer currentCustomer;
     TextView itemNameDb, priceDb ;
     CheckBox boxOne,boxTwo,boxThree;
@@ -84,7 +86,8 @@ public class CheckOutCart extends Fragment implements View.OnClickListener {
         item = ic.getItemById(1);
 
         currentCustomer = cC.getCustomerById(1);
-
+        //used to Test array of option
+        options2.add(options.get(1));
 
 
         itemNameDb.setText(item.getM_Name());
@@ -94,6 +97,9 @@ public class CheckOutCart extends Fragment implements View.OnClickListener {
         boxOne.setText(options.get(0).getM_Option());
         boxTwo.setText(options.get(1).getM_Option());
         boxThree.setText(options.get(2).getM_Option());
+
+
+
 
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dv)
                 .setPositiveButton(android.R.string.ok, null)
@@ -120,5 +126,8 @@ public class CheckOutCart extends Fragment implements View.OnClickListener {
     //Empty Database
     private void clearCheckoutDatabase(){
         cart.clearTable(1);
+
     }
+
+
 }
