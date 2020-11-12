@@ -131,6 +131,5 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
                 .setPositiveButton("Add to Cart", null)
                 .setNegativeButton("Cancel", null)
                 .show();
-
     }
 }
