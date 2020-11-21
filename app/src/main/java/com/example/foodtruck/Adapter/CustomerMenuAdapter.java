@@ -1,9 +1,12 @@
 package com.example.foodtruck.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,12 +65,14 @@ public class CustomerMenuAdapter extends ListAdapter<Item, CustomerMenuAdapter.I
     //viewHolder class whose objects represent each list items
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView itemName, itemPrice;
+        private ImageView itemPicture;
         private OnItemListener onItemListener;
 
         public ItemViewHolder(View view, OnItemListener onItemListener) {
             super(view);
             itemName = view.findViewById(R.id.itemName);
             itemPrice = view.findViewById(R.id.itemPrice);
+            itemPicture = view.findViewById(R.id.ivMenuItemPicture);
             this.onItemListener = onItemListener;
             view.setOnClickListener(this);
         }
@@ -75,6 +80,8 @@ public class CustomerMenuAdapter extends ListAdapter<Item, CustomerMenuAdapter.I
         public void BindData(Item item, Context context) {
             itemName.setText(item.getM_Name());
             itemPrice.setText(item.getM_Price());
+            Bitmap bitmap = BitmapFactory.decodeByteArray(item.getM_Image(), 0, item.getM_Image().length);
+            itemPicture.setImageBitmap(bitmap);
         }
 
         @Override

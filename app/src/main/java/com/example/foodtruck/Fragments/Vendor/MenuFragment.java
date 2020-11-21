@@ -1,11 +1,14 @@
 package com.example.foodtruck.Fragments.Vendor;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,12 +19,15 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,8 +43,10 @@ import com.example.foodtruck.Models.Menu;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,6 +66,8 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
     View dV;
     private Pattern p;
     private Matcher m;
+    private Bitmap bitmap;
+    private ImageView imageView;
 
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -139,14 +149,37 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         addItemDialog();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
+            Uri selectedImage = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                imageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                Log.i("TAG", "Some exception " + e);
+            }
+        }
+    }
+
     private void addItemDialog() {
         dialogInflater = getLayoutInflater();
         dV = dialogInflater.inflate(R.layout.dialog_addmenu_item, null);
+        imageView = dV.findViewById(R.id.menuLoadImage);
 
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
                 .setPositiveButton("Add", null)
                 .setNegativeButton("Cancel", null)
                 .show();
+
+        Button image = dV.findViewById(R.id.dl_btnAddItemImage);
+
+        image.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, 10);
+        });
 
         Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         b.setOnClickListener(v -> {
@@ -198,18 +231,21 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         itemName = dV.findViewById(R.id.dl_itemName);
         itemPrice = dV.findViewById(R.id.dl_itemPrice);
         itemAvailability = dV.findViewById(R.id.dl_spinnerAvailability);
+        imageView = dV.findViewById(R.id.menuLoadImage);
 
         if (validateName(itemName) & validatePrice(itemPrice)) {
-            //convert image to byte to be able to pass int food truck database
-            Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.test, null);
-            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] bitMapData = stream.toByteArray();
 
-            ItemsContract ic = new ItemsContract(getContext());
-            ic.createItem(itemName.getText().toString(), itemPrice.getText().toString(), itemAvailability.getSelectedItem().toString(), bitMapData, menu.getM_Id());
-            return true;
+            if (imageView.getDrawable() != null) {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] bitMapData = stream.toByteArray();
+
+                ItemsContract ic = new ItemsContract(getContext());
+                ic.createItem(itemName.getText().toString(), itemPrice.getText().toString(), itemAvailability.getSelectedItem().toString(), bitMapData, menu.getM_Id());
+                return true;
+            } else
+                Snackbar.make(dV, "                         Please Upload an Image", Snackbar.LENGTH_LONG).show();
+
         }
         return false;
     }
