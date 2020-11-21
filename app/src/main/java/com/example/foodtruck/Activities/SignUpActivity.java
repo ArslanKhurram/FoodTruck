@@ -18,6 +18,7 @@ import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.OptionsContract;
 import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
+import com.example.foodtruck.DataBase.RatingsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.Models.Admin;
@@ -81,6 +82,7 @@ public class SignUpActivity extends AppCompatActivity {
         foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", bitMapData, 10.5, 10.5, vendor.getM_Id());
         foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", bitMapData1, 10.5, 10.5, vendor.getM_Id());
         FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(1);
+
 
         if (foodTruck1 != null) {
             MenusContract menusContract = new MenusContract(this);
