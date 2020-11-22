@@ -4,21 +4,12 @@
 
     <TextView
         android:id="@+id/tvoption"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@id/tvChecked"
         android:layout_alignParentLeft="true"
-        android:text="TextView"
         android:paddingLeft="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-
-    <TextView
-        android:id="@+id/tvChecked"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:text="TextView"
-        android:paddingRight="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+
 </RelativeLayout>

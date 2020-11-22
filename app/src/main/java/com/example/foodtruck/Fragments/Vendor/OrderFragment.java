@@ -3,48 +3,42 @@ package com.example.foodtruck.Fragments.Vendor;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodtruck.Adapter.ListViewAdapter;
+import com.example.foodtruck.Adapter.ItemsOrderedAdapter;
+import com.example.foodtruck.Adapter.OptionsAdapter;
 import com.example.foodtruck.Adapter.OrderAdapter;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
+import com.example.foodtruck.DataBase.OptionsContract;
 import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Item;
+import com.example.foodtruck.Models.Option;
 import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.OrderedItem;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,13 +52,15 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.LayoutManager mLayoutManager2;
     private SharedPreferences sharedPref;
-    private Order order;
     private LayoutInflater dialogInflater;
     private ArrayList<Order> pendingOrderList = new ArrayList<>();
     private ArrayList<Order> completedOrderList = new ArrayList<>();
     private ListView listView;
     private ArrayList<OrderedItem> mOrderedItems;
-    private ListViewAdapter listAdapter;
+    private ItemsOrderedAdapter listAdapter;
+    private OptionsAdapter optionsAdapter;
+    private ListView optionsList;
+    private ArrayList<Option> mOptions;
     View dv;
     private TextView customerName;
     private Spinner statusSpinner;
@@ -150,17 +146,32 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         dv = dialogInflater.inflate(R.layout.dialog_show_order, null);
         //ListView
         listView = dv.findViewById(R.id.itemsInOrder);
+        optionsList = dv.findViewById(R.id.ItemsOptions);
+
 
         //calls items from orderedItemsContract
         OrderedItemsContract oic = new OrderedItemsContract(getContext());
         mOrderedItems = oic.getOrderedItems(order.getM_Id());
 
         //submits list and sets adapter
-        listAdapter =  new ListViewAdapter(getContext(), mOrderedItems);
+        listAdapter =  new ItemsOrderedAdapter(getContext(), mOrderedItems);
         listView.setAdapter(listAdapter);
+
+        //show options
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                OptionsContract oc = new OptionsContract(getContext());
+                mOptions = oc.getOptionsListByItemID(order.getM_Id());
+                optionsAdapter = new OptionsAdapter(getContext(), mOptions);
+                optionsList.setAdapter(optionsAdapter);
+            }
+        });
 
         customerName = dv.findViewById(R.id.tvCustomerName);
         statusSpinner = dv.findViewById(R.id.statusSpinner);
+
 
         int selection = ((order.getM_Status().equals("Preparing")) ? 0 : 1);
         //set customer name and status
