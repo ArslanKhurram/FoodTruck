@@ -1,9 +1,11 @@
 package com.example.foodtruck.Fragments.Customer;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -30,10 +32,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtruck.Adapter.CustomerMenuAdapter;
 import com.example.foodtruck.Adapter.MenuAdapter;
+import com.example.foodtruck.DataBase.CustomersContract;
+import com.example.foodtruck.DataBase.FavoritesContract;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Menu;
 import com.example.foodtruck.Models.Vendor;
@@ -61,19 +66,22 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     View dV;
     private Pattern p;
     private Matcher m;
+    private Button btnSave;
 
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_menu_customerview, container, false);
         Bundle bundle = getArguments();
         Long truckID = null;
-        if(bundle != null)
+        if (bundle != null)
             truckID = bundle.getLong("mKey");
         tv = v.findViewById(R.id.noMenuPrompt);
         hsv = v.findViewById(R.id.scrlMenu);
+        btnSave = v.findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(this);
         tv.setVisibility(View.INVISIBLE);
         cMenuAdapter = new CustomerMenuAdapter(getContext(), this::onItemClick);
-        if(getMenuList(truckID) != null)
+        if (getMenuList(truckID) != null)
             cMenuAdapter.submitList(getMenuList(truckID));
         else {
             tv.setVisibility(View.VISIBLE);
@@ -110,9 +118,33 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
 
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.btnSave) {
+            SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+            String email = sharedPref.getString("Email", "");
+            String userType = sharedPref.getString("UserType", "");
 
+            if (userType.equals("Customer")) {
+                CustomersContract customersContract = new CustomersContract(getContext());
+                Customer customer = customersContract.getCustomerIdByEmail(email);
+
+                Bundle bundle = getArguments();
+                Long foodtruckID = bundle.getLong("mKey");
+
+                FavoritesContract favoritesContract = new FavoritesContract(getContext());
+                favoritesContract.createEntry(foodtruckID, customer.getM_Id());
+
+                Drawable favorite = getContext().getResources().getDrawable(R.drawable.ic_favorite, null);
+                favorite.setBounds(0, 0, 50, 50);
+                btnSave.setCompoundDrawables(favorite, null, null, null);
+                btnSave.setTextColor(Color.RED);
+            } else if (userType.equals("Vendor")) {
+
+            }
+
+        }
     }
 
     // TODO: Add dialog code for item's options from Brian's branch
