@@ -39,6 +39,7 @@ import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Models.Customer;
+import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Menu;
 import com.example.foodtruck.Models.Vendor;
@@ -80,6 +81,14 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         btnSave = v.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
         tv.setVisibility(View.INVISIBLE);
+
+        if (checkFavorited()) {
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable favorite = getContext().getResources().getDrawable(R.drawable.ic_favorite, null);
+            favorite.setBounds(0, 0, 70, 70);
+            btnSave.setCompoundDrawables(favorite, null, null, null);
+            btnSave.setTextColor(Color.RED);
+        }
+
         cMenuAdapter = new CustomerMenuAdapter(getContext(), this::onItemClick);
         if (getMenuList(truckID) != null)
             cMenuAdapter.submitList(getMenuList(truckID));
@@ -126,12 +135,12 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
             String email = sharedPref.getString("Email", "");
             String userType = sharedPref.getString("UserType", "");
 
-            if (userType.equals("Customer")) {
+            if (userType.equals("Customer") && !checkFavorited()) {
                 CustomersContract customersContract = new CustomersContract(getContext());
                 Customer customer = customersContract.getCustomerIdByEmail(email);
 
                 Bundle bundle = getArguments();
-                Long foodtruckID = bundle.getLong("mKey");
+                long foodtruckID = bundle.getLong("mKey");
 
                 FavoritesContract favoritesContract = new FavoritesContract(getContext());
                 favoritesContract.createEntry(foodtruckID, customer.getM_Id());
@@ -140,17 +149,45 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
                 favorite.setBounds(0, 0, 50, 50);
                 btnSave.setCompoundDrawables(favorite, null, null, null);
                 btnSave.setTextColor(Color.RED);
-            } else if (userType.equals("Vendor")) {
-
+            } else if (checkFavorited()) {
+                unFavorite();
             }
 
         }
     }
 
-    // TODO: Add dialog code for item's options from Brian's branch
-    private void openOptions(Item i) {
-        //itemOptionsDialog(i);
+    private boolean checkFavorited() {
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+        String email = sharedPref.getString("Email", "");
+        String userType = sharedPref.getString("UserType", "");
+        Bundle bundle = getArguments();
+        long foodtruckID = bundle.getLong("mKey");
 
+
+        if (userType.equals("Customer")) {
+            CustomersContract customersContract = new CustomersContract(getContext());
+            Customer customer = customersContract.getCustomerIdByEmail(email);
+            FavoritesContract favoritesContract = new FavoritesContract(getContext());
+            for (FoodTruck foodtruck : favoritesContract.getSavedFoodTrucks(customer.getM_Id())) {
+                if (foodtruckID == foodtruck.getM_ID()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void unFavorite() {
+        Bundle bundle = getArguments();
+        long foodtruckID = bundle.getLong("mKey");
+
+        FavoritesContract favoritesContract = new FavoritesContract(getContext());
+        favoritesContract.deleteFavorite(foodtruckID);
+
+        Drawable favorite = getContext().getResources().getDrawable(R.drawable.ic_notfavorite, null);
+        favorite.setBounds(0, 0, 50, 50);
+        btnSave.setCompoundDrawables(favorite, null, null, null);
+        btnSave.setTextColor(Color.BLACK);
     }
 
     private void itemOptionsDialog(Item item) {

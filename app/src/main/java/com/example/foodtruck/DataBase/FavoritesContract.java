@@ -95,6 +95,15 @@ public final class FavoritesContract {
         return newFavorite;
     }
 
+    public void deleteFavorite(long foodTruckID) {
+        open();
+        Cursor cursor = mDb.rawQuery("DELETE FROM " + FavoritesEntry.TABLE_NAME + " WHERE " + FavoritesEntry.COL_FOODTRUCK_ID + " = " + String.valueOf(foodTruckID), null);
+        cursor.moveToFirst();
+        cursor.close();
+        mDb.close();
+        close();
+    }
+
     public ArrayList<FoodTruck> getSavedFoodTrucks(long customerID) {
         open();
         ArrayList<FoodTruck> savedFoodTrucks = new ArrayList<>();
