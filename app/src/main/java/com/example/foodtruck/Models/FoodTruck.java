@@ -70,12 +70,7 @@ public class FoodTruck {
 
     @Override
     public String toString() {
-        return "FoodTruck{" +
-                "m_ID=" + m_ID +
-                ", m_Name='" + m_Name + '\'' +
-                ", m_Category='" + m_Category + '\'' +
-                ", m_Vendor=" + m_Vendor.getM_FirstName() + " " + m_Vendor.getM_LastName() +
-                '}';
+        return m_Name;
     }
 
 }
