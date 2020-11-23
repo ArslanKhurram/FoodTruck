@@ -87,13 +87,13 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         View v = inflater.inflate(R.layout.fragment_menu_customerview, container, false);
         Bundle bundle = getArguments();
         Long truckID = null;
-        if(bundle != null)
+        if (bundle != null)
             truckID = bundle.getLong("mKey");
         tv = v.findViewById(R.id.noMenuPrompt);
         hsv = v.findViewById(R.id.scrlMenu);
         tv.setVisibility(View.INVISIBLE);
         cMenuAdapter = new CustomerMenuAdapter(getContext(), this::onItemClick);
-        if(getMenuList(truckID) != null)
+        if (getMenuList(truckID) != null)
             cMenuAdapter.submitList(getMenuList(truckID));
         else {
             tv.setVisibility(View.VISIBLE);
@@ -157,11 +157,12 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         //hardcoded
         currentCustomer = cC.getCustomerById(1);
         itemNameDb.setText(item.getM_Name());
-        priceDb.setText("$"+item.getM_Price());
+        priceDb.setText("$" + item.getM_Price());
         spnQnty.getSelectedItem().toString();
 
 
-        arrayOptions();
+        //arrayOptions();
+        arrayOptionsUpdated(item);
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
                 .setPositiveButton("Add to Cart", null)
                 .setNegativeButton("Cancel", null)
@@ -170,51 +171,54 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         Button btnAdd = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         btnAdd.setOnClickListener(v -> {
             addCartToDb(item);
-           clearCheckoutDatabase();
+            clearCheckoutDatabase();
             alertDialog.cancel();
         });
     }//end itemOptionDialog
 
 
     //Add Cart To CheckOut Cart Db
-    private void addCartToDb(Item item){
-        cart.addCart(item.getM_Name(),item.getM_Price(),spnQnty.getSelectedItem().toString(),currentCustomer.getM_Id());
+    private void addCartToDb(Item item) {
+        cart.addCart(item.getM_Name(), item.getM_Price(), spnQnty.getSelectedItem().toString(), currentCustomer.getM_Id());
     }
 
     //Empty Database
-    private void clearCheckoutDatabase(){
+    private void clearCheckoutDatabase() {
         cart.clearTable(1);
     }
 
     //get value of checked checkbox that are selected
-    private void onCheckedChanged (CompoundButton buttonView, boolean isChecked){
-        if(isChecked){
+    private void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
         }
     }
 
 
-    //creates an array list with current selected menu id
-    private void arrayOptions () {
+    //obtians optin from database and dispaly them in a dynamic checkbox
+    private void arrayOptionsUpdated(Item item) {
         LinearLayout ll = dV.findViewById(R.id.checkBoxes);
-        OptionsContract occ = new OptionsContract(getContext());
-        ArrayList<Option> optionsList = new ArrayList<>();
 
-        ArrayList<String> alist=new ArrayList<String>();
-        alist.add(0,"Bacon");
-        alist.add(1,"Ketchup");
-        alist.add(2,"Lettuce");
-        alist.add(3,"American Cheese");
-        alist.add(4,"Hot Sauce");
-        alist.add(5,"Monterey Jack");
+        Long optionId = item.getM_Id();
 
-        CheckBox[] cb = new CheckBox[alist.size()];
+        ArrayList<Option> selectedOption;
+        OptionsContract oc = new OptionsContract(getContext());
 
-        //for loop to create the checkboxes
-        for (int i = 0; i < alist.size(); i++){
+        selectedOption = oc.getOptionsListByItemID(optionId);
+
+
+        selectedOption.get(0).getM_Option();
+
+
+        CheckBox[] cb = new CheckBox[selectedOption.size()];
+
+        for (int i = 0; i < selectedOption.size(); i++) {
             cb[i] = new CheckBox(getContext());
-            cb[i].setText(alist.get(i));
+            cb[i].setText(selectedOption.get(i).getM_Option());
             ll.addView(cb[i]);
+
         }
 
+    }
 
-    }}
+
+}
