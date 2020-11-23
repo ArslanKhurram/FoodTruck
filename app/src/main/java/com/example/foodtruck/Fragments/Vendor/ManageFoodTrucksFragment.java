@@ -57,16 +57,14 @@ import java.util.Objects;
 
 public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAdapter.onFoodTruckCardListener, View.OnClickListener {
 
-    private static final int GALLERY_REQUEST = '1';
-    Bitmap bitmap;
+    private Bitmap bitmap;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter recyclerAdapter;
     private MyFoodTruckAdapter foodTruckAdapter;
     private RecyclerView.LayoutManager foodTruckLayoutManager;
     private TextView tv;
-    EditText name, category, location;
-    LatLng latLng;
-    ImageView imageView;
+    private EditText name, category, location;
+    private LatLng latLng;
+    private ImageView imageView;
     private ArrayList<FoodTruck> foodTruckList = new ArrayList<>();
     private SharedPreferences sharedPref;
 

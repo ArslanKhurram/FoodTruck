@@ -104,16 +104,27 @@ public final class FavoritesContract {
         close();
     }
 
+    //check if foodtruck exists for a vendor
+    public boolean checkIfFavoritesExist(long customerID) {
+        open();
+        Cursor cursor = mDb.query(FavoritesEntry.TABLE_NAME, mAllColumns, FavoritesEntry.COL_CUSTOMER_ID + " =? ",
+                new String[]{String.valueOf(customerID)}, null, null, null);
+
+
+        boolean check = cursor.getCount() > 0;
+        cursor.close();
+        return check;
+    }
+
     public ArrayList<FoodTruck> getSavedFoodTrucks(long customerID) {
         open();
-        ArrayList<FoodTruck> savedFoodTrucks = new ArrayList<>();
-        FoodTrucksContract fc = new FoodTrucksContract(mContext);
 
+        if (checkIfFavoritesExist(customerID)) {
+            ArrayList<FoodTruck> savedFoodTrucks = new ArrayList<>();
+            FoodTrucksContract fc = new FoodTrucksContract(mContext);
 
-        Cursor cursor = mDb.rawQuery("SELECT " + FavoritesEntry.COL_FOODTRUCK_ID + " FROM " + FavoritesEntry.TABLE_NAME + " WHERE " + FavoritesEntry.COL_CUSTOMER_ID + " = " + String.valueOf(customerID), null);
+            Cursor cursor = mDb.rawQuery("SELECT " + FavoritesEntry.COL_FOODTRUCK_ID + " FROM " + FavoritesEntry.TABLE_NAME + " WHERE " + FavoritesEntry.COL_CUSTOMER_ID + " = " + String.valueOf(customerID), null);
 
-        Log.i("Cursor", DatabaseUtils.dumpCursorToString(cursor));
-        if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 FoodTruck foodTruck = fc.getFoodTruckById(cursor.getLong(0));
@@ -124,12 +135,12 @@ public final class FavoritesContract {
                     cursor.moveToNext();
                 }
             }
-
+            cursor.close();
+            return savedFoodTrucks;
         }
-        cursor.close();
         mDb.close();
         close();
-        return savedFoodTrucks;
+        return null;
     }
 
     public static final class FavoritesEntry implements BaseColumns {

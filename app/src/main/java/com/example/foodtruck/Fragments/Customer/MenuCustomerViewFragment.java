@@ -168,9 +168,11 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
             CustomersContract customersContract = new CustomersContract(getContext());
             Customer customer = customersContract.getCustomerIdByEmail(email);
             FavoritesContract favoritesContract = new FavoritesContract(getContext());
-            for (FoodTruck foodtruck : favoritesContract.getSavedFoodTrucks(customer.getM_Id())) {
-                if (foodtruckID == foodtruck.getM_ID()) {
-                    return true;
+            if (favoritesContract.checkIfFavoritesExist(customer.getM_Id())) {
+                for (FoodTruck foodtruck : favoritesContract.getSavedFoodTrucks(customer.getM_Id())) {
+                    if (foodtruckID == foodtruck.getM_ID()) {
+                        return true;
+                    }
                 }
             }
         }
