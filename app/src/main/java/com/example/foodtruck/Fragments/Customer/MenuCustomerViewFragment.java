@@ -49,6 +49,7 @@ import com.example.foodtruck.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,17 +63,13 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     private EditText itemName, itemPrice;
     private TextView tv, itemNameDb, priceDb;
     private HorizontalScrollView hsv;
-    private Spinner itemAvailability;
-    private SharedPreferences sharedPref;
     private LayoutInflater dialogInflater;
     private Menu menu;
     View dV;
-    private Pattern p;
-    private Matcher m;
     private Spinner spnQnty;
     private CheckOutContract cart;
     private ArrayList<Option> arrayCb = new ArrayList<>();
-
+    private String selectedOptions ="";
 
     //hardcoded
     private Customer currentCustomer;
@@ -139,7 +136,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
 
     }
 
-    // TODO: Add dialog code for item's options from Brian's branch
+    // TODO: Add dialog code for item's options from Bryan's branch
     private void openOptions(Item i) {
         itemOptionsDialog(i);
 
@@ -154,15 +151,17 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         priceDb = dV.findViewById(R.id.priceDb);
         spnQnty = dV.findViewById(R.id.spnQnty);
 
+
         //hardcoded
         currentCustomer = cC.getCustomerById(1);
         itemNameDb.setText(item.getM_Name());
         priceDb.setText("$" + item.getM_Price());
         spnQnty.getSelectedItem().toString();
 
-
-        //arrayOptions();
+        //Dynamically Displays Checkboxes & Pulls options from database
         arrayOptionsUpdated(item);
+
+
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
                 .setPositiveButton("Add to Cart", null)
                 .setNegativeButton("Cancel", null)
@@ -170,8 +169,10 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
 
         Button btnAdd = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         btnAdd.setOnClickListener(v -> {
+
             addCartToDb(item);
-            clearCheckoutDatabase();
+            //Clears checkout cart database but shouldnt be use yet until we forward the cart to foodtrucks
+           // clearCheckoutDatabase();
             alertDialog.cancel();
         });
     }//end itemOptionDialog
@@ -179,7 +180,10 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
 
     //Add Cart To CheckOut Cart Db
     private void addCartToDb(Item item) {
-        cart.addCart(item.getM_Name(), item.getM_Price(), spnQnty.getSelectedItem().toString(), currentCustomer.getM_Id());
+
+        cart.addCart(item.getM_Name(), item.getM_Price(), spnQnty.getSelectedItem().toString(), currentCustomer.getM_Id(),selectedOptions);
+       //Temporary Fix, if this code is not emplace the previous selection will stack on to the newly added items
+        selectedOptions ="";
     }
 
     //Empty Database
@@ -187,35 +191,30 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         cart.clearTable(1);
     }
 
-    //get value of checked checkbox that are selected
-    private void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-        }
-    }
-
-
-    //obtians optin from database and dispaly them in a dynamic checkbox
-    private void arrayOptionsUpdated(Item item) {
+    //obtains option from database and display them in a dynamic checkbox
+    private void  arrayOptionsUpdated(Item item) {
         LinearLayout ll = dV.findViewById(R.id.checkBoxes);
-
         Long optionId = item.getM_Id();
-
         ArrayList<Option> selectedOption;
         OptionsContract oc = new OptionsContract(getContext());
-
         selectedOption = oc.getOptionsListByItemID(optionId);
-
-
         selectedOption.get(0).getM_Option();
-
-
         CheckBox[] cb = new CheckBox[selectedOption.size()];
 
         for (int i = 0; i < selectedOption.size(); i++) {
             cb[i] = new CheckBox(getContext());
             cb[i].setText(selectedOption.get(i).getM_Option());
-            ll.addView(cb[i]);
+            int finalI = i;
 
+            cb[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(cb[finalI].isChecked()){
+                        selectedOptions += (selectedOption.get(finalI).getM_Option() + " ");
+                    }
+                }
+            });
+            ll.addView(cb[i]);
         }
 
     }
