@@ -13,8 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,10 +38,12 @@ import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
+import com.example.foodtruck.DataBase.OptionsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Menu;
+import com.example.foodtruck.Models.Option;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,10 +71,16 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     private Matcher m;
     private Spinner spnQnty;
     private CheckOutContract cart;
+    private ArrayList<Option> arrayCb = new ArrayList<>();
+
 
     //hardcoded
     private Customer currentCustomer;
     private CustomersContract cC;
+
+    public MenuCustomerViewFragment() {
+
+    }
 
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -142,12 +153,15 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         itemNameDb = dV.findViewById(R.id.itemNameDb);
         priceDb = dV.findViewById(R.id.priceDb);
         spnQnty = dV.findViewById(R.id.spnQnty);
+
         //hardcoded
         currentCustomer = cC.getCustomerById(1);
         itemNameDb.setText(item.getM_Name());
         priceDb.setText("$"+item.getM_Price());
         spnQnty.getSelectedItem().toString();
 
+
+        arrayOptions();
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
                 .setPositiveButton("Add to Cart", null)
                 .setNegativeButton("Cancel", null)
@@ -161,6 +175,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         });
     }//end itemOptionDialog
 
+
     //Add Cart To CheckOut Cart Db
     private void addCartToDb(Item item){
         cart.addCart(item.getM_Name(),item.getM_Price(),spnQnty.getSelectedItem().toString(),currentCustomer.getM_Id());
@@ -169,8 +184,37 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     //Empty Database
     private void clearCheckoutDatabase(){
         cart.clearTable(1);
+    }
 
+    //get value of checked checkbox that are selected
+    private void onCheckedChanged (CompoundButton buttonView, boolean isChecked){
+        if(isChecked){
+        }
     }
 
 
-}
+    //creates an array list with current selected menu id
+    private void arrayOptions () {
+        LinearLayout ll = dV.findViewById(R.id.checkBoxes);
+        OptionsContract occ = new OptionsContract(getContext());
+        ArrayList<Option> optionsList = new ArrayList<>();
+
+        ArrayList<String> alist=new ArrayList<String>();
+        alist.add(0,"Bacon");
+        alist.add(1,"Ketchup");
+        alist.add(2,"Lettuce");
+        alist.add(3,"American Cheese");
+        alist.add(4,"Hot Sauce");
+        alist.add(5,"Monterey Jack");
+
+        CheckBox[] cb = new CheckBox[alist.size()];
+
+        //for loop to create the checkboxes
+        for (int i = 0; i < alist.size(); i++){
+            cb[i] = new CheckBox(getContext());
+            cb[i].setText(alist.get(i));
+            ll.addView(cb[i]);
+        }
+
+
+    }}
