@@ -173,6 +173,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
             addCartToDb(item);
             //Clears checkout cart database but shouldnt be use yet until we forward the cart to foodtrucks
            // clearCheckoutDatabase();
+
             alertDialog.cancel();
         });
     }//end itemOptionDialog
@@ -180,8 +181,17 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
 
     //Add Cart To CheckOut Cart Db
     private void addCartToDb(Item item) {
-
-        cart.addCart(item.getM_Name(), item.getM_Price(), spnQnty.getSelectedItem().toString(), currentCustomer.getM_Id(),selectedOptions);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("foodTruck",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Bundle bundle = getArguments();
+        Long truckID = null;
+        if (bundle != null) {
+            truckID = bundle.getLong("mKey");
+            editor.putLong("truck_Id",truckID);
+            editor.commit();
+        }
+        cart.addCart(item.getM_Id(), spnQnty.getSelectedItem().toString(), currentCustomer.getM_Id(),selectedOptions);
+        Toast.makeText(getContext(), "Added To Cart", Toast.LENGTH_SHORT).show();
        //Temporary Fix, if this code is not emplace the previous selection will stack on to the newly added items
         selectedOptions ="";
     }
@@ -218,6 +228,5 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         }
 
     }
-
 
 }

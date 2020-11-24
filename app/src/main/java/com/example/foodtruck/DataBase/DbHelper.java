@@ -139,8 +139,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String SQL_CREATE_CHECKOUT_CART_TABLE = "CREATE TABLE " + CartEntry.TABLE_NAME + " (" +
             CartEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             CartEntry.COL_CUST_ID + " INTEGER NOT NULL, " +
-            CartEntry.COL_ITEM + " TEXT NOT NULL, " +
-            CartEntry.COL_PRICE + " TEXT NOT NULL, " +
+            CartEntry.COL_ITEM_ID + " INTERGER NOT NULL, " +
             CartEntry.COL_QUANTITY + " TEXT NOT NULL, " +
             CartEntry.COL_OPTION + " TEXT NOT NULL " +
             ");";
