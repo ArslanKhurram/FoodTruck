@@ -138,7 +138,7 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
         bundle.putLong("mKey", ft.getM_ID());
         MenusContract mc = new MenusContract(getContext());
         menuFrag.setArguments(bundle);
-        transaction.replace(R.id.fragment_container, menuFrag).commit();
+        transaction.replace(R.id.mainFragment_container, menuFrag).commit();
     }
 
 
