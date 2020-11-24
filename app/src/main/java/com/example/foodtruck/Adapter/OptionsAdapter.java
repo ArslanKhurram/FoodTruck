@@ -8,16 +8,18 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.foodtruck.Models.Option;
+import com.example.foodtruck.Models.OrderedItem;
+import com.example.foodtruck.Models.OrderedItemOptions;
 import com.example.foodtruck.R;
 
 import java.util.ArrayList;
 
-public class OptionsAdapter extends ArrayAdapter<Option> {
+public class OptionsAdapter extends ArrayAdapter<OrderedItemOptions> {
 
 
-    ArrayList<Option> options;
+    ArrayList<OrderedItemOptions> options;
 
-    public OptionsAdapter(Context context, ArrayList<Option> mOptions)
+    public OptionsAdapter(Context context, ArrayList<OrderedItemOptions> mOptions)
     {
         super(context, 0);
         options = mOptions;
@@ -33,7 +35,7 @@ public class OptionsAdapter extends ArrayAdapter<Option> {
     }
 
     @Override
-    public Option getItem(int position) {
+    public OrderedItemOptions getItem(int position) {
         return options.get(position);
     }
 
@@ -55,8 +57,8 @@ public class OptionsAdapter extends ArrayAdapter<Option> {
             layoutHandler = (OptionsAdapter.LayoutHandler) mview.getTag();
         }
 
-        Option option = (Option) this.getItem(position);
-        layoutHandler.option.setText(option.getM_Option());
+        OrderedItemOptions option = (OrderedItemOptions) this.getItem(position);
+        layoutHandler.option.setText(option.getM_Option().getM_Option());
         return mview;
     }
 }

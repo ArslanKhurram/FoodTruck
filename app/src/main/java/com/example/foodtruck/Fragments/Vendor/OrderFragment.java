@@ -27,6 +27,7 @@ import com.example.foodtruck.Adapter.OrderAdapter;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.OptionsContract;
+import com.example.foodtruck.DataBase.OrderedItemOptionsContract;
 import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.VendorsContract;
@@ -35,6 +36,7 @@ import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Option;
 import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.OrderedItem;
+import com.example.foodtruck.Models.OrderedItemOptions;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 
@@ -60,7 +62,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
     private ItemsOrderedAdapter listAdapter;
     private OptionsAdapter optionsAdapter;
     private ListView optionsList;
-    private ArrayList<Option> mOptions;
+    private ArrayList<OrderedItemOptions> mOptions;
     View dv;
     private TextView customerName;
     private Spinner statusSpinner;
@@ -162,8 +164,10 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                OptionsContract oc = new OptionsContract(getContext());
-                mOptions = oc.getOptionsListByItemID(order.getM_Id());
+                OrderedItemOptionsContract oioc = new OrderedItemOptionsContract(getContext());
+                OrderedItemsContract oic = new OrderedItemsContract(getContext());
+                OrderedItem orderedItems = oic.getOrderedItemById(order.getM_Id());
+                mOptions = oioc.getOrderedItemOptions(orderedItems.getM_id());
                 optionsAdapter = new OptionsAdapter(getContext(), mOptions);
                 optionsList.setAdapter(optionsAdapter);
             }

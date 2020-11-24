@@ -8,12 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.OrderedItem;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.example.foodtruck.DataBase.CustomersContract.CustomersEntry.TABLE_NAME;
 
 //class to add Ordered Items to database
 public final class OrderedItemsContract {
@@ -120,6 +123,21 @@ public final class OrderedItemsContract {
         mDb.close();
         close();
         return orderedItems;
+    }
+
+    public OrderedItem getOrderedItemById(long id) {
+        open();
+        Cursor cursor = mDb.query(OrderedItemsEntry.TABLE_NAME, mAllColumns, OrderedItemsEntry._ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        OrderedItem orderedItem = cursorToOrderedItem(cursor, cursor.getLong(cursor.getColumnIndex(OrderedItemsEntry.COL_ITEM_ID)), cursor.getLong(cursor.getColumnIndex(OrderedItemsEntry.COL_ORDER_ID)));
+        cursor.close();
+        mDb.close();
+        close();
+        return orderedItem;
     }
 
     //column and table names

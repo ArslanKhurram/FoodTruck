@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 import com.example.foodtruck.DataBase.CheckOutContract.CartEntry;
+import com.example.foodtruck.Models.OrderedItemOptions;
 
 import static com.example.foodtruck.DataBase.CustomersContract.CustomersEntry;
 import static com.example.foodtruck.DataBase.FoodTrucksContract.FoodTrucksEntry;
@@ -13,6 +14,7 @@ import static com.example.foodtruck.DataBase.ItemsContract.ItemsEntry;
 import static com.example.foodtruck.DataBase.MenusContract.MenusEntry;
 import static com.example.foodtruck.DataBase.PaymentsContract.PaymentsEntry;
 import static com.example.foodtruck.DataBase.VendorsContract.VendorsEntry;
+import static com.example.foodtruck.DataBase.OrderedItemOptionsContract.OrderedItemOptionsEntry;
 
 import static com.example.foodtruck.DataBase.AdminContract.AdminEntry;
 
@@ -144,6 +146,12 @@ public class DbHelper extends SQLiteOpenHelper {
             CartEntry.COL_QUANTITY + " TEXT NOT NULL " +
             ");";
 
+    public static final String SQL_CREATE_ORDERED_ITEM_OPTIONS_TABLE = "CREATE TABLE " + OrderedItemOptionsEntry.TABLE_NAME + " (" +
+            OrderedItemOptionsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            OrderedItemOptionsEntry.COL_OPTION_ID + " INTEGER NOT NULL, " +
+            OrderedItemOptionsEntry.COL_ITEM_ID + " INTEGER NOT NULL, " +
+            OrderedItemOptionsEntry.COL_ORDERED_ITEM_ID + " INTEGER NOT NULL " +
+            ");";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -158,6 +166,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_ORDERS_TABLE);
         db.execSQL(SQL_CREATE_ORDERED_ITEMS_TABLE);
         db.execSQL(SQL_CREATE_CHECKOUT_CART_TABLE);
+        db.execSQL(SQL_CREATE_ORDERED_ITEM_OPTIONS_TABLE);
 
     }
 
@@ -173,6 +182,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + OptionsEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + OrdersEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + OrderedItemsEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + OrderedItemOptionsEntry.TABLE_NAME);
 
         onCreate(db);
     }
