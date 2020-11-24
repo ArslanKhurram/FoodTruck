@@ -23,7 +23,7 @@ public final class FoodTrucksContract {
     private DbHelper mDbHelper;
     private Context mContext;
 
-    //constructor to open payments table
+    //constructor to open table
     public FoodTrucksContract(Context context) {
         this.mContext = context;
         mDbHelper = new DbHelper(context);

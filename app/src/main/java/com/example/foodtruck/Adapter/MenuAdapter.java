@@ -1,9 +1,12 @@
 package com.example.foodtruck.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -64,6 +67,7 @@ public class MenuAdapter extends ListAdapter<Item, MenuAdapter.ItemViewHolder> {
     //viewHolder class whose objects represent each list items
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView itemName, itemPrice, itemAvailable, itemCount;
+        private ImageView itemPicture;
         private OnItemListener onItemListener;
 
         public ItemViewHolder(View view, OnItemListener onItemListener) {
@@ -72,6 +76,7 @@ public class MenuAdapter extends ListAdapter<Item, MenuAdapter.ItemViewHolder> {
             itemPrice = view.findViewById(R.id.itemPrice);
             itemAvailable = view.findViewById(R.id.availableTxt);
             itemCount = view.findViewById(R.id.itemCount);
+            itemPicture = view.findViewById(R.id.ivMenuItemPicture);
             this.onItemListener = onItemListener;
 
             view.setOnClickListener(this);
@@ -82,6 +87,9 @@ public class MenuAdapter extends ListAdapter<Item, MenuAdapter.ItemViewHolder> {
             itemPrice.setText("Price: " + item.getM_Price());
             itemAvailable.setText("Available: " + item.getM_Available());
             itemCount.setText(String.valueOf(item.getM_Id()));
+
+            Bitmap bitmap = BitmapFactory.decodeByteArray(item.getM_Image(), 0, item.getM_Image().length);
+            itemPicture.setImageBitmap(bitmap);
         }
 
         @Override
