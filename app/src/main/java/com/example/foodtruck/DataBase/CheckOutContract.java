@@ -13,10 +13,6 @@ import android.util.Log;
 
 import com.example.foodtruck.Models.Cart;
 import com.example.foodtruck.Models.Customer;
-import com.example.foodtruck.Models.Item;
-import com.example.foodtruck.Models.Option;
-
-import java.util.ArrayList;
 
 public class CheckOutContract {
 
@@ -33,7 +29,6 @@ public class CheckOutContract {
             CartEntry.COL_ITEM,
             CartEntry.COL_PRICE,
             CartEntry.COL_QUANTITY,
-            CartEntry.COL_OPTION
     };
 
     //Add checkout cart to database
@@ -43,7 +38,6 @@ public class CheckOutContract {
         av.put(CartEntry.COL_ITEM, cart.getM_Item());
         av.put(CartEntry.COL_PRICE, cart.getM_Price());
         av.put(CartEntry.COL_QUANTITY,cart.getM_Quantity());
-        av.put(CartEntry.COL_OPTION,cart.getM_Selected_Options());
 
         long insertID = mDb.insert(CartEntry.TABLE_NAME,null,av);
         Cursor cursor = mDb.query(CartEntry.TABLE_NAME,mAllColumns,CartEntry._ID + " = " + insertID, null,null,null,null);
@@ -56,14 +50,13 @@ public class CheckOutContract {
     }
 
     //used to add cart into database
-    public Cart addCart (String item , String price, String qnty, long customerId, String option){
+    public Cart addCart (String item , String price, String qnty, long customerId){
         open();
         ContentValues av = new ContentValues();
         av.put(CartEntry.COL_ITEM, item);
         av.put(CartEntry.COL_PRICE, price);
         av.put(CartEntry.COL_QUANTITY,qnty);
         av.put(CartEntry.COL_CUST_ID, customerId);
-        av.put(CartEntry.COL_OPTION, option);
         long insertID = mDb.insert(CartEntry.TABLE_NAME,null,av);
         Cursor cursor = mDb.query(CartEntry.TABLE_NAME,mAllColumns,CartEntry._ID + " = " + insertID, null,null,null,null);
         cursor.moveToFirst();
@@ -99,60 +92,6 @@ public class CheckOutContract {
         return cart;
 
     }
-    //return array list of options
-    public ArrayList<Option> getOptionSelected(long itemID){
-        open();
-        boolean check = checkIfOptionsExist(itemID);
-        if (check) {
-            ArrayList<Option> optionsList = new ArrayList<Option>();
-
-            Cursor cursor = mDb.query(CartEntry.TABLE_NAME, mAllColumns, CartEntry.COL_CUST_ID + " =?",
-                    new String[]{String.valueOf(itemID)}, null, null, null);
-
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                Option option = cursorToOption(cursor, itemID);
-                optionsList.add(option);
-                if (cursor.isLast() || cursor.isClosed())
-                    break;
-                else
-                    cursor.moveToNext();
-            }
-            cursor.close();
-            return optionsList;
-        }
-        mDb.close();
-        close();
-        return null;
-
-
-    }
-
-    //set data to specific option object
-    protected Option cursorToOption(Cursor cursor, long id) {
-        Option option = new Option();
-        option.setM_Id(cursor.getLong(0));
-        option.setM_Option(cursor.getString(1));
-
-        //get The Customer by id
-        ItemsContract contract = new ItemsContract(mContext);
-        Item item = contract.getItemById(id);
-        if (contract != null) {
-            option.setM_Item(item);
-        }
-        return option;
-    }
-
-    //check is options exist for an item
-    public boolean checkIfOptionsExist(long ItemID) {
-        open();
-        Cursor cursor = mDb.query(CartEntry.TABLE_NAME, mAllColumns, CartEntry._ID + "=? ",
-                new String[]{String.valueOf(ItemID)}, null, null, null);
-
-        boolean check = cursor.getCount() > 0;
-        cursor.close();
-        return check;
-    }
 
     //open cart table
     public CheckOutContract(Context context){
@@ -173,7 +112,6 @@ public class CheckOutContract {
         cart.setM_Item(cursor.getString(1));
         cart.setM_Price(cursor.getString(2));
         cart.setM_Quantity(cursor.getString(3));
-        cart.setM_Selected_Options(cursor.getString(4));
 
         //get The Customer by id
         CustomersContract contract = new CustomersContract(mContext);
@@ -208,7 +146,6 @@ public class CheckOutContract {
         public static final String COL_ITEM = "item";
         public static final String COL_PRICE = "price";
         public static final String COL_QUANTITY = "Quantity";
-        public static final String COL_OPTION = "Options";
 
     }// ends CartEntry
 }

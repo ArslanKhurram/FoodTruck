@@ -56,7 +56,7 @@ public final class OrdersContract {
             OrdersEntry.COL_DATE_ADDED,
             OrdersEntry.COL_STATUS,
             OrdersEntry.COL_CUSTOMER_ID,
-            OrdersEntry.COL_FOOD_TRUCK_ID
+            OrdersEntry.COL_VENDOR_ID
     };
 
     //add order into database
@@ -67,7 +67,7 @@ public final class OrdersContract {
         cv.put(OrdersEntry.COL_DATE_ADDED, dateAdded);
         cv.put(OrdersEntry.COL_STATUS, status);
         cv.put(OrdersEntry.COL_CUSTOMER_ID, customerId);
-        cv.put(OrdersEntry.COL_FOOD_TRUCK_ID, vendorId);
+        cv.put(OrdersEntry.COL_VENDOR_ID, vendorId);
 
         long insertId = mDb.insert(OrdersEntry.TABLE_NAME, null, cv);
         Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry._ID +
@@ -81,17 +81,17 @@ public final class OrdersContract {
     }
 
     //return array List of orders for vendor
-    public ArrayList<Order> getOrdersList(long foodTruckID) {
+    public ArrayList<Order> getOrdersList(long vendorId) {
         open();
         ArrayList<Order> ordersList = new ArrayList<Order>();
 
-        Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry.COL_FOOD_TRUCK_ID + " =?",
-                new String[]{String.valueOf(foodTruckID)}, null, null, null);
+        Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry.COL_VENDOR_ID + " =?",
+                new String[]{String.valueOf(vendorId)}, null, null, null);
 
         if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), foodTruckID);
+                Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), vendorId);
                 ordersList.add(order);
                 if (cursor.isLast() || cursor.isClosed())
                     break;
@@ -106,16 +106,16 @@ public final class OrdersContract {
     }
 
     //return array List of orders for vendor
-    public ArrayList<Order> getOrderListByStatus(long foodTruckID, String status) {
+    public ArrayList<Order> getOrderListByStatus(long vendorId, String status) {
         open();
         ArrayList<Order> ordersList = new ArrayList<Order>();
 
-        Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry.COL_STATUS + " =? " + " AND " + OrdersEntry.COL_FOOD_TRUCK_ID + " =? ", new String[]{status, String.valueOf(foodTruckID)}, null, null, null);
+        Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry.COL_STATUS + " =? " + " AND " + OrdersEntry.COL_VENDOR_ID + " =? ", new String[]{status, String.valueOf(vendorId)}, null, null, null);
 
         if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), foodTruckID);
+                Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), vendorId);
                 ordersList.add(order);
                 if (cursor.isLast() || cursor.isClosed())
                     break;
@@ -138,15 +138,25 @@ public final class OrdersContract {
             cursor.moveToFirst();
         }
 
-        Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_FOOD_TRUCK_ID)));
+        Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_VENDOR_ID)));
         cursor.close();
         mDb.close();
         close();
         return order;
     }
 
+    //column and table names
+    public static final class OrdersEntry implements BaseColumns {
+        public static final String TABLE_NAME = "orders";
+        public static final String COL_ORDER_NUMBER = "orderNumber";
+        public static final String COL_DATE_ADDED = "dateAdded";
+        public static final String COL_STATUS = "status";
+        public static final String COL_CUSTOMER_ID = "customer_ID";
+        public static final String COL_VENDOR_ID = "vendor_ID";
+    }
+
     //set data to specific order object
-    protected Order cursorToOrder(Cursor cursor, long customerID, long foodTruckID) {
+    protected Order cursorToOrder(Cursor cursor, long customerID, long vendorID) {
         Order order = new Order();
         order.setM_Id(cursor.getLong(0));
         order.setM_OrderNumber(cursor.getString(1));
@@ -161,23 +171,13 @@ public final class OrdersContract {
         }
 
         //get The Vendor by id
-        FoodTrucksContract fc = new FoodTrucksContract(mContext);
-        FoodTruck foodTruck = fc.getFoodTruckById(foodTruckID);
-        if (foodTruck != null) {
-            order.setM_FoodTruck(foodTruck);
+        VendorsContract vc = new VendorsContract(mContext);
+        Vendor vendor = vc.getVendorById(vendorID);
+        if (vc != null) {
+            order.setM_Vendor(vendor);
         }
 
         return order;
-    }
-
-    //column and table names
-    public static final class OrdersEntry implements BaseColumns {
-        public static final String TABLE_NAME = "orders";
-        public static final String COL_ORDER_NUMBER = "orderNumber";
-        public static final String COL_DATE_ADDED = "dateAdded";
-        public static final String COL_STATUS = "status";
-        public static final String COL_CUSTOMER_ID = "customer_ID";
-        public static final String COL_FOOD_TRUCK_ID = "foodtruck_ID";
     }
 
     public void updateOrder(long id, String status) {

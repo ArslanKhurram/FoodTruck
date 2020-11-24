@@ -126,7 +126,7 @@ public class DbHelper extends SQLiteOpenHelper {
             OrdersEntry.COL_DATE_ADDED + " TEXT NOT NULL, " +
             OrdersEntry.COL_STATUS + " TEXT NOT NULL, " +
             OrdersEntry.COL_CUSTOMER_ID + " INTEGER NOT NULL, " +
-            OrdersEntry.COL_FOOD_TRUCK_ID + " INTEGER NOT NULL " +
+            OrdersEntry.COL_VENDOR_ID + " INTEGER NOT NULL " +
             "); ";
 
     //query to create ordered items table
@@ -143,8 +143,7 @@ public class DbHelper extends SQLiteOpenHelper {
             CartEntry.COL_CUST_ID + " INTEGER NOT NULL, " +
             CartEntry.COL_ITEM + " TEXT NOT NULL, " +
             CartEntry.COL_PRICE + " TEXT NOT NULL, " +
-            CartEntry.COL_QUANTITY + " TEXT NOT NULL, " +
-            CartEntry.COL_OPTION + " TEXT NOT NULL " +
+            CartEntry.COL_QUANTITY + " TEXT NOT NULL " +
             ");";
 
     //query to create rating table
