@@ -127,6 +127,11 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         // Menu id from clicked foodTruck, compile list of items associated in that menu
         menu = mc.getMenuByFoodTruckId(ft);
         if (menu != null) {
+            for(Item item : ic.getItemListByMenuID(menu.getM_Id())) {
+                if(item.getM_Available().equals("No")) {
+
+                }
+            }
             itemList = ic.getItemListByMenuID(menu.getM_Id());
             return itemList;
         } else

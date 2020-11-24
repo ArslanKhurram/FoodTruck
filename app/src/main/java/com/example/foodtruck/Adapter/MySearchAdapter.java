@@ -63,13 +63,14 @@ public class MySearchAdapter extends ListAdapter<FoodTruck, MySearchAdapter.Food
     public static class FoodTruckViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView foodTruckPicture;
-        public TextView foodTruckName;
+        public TextView foodTruckName, foodTruckCategory;
         public onCardClickListener onCardClickListener;
 
         public FoodTruckViewHolder(@NonNull View itemView, onCardClickListener vOnCardClickListener) {
             super(itemView);
             foodTruckPicture = itemView.findViewById(R.id.ivSearchItem);
             foodTruckName = itemView.findViewById(R.id.txtSearchName);
+            foodTruckCategory = itemView.findViewById(R.id.txtSearchCategory);
             onCardClickListener = vOnCardClickListener;
             itemView.setOnClickListener(this);
         }
@@ -78,6 +79,7 @@ public class MySearchAdapter extends ListAdapter<FoodTruck, MySearchAdapter.Food
             Bitmap bmp = BitmapFactory.decodeByteArray(foodTruck.getM_Image(), 0, foodTruck.getM_Image().length);
             foodTruckPicture.setImageBitmap(bmp);
             foodTruckName.setText(foodTruck.getM_Name());
+            foodTruckCategory.setText(foodTruck.getM_Category());
         }
 
         @Override
