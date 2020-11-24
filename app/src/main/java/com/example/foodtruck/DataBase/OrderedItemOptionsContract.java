@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.example.foodtruck.Models.Item;
+import com.example.foodtruck.Models.Option;
 import com.example.foodtruck.Models.OrderedItem;
 import com.example.foodtruck.Models.OrderedItemOptions;
 
@@ -76,6 +77,11 @@ public final class OrderedItemOptionsContract {
         OrderedItemOptions orderedItemOptions = new OrderedItemOptions();
         orderedItemOptions.setM_id(cursor.getLong(0));
 
+        //get Option by id
+        OptionsContract optionsContract = new OptionsContract(mContext);
+        Option option = optionsContract.getOptionById(cursor.getLong(cursor.getColumnIndex(OrderedItemOptionsEntry.COL_OPTION_ID)));
+        orderedItemOptions.setM_Option(option);
+
         //get The Item by id
         ItemsContract ic = new ItemsContract(mContext);
         Item item = ic.getItemById(itemID);
@@ -90,12 +96,28 @@ public final class OrderedItemOptionsContract {
         return orderedItemOptions;
     }
 
+    //return Item by searching by id
+    public OrderedItemOptions getOptionById(long orderedItemID) {
+        open();
+        Cursor cursor = mDb.query(OrderedItemOptionsEntry.TABLE_NAME, mAllColumns, OrderedItemOptionsEntry.COL_ORDERED_ITEM_ID + " = ?",
+                new String[]{String.valueOf(orderedItemID)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        OrderedItemOptions option = cursorToItemOptions(cursor, cursor.getLong(cursor.getColumnIndex(OrderedItemOptionsEntry.COL_ITEM_ID)), orderedItemID);
+        cursor.close();
+        mDb.close();
+        close();
+        return option;
+    }
+
     //return array list for an order
     public ArrayList<OrderedItemOptions> getOrderedItemOptions(long ordereditemID) {
         open();
         ArrayList<OrderedItemOptions> orderedItemOptions = new ArrayList<>();
 
-        Cursor cursor = mDb.query(OrderedItemOptionsEntry.TABLE_NAME, mAllColumns,  OrderedItemOptionsEntry.COL_ORDERED_ITEM_ID + " =? ",
+        Cursor cursor = mDb.query(OrderedItemOptionsEntry.TABLE_NAME, mAllColumns, OrderedItemOptionsEntry.COL_ORDERED_ITEM_ID + " =? ",
                 new String[]{String.valueOf(ordereditemID)}, null, null, null);
 
         if (cursor != null) {

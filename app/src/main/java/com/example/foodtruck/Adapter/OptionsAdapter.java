@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.foodtruck.DataBase.OrderedItemOptionsContract;
 import com.example.foodtruck.Models.Option;
 import com.example.foodtruck.Models.OrderedItem;
 import com.example.foodtruck.Models.OrderedItemOptions;
@@ -19,14 +20,30 @@ public class OptionsAdapter extends ArrayAdapter<OrderedItemOptions> {
 
     ArrayList<OrderedItemOptions> options;
 
-    public OptionsAdapter(Context context, ArrayList<OrderedItemOptions> mOptions)
-    {
+    public OptionsAdapter(Context context, ArrayList<OrderedItemOptions> mOptions) {
         super(context, 0);
         options = mOptions;
     }
 
-    static class LayoutHandler{
-        TextView option;
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View mview = convertView;
+        OptionsAdapter.LayoutHandler layoutHandler;
+
+        if (mview == null) {
+            LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            mview = layoutInflater.inflate(R.layout.optionslist_layout, parent, false);
+            layoutHandler = new OptionsAdapter.LayoutHandler();
+            layoutHandler.option = mview.findViewById(R.id.tvoption);
+            mview.setTag(layoutHandler);
+        } else {
+            layoutHandler = (OptionsAdapter.LayoutHandler) mview.getTag();
+        }
+
+        OrderedItemOptionsContract orderedItemOptionsContract = new OrderedItemOptionsContract(getContext());
+        OrderedItemOptions option = (OrderedItemOptions) this.getItem(position);
+        layoutHandler.option.setText(option.getM_Option().getM_Option());
+        return mview;
     }
 
     @Override
@@ -39,26 +56,7 @@ public class OptionsAdapter extends ArrayAdapter<OrderedItemOptions> {
         return options.get(position);
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View mview = convertView;
-        OptionsAdapter.LayoutHandler layoutHandler;
-
-        if(mview==null)
-        {
-            LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            mview = layoutInflater.inflate(R.layout.optionslist_layout, parent, false);
-            layoutHandler = new OptionsAdapter.LayoutHandler();
-            layoutHandler.option = mview.findViewById(R.id.tvoption);
-            mview.setTag(layoutHandler);
-        }
-        else
-        {
-            layoutHandler = (OptionsAdapter.LayoutHandler) mview.getTag();
-        }
-
-        OrderedItemOptions option = (OrderedItemOptions) this.getItem(position);
-        layoutHandler.option.setText(option.getM_Option().getM_Option());
-        return mview;
+    static class LayoutHandler {
+        TextView option;
     }
 }
