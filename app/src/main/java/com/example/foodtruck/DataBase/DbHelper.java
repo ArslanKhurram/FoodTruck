@@ -107,7 +107,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String SQL_CREATE_ADMIN_TABLE = "CREATE TABLE " + AdminEntry.TABLE_NAME + " (" +
             AdminEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             AdminEntry.COL_EMAIL + " TEXT NOT NULL, " +
-            AdminEntry.COL_PASSWORD + " INTEGER NOT NULL " + 
+            AdminEntry.COL_PASSWORD + " INTEGER NOT NULL " +
             "); ";
 
 
@@ -143,7 +143,8 @@ public class DbHelper extends SQLiteOpenHelper {
             CartEntry.COL_CUST_ID + " INTEGER NOT NULL, " +
             CartEntry.COL_ITEM + " TEXT NOT NULL, " +
             CartEntry.COL_PRICE + " TEXT NOT NULL, " +
-            CartEntry.COL_QUANTITY + " TEXT NOT NULL " +
+            CartEntry.COL_QUANTITY + " TEXT NOT NULL, " +
+            CartEntry.COL_OPTION + " TEXT NOT NULL " +
             ");";
 
     //query to create rating table

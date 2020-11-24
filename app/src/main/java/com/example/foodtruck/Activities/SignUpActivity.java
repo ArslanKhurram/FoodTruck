@@ -92,20 +92,22 @@ public class SignUpActivity extends AppCompatActivity {
                         oc.createOption("Something", i.getM_Id());
                         oc.createOption("Something", i.getM_Id());
                     }
+                }
 
-            OrdersContract ordersContract = new OrdersContract(this);
-            ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
-            ordersContract.createOrder("A03", "10/22/2020", "Preparing", customer2.getM_Id(), foodTruck1.getM_ID());
-            ordersContract.createOrder("B03", "10/22/2020", "Completed", customer3.getM_Id(), foodTruck1.getM_ID());
-            ArrayList<Order> orderArrayList = ordersContract.getOrdersList(foodTruck1.getM_ID());
+                OrdersContract ordersContract = new OrdersContract(this);
+                ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
+                ordersContract.createOrder("A03", "10/22/2020", "Preparing", customer2.getM_Id(), foodTruck1.getM_ID());
+                ordersContract.createOrder("B03", "10/22/2020", "Completed", customer3.getM_Id(), foodTruck1.getM_ID());
+                ArrayList<Order> orderArrayList = ordersContract.getOrdersList(foodTruck1.getM_ID());
 
-            OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
+                OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
 
-            if (itemArrayList != null && orderArrayList != null) {
+                if (itemArrayList != null && orderArrayList != null) {
 
-                for (int i = 0; i < orderArrayList.size(); i++) {
-                    orderedItemsContract.addOrderedItem("1", itemArrayList.get(1).getM_Id(), orderArrayList.get(i).getM_Id());
-                    orderedItemsContract.addOrderedItem("2", itemArrayList.get(2).getM_Id(), orderArrayList.get(i).getM_Id());
+                    for (int i = 0; i < orderArrayList.size(); i++) {
+                        orderedItemsContract.addOrderedItem("1", itemArrayList.get(1).getM_Id(), orderArrayList.get(i).getM_Id());
+                        orderedItemsContract.addOrderedItem("2", itemArrayList.get(2).getM_Id(), orderArrayList.get(i).getM_Id());
+                    }
                 }
             }
         }
