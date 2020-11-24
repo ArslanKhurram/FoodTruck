@@ -10,13 +10,57 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:autofillHints="@string/account"/>
+        app:queryHint="Search"/>
+
+    <RadioGroup
+        android:id="@+id/search_filter_group"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/search_view">
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rbName"
+            android:layout_margin="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:textColor="@android:color/white"
+            android:text="Name"
+            android:textAlignment="center"
+            android:checked="true"
+            android:layout_weight="1"
+            android:button="@android:color/transparent"
+            android:background="@drawable/radio_button_selector" />
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rbCategory"
+            android:layout_margin="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:textColor="@android:color/black"
+            android:text="Category"
+            android:textAlignment="center"
+            android:checked="false"
+            android:layout_weight="1"
+            android:button="@android:color/transparent"
+            android:background="@drawable/radio_button_selector" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnSortSearch"
+        android:layout_width="75dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/search_view"
+        android:drawableRight="@drawable/ic_expand"
+        android:background="@drawable/radio_button_deselected"
+        android:layout_toRightOf="@id/search_filter_group"
+        android:layout_marginStart="35dp"
+        android:textSize="12dp"
+        android:text="Sort" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/search_view"
+        android:layout_below="@id/search_filter_group"
         android:layout_centerHorizontal="true"
         tools:listitem="@layout/search_card" />
 

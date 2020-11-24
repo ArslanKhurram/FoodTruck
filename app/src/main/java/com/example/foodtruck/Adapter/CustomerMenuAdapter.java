@@ -3,6 +3,7 @@ package com.example.foodtruck.Adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,7 @@ public class CustomerMenuAdapter extends ListAdapter<Item, CustomerMenuAdapter.I
 
     //viewHolder class whose objects represent each list items
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView itemName, itemPrice;
+        private TextView itemName, itemPrice, itemSoldOut;
         private ImageView itemPicture;
         private OnItemListener onItemListener;
 
@@ -72,6 +73,7 @@ public class CustomerMenuAdapter extends ListAdapter<Item, CustomerMenuAdapter.I
             super(view);
             itemName = view.findViewById(R.id.itemName);
             itemPrice = view.findViewById(R.id.itemPrice);
+            itemSoldOut = view.findViewById(R.id.availableTxt);
             itemPicture = view.findViewById(R.id.ivMenuItemPicture);
             this.onItemListener = onItemListener;
             view.setOnClickListener(this);
@@ -80,8 +82,14 @@ public class CustomerMenuAdapter extends ListAdapter<Item, CustomerMenuAdapter.I
         public void BindData(Item item, Context context) {
             itemName.setText(item.getM_Name());
             itemPrice.setText(item.getM_Price());
+            itemSoldOut.setText("[Sold Out]");
             Bitmap bitmap = BitmapFactory.decodeByteArray(item.getM_Image(), 0, item.getM_Image().length);
             itemPicture.setImageBitmap(bitmap);
+            if (item.getM_Available().equals("No")) {
+                itemName.setTextColor(Color.GRAY);
+                itemPrice.setTextColor(Color.GRAY);
+                itemSoldOut.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override

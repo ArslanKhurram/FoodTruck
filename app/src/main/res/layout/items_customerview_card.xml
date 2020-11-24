@@ -35,6 +35,16 @@
             android:layout_height="50dp"
             android:layout_marginEnd="5dp" />
 
+        <TextView
+            android:id="@+id/availableTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/itemName"
+            android:layout_toEndOf="@id/ivMenuItemPicture"
+            android:textStyle="bold"
+            android:text="[Sold Out]"
+            android:visibility="invisible"/>
+
     </RelativeLayout>
 
 
