@@ -17,7 +17,7 @@
             android:id="@+id/ivMenuItemPicture"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="5dp" />
+            android:src="@drawable/ic_image" />
 
         <TextView
             android:id="@+id/itemCount"

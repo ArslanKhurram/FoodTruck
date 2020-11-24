@@ -6,7 +6,7 @@ public class Cart {
     private String m_Item;
     private String m_Price;
     private String m_Quantity;
-    private String m_Selected_Options;
+
 
 
     public Cart(){}
@@ -26,8 +26,6 @@ public class Cart {
     public Customer getCustId(){return m_Customer;}
     public void setCustId(Customer cust_Id){this.m_Customer = cust_Id;}
 
-    public String getM_Selected_Options(){return m_Selected_Options;}
-    public void setM_Selected_Options(String m_Options){this.m_Selected_Options = m_Options;}
 
     }
 
