@@ -91,6 +91,35 @@ public class SignUpActivity extends AppCompatActivity {
                         oc.createOption("Something", i.getM_Id());
                         oc.createOption("Something", i.getM_Id());
                     }
+                  
+        drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck1, null);
+        bitmap = ((BitmapDrawable) drawable).getBitmap();
+        stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] bitMapData1 = stream.toByteArray();
+
+        FoodTrucksContract foodTrucksContract = new FoodTrucksContract(this);
+        foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", bitMapData, 10.5, 10.5, vendor.getM_Id());
+        foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", bitMapData1, 10.5, 10.5, vendor.getM_Id());
+        FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(vendor.getM_Id());
+
+        if (foodTruck1 != null) {
+            MenusContract menusContract = new MenusContract(this);
+            menusContract.createMenu(foodTruck1.getM_ID());
+            Menu menu = menusContract.getMenuByFoodTruckId(foodTruck1.getM_ID());
+
+            ItemsContract itemsContract = new ItemsContract(this);
+            itemsContract.createItem("Cheese Burger", "9.99", "Yes", bitMapData1, menu.getM_Id());
+            itemsContract.createItem("Apple Pie", "1.99", "Yes", bitMapData1, menu.getM_Id());
+            itemsContract.createItem("Hot Dog", "6.99", "Yes", bitMapData1, menu.getM_Id());
+            ArrayList<Item> itemArrayList = itemsContract.getItemListByMenuID(menu.getM_Id());
+
+            OptionsContract oc = new OptionsContract(this);
+            if (itemArrayList != null) {
+                for (Item i : itemArrayList) {
+                    oc.createOption("Something", i.getM_Id());
+                    oc.createOption("Something", i.getM_Id());
+                    oc.createOption("Something", i.getM_Id());
                 }
 
                 OrdersContract ordersContract = new OrdersContract(this);
@@ -100,9 +129,14 @@ public class SignUpActivity extends AppCompatActivity {
                 Order order = ordersContract.getOrderById(1);
                 Order order2 = ordersContract.getOrderById(2);
                 Order order3 = ordersContract.getOrderById(3);
+            OrdersContract ordersContract = new OrdersContract(this);
+            ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
+            ordersContract.createOrder("A03", "10/22/2020", "Preparing", customer2.getM_Id(), foodTruck1.getM_ID());
+            ordersContract.createOrder("B03", "10/22/2020", "Completed", customer3.getM_Id(), foodTruck1.getM_ID());
+            ArrayList<Order> orderArrayList = ordersContract.getOrdersList(foodTruck1.getM_ID());
 
-                OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
-
+            OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
+              
                 if (itemArrayList != null) {
 
                     orderedItemsContract.addOrderedItem("1", itemArrayList.get(0).getM_Id(), order.getM_Id());
@@ -112,6 +146,7 @@ public class SignUpActivity extends AppCompatActivity {
                     orderedItemsContract.addOrderedItem("1", itemArrayList.get(1).getM_Id(), order3.getM_Id());
                     orderedItemsContract.addOrderedItem("2", itemArrayList.get(2).getM_Id(), order3.getM_Id());
                     ArrayList<OrderedItem> orderedItemArrayList = orderedItemsContract.getOrderedItems(order.getM_Id());
+
 
                 }
             }
