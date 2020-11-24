@@ -166,6 +166,21 @@ public final class FoodTrucksContract {
         close();
     }
 
+    public FoodTruck findFoodTruckByName(String name) {
+        open();
+            Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry.COL_NAME + " = ?",
+                    new String[]{name}, null, null, null);
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                FoodTruck foodTruck = cursorToFoodTruck(cursor);
+                cursor.close();
+                mDb.close();
+                close();
+                return foodTruck;
+            }
+        return null;
+    }
+
     //return total number of foodtruckcontracts in the FoodTrucks table
     public int CountContracts() {
         open();
