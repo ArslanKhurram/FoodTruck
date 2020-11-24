@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,12 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.foodtruck.DataBase.FoodTrucksContract;
+import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Fragments.Customer.MenuCustomerViewFragment;
 import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -40,6 +44,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.CancellationToken;
 import com.google.android.gms.tasks.OnTokenCanceledListener;
@@ -116,9 +121,18 @@ public class MapFragment extends Fragment {
                         fc.FoodTruckList(c).forEach((n) -> mMap.addMarker(new MarkerOptions().
                                 position(new LatLng(n.getM_Latitude(), n.getM_Longitude())).
                                 title(n.getM_Name()).
+                                snippet("Tap to view menu").
                                 icon(BitmapDescriptorFactory.fromBitmap(bitmap)))); // Create bitmap definition with Map's BitmapDescriptorFactory class
                     }
                 }
+
+                // Goes to menu when an information window from a clicked marker is tapped
+                // It will ALWAYS reference the title of the marker itself, since the title is created as the name of the truck
+                // This might need to be changed as trucks with the same name can cause potential issues
+                googleMap.setOnInfoWindowClickListener(marker -> {
+                    FoodTruck truckAtPos = fc.findFoodTruckByName(marker.getTitle());
+                    GotoMenu(truckAtPos);
+                });
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(40.79, -73.29)).zoom(9).build();
@@ -150,6 +164,26 @@ public class MapFragment extends Fragment {
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    private int getMarkerIDPos(String mID) {
+        int myIndex = -1;
+        try{
+            myIndex = Integer.parseInt(mID.replace("m", ""));
+        }catch(NumberFormatException nfe){
+            Log.e("MARKER ID: ", nfe.getMessage());
+        }
+        return myIndex;
+    }
+
+    private void GotoMenu(FoodTruck ft) {
+        MenuCustomerViewFragment menuFrag = new MenuCustomerViewFragment();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putLong("mKey", ft.getM_ID());
+        MenusContract mc = new MenusContract(getContext());
+        menuFrag.setArguments(bundle);
+        transaction.replace(R.id.fragment_container, menuFrag).commit();
     }
 
     @Override

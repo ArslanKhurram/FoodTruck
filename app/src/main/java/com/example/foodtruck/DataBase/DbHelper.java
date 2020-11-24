@@ -141,7 +141,8 @@ public class DbHelper extends SQLiteOpenHelper {
             CartEntry.COL_CUST_ID + " INTEGER NOT NULL, " +
             CartEntry.COL_ITEM + " TEXT NOT NULL, " +
             CartEntry.COL_PRICE + " TEXT NOT NULL, " +
-            CartEntry.COL_QUANTITY + " TEXT NOT NULL " +
+            CartEntry.COL_QUANTITY + " TEXT NOT NULL, " +
+            CartEntry.COL_OPTION + " TEXT NOT NULL " +
             ");";
 
 

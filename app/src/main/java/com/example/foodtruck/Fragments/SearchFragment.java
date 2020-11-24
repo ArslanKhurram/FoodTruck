@@ -23,6 +23,7 @@ import com.example.foodtruck.Adapter.MySearchAdapter;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Fragments.Customer.MenuCustomerViewFragment;
 import com.example.foodtruck.Fragments.Vendor.MenuFragment;
 import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.R;
@@ -101,7 +102,7 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
     // TODO: Set card clicks to go to that Foodtruck's menu
     @Override
     public void onCardClick(int pos) {
-        // GotoMenu(resultsList.get(pos));
+        GotoMenu(resultsList.get(pos));
     }
 
     private void fillSearchList(ArrayList<FoodTruck> ftList) {
@@ -131,12 +132,13 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
         }
 
     private void GotoMenu(FoodTruck ft) {
-        MenuFragment menuFrag = new MenuFragment();
+        MenuCustomerViewFragment menuFrag = new MenuCustomerViewFragment();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
+        bundle.putLong("mKey", ft.getM_ID());
         MenusContract mc = new MenusContract(getContext());
-        // bundle.putString();
-
+        menuFrag.setArguments(bundle);
+        transaction.replace(R.id.fragment_container, menuFrag).commit();
     }
 
 
