@@ -164,22 +164,6 @@ public class CheckOutContract {
         return check;
     }
 
-    //return cart by id
-    public Cart getCart(long id) {
-        open();
-        Cursor cursor = mDb.query(CartEntry.TABLE_NAME, mAllColumns, CartEntry._ID + " = ?",
-                new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        Cart cart = cursorToCart(cursor);
-        cursor.close();
-        mDb.close();
-        close();
-        return cart;
-
-    }
-
     //open cart table
     public CheckOutContract(Context context){
         mDbHelper = new DbHelper(context);
