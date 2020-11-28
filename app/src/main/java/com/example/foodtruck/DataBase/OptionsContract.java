@@ -69,6 +69,22 @@ public final class OptionsContract {
         return newOption;
     }
 
+    //return Item by searching by id
+    public Option getOptionById(long optionID) {
+        open();
+        Cursor cursor = mDb.query(OptionsEntry.TABLE_NAME, mAllColumns, OptionsEntry._ID + " = ?",
+                new String[]{String.valueOf(optionID)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Option option = cursorToOption(cursor, cursor.getLong(cursor.getColumnIndex(OptionsEntry.COL_ITEM_ID)));
+        cursor.close();
+        mDb.close();
+        close();
+        return option;
+    }
+
     //return array list of options for a particular item
     public ArrayList<Option> getOptionsListByItemID(long itemID) {
         open();

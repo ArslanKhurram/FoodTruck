@@ -16,6 +16,7 @@ import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.OptionsContract;
+import com.example.foodtruck.DataBase.OrderedItemOptionsContract;
 import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.RatingsContract;
@@ -86,13 +87,12 @@ public class SignUpActivity extends AppCompatActivity {
                 ArrayList<Item> itemArrayList = itemsContract.getItemListByMenuID(menu.getM_Id());
 
                 OptionsContract oc = new OptionsContract(this);
-                if (itemArrayList != null) {
-                    for (Item i : itemArrayList) {
-                        oc.createOption("Something", i.getM_Id());
-                        oc.createOption("Something", i.getM_Id());
-                        oc.createOption("Something", i.getM_Id());
-                    }
-                }
+                oc.createOption("Cheese", 1); //burger
+                oc.createOption("Cream", 2); //pie
+                oc.createOption("Ketchup", 3); //hotdog
+                oc.createOption("Berries", 2); //pie
+                oc.createOption("Mustard", 3); //hotdog
+                oc.createOption("Beans", 3); //hotdog
 
                 OrdersContract ordersContract = new OrdersContract(this);
                 ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
@@ -101,6 +101,7 @@ public class SignUpActivity extends AppCompatActivity {
                 ArrayList<Order> orderArrayList = ordersContract.getOrdersList(foodTruck1.getM_ID());
 
                 OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
+                OrderedItemOptionsContract orderedItemOptionsContract = new OrderedItemOptionsContract(this);
 
                 if (itemArrayList != null && orderArrayList != null) {
 
@@ -109,6 +110,17 @@ public class SignUpActivity extends AppCompatActivity {
                         orderedItemsContract.addOrderedItem("2", itemArrayList.get(2).getM_Id(), orderArrayList.get(i).getM_Id());
                     }
                 }
+
+                //adding options to orders
+                orderedItemOptionsContract.addOrderedItemOptions(2, 2, 1); //pie
+                orderedItemOptionsContract.addOrderedItemOptions(4, 2, 1); //pie
+                orderedItemOptionsContract.addOrderedItemOptions(3, 3, 2); //hotdog
+                orderedItemOptionsContract.addOrderedItemOptions(4, 2, 3); //pie
+                orderedItemOptionsContract.addOrderedItemOptions(5, 3, 4); //hotdog
+                orderedItemOptionsContract.addOrderedItemOptions(6, 3, 4); //hotdog
+                orderedItemOptionsContract.addOrderedItemOptions(2, 2, 5); //pie
+                orderedItemOptionsContract.addOrderedItemOptions(4, 2, 5); //pie
+                orderedItemOptionsContract.addOrderedItemOptions(6, 3, 6); //hotdog
             }
         }
     }
