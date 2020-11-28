@@ -95,6 +95,21 @@ public final class OrderedItemsContract {
         return orderedItem;
     }
 
+    public OrderedItem getOrderedItemById(long id) {
+        open();
+        Cursor cursor = mDb.query(OrderedItemsEntry.TABLE_NAME, mAllColumns, OrderedItemsEntry._ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        OrderedItem orderedItem = cursorToOrderedItem(cursor, cursor.getLong(cursor.getColumnIndex(OrderedItemsEntry.COL_ITEM_ID)), cursor.getLong(cursor.getColumnIndex(OrderedItemsEntry.COL_ORDER_ID)));
+        cursor.close();
+        mDb.close();
+        close();
+        return orderedItem;
+    }
+
     //return array list for an order
     public ArrayList<OrderedItem> getOrderedItems(long orderID) {
         open();
