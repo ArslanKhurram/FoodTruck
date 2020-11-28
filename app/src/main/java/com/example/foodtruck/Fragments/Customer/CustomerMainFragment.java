@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.foodtruck.Fragments.MapFragment;
 import com.example.foodtruck.Fragments.SearchFragment;
-import com.example.foodtruck.Fragments.Vendor.MenuFragment;
 import com.example.foodtruck.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -27,10 +26,7 @@ public class CustomerMainFragment extends Fragment implements BottomNavigationVi
 
         //reference to bottom navigation bar
         BottomNavigationView navigationView = v.findViewById(R.id.bottom_navigation);
-        if (savedInstanceState == null) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new FavoritesFragment()).commit();
-            navigationView.getMenu().getItem(0).setChecked(true);
-        }
+
         navigationView.setOnNavigationItemSelectedListener(this); //set a listener on the navigation bar
 
         return v;

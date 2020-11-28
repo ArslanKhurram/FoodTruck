@@ -109,17 +109,15 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/checkBoxes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
 
             </LinearLayout>
 
         </ScrollView>
 
     </LinearLayout>
-
+    22
 </LinearLayout>
 

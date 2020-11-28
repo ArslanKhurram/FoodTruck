@@ -13,7 +13,6 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,14 +58,16 @@ import java.util.Objects;
 
 public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAdapter.onFoodTruckCardListener, View.OnClickListener {
 
-    private Bitmap bitmap;
+    private static final int GALLERY_REQUEST = '1';
+    Bitmap bitmap;
     private RecyclerView recyclerView;
+    private RecyclerView.Adapter recyclerAdapter;
     private MyFoodTruckAdapter foodTruckAdapter;
     private RecyclerView.LayoutManager foodTruckLayoutManager;
     private TextView tv;
-    private EditText name, category, location;
-    private LatLng latLng;
-    private ImageView imageView;
+    EditText name, category, location;
+    LatLng latLng;
+    ImageView imageView;
     private ArrayList<FoodTruck> foodTruckList = new ArrayList<>();
     private SharedPreferences sharedPref;
 
@@ -296,14 +297,12 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
                 drawable.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] bitMapData = stream.toByteArray();
 
+                VendorsContract vc = new VendorsContract(getActivity());
+                Vendor vendor = vc.getVendorIdByEmail(sharedPref.getString("Email", ""));
+
                 if (latLng != null) {
                     FoodTrucksContract fc = new FoodTrucksContract(getActivity());
                     fc.updateFoodTruck(foodTruck.getM_ID(), name.getText().toString(), category.getText().toString(), bitMapData, latLng.latitude, latLng.longitude);
-                    foodTruckAdapter.submitList(getFoodTruckList());
-                    alertDialog.cancel();
-                } else if (!TextUtils.isEmpty(location.getText())) {
-                    FoodTrucksContract fc = new FoodTrucksContract(getActivity());
-                    fc.updateFoodTruck(foodTruck.getM_ID(), name.getText().toString(), category.getText().toString(), bitMapData, foodTruck.getM_Latitude(), foodTruck.getM_Longitude());
                     foodTruckAdapter.submitList(getFoodTruckList());
                     alertDialog.cancel();
                 } else
@@ -311,12 +310,6 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
             } else
                 Snackbar.make(v, "Please Upload an Image", Snackbar.LENGTH_LONG).show();
 
-            Toast.makeText(getContext(), "Food Truck Updated", Toast.LENGTH_SHORT).show();
-        });
-
-
-        alertDialog.setOnDismissListener(dialog -> {
-            foodTruckAdapter.notifyDataSetChanged();
         });
     }
 

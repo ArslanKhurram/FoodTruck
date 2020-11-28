@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Option;
+import com.example.foodtruck.Models.OrderedItemOptions;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -69,6 +70,22 @@ public final class OptionsContract {
         return newOption;
     }
 
+    //return Item by searching by id
+    public Option getOptionById(long optionID) {
+        open();
+        Cursor cursor = mDb.query(OptionsEntry.TABLE_NAME, mAllColumns, OptionsEntry._ID + " = ?",
+                new String[]{String.valueOf(optionID)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Option option = cursorToOption(cursor, cursor.getLong(cursor.getColumnIndex(OptionsEntry.COL_ITEM_ID)));
+        cursor.close();
+        mDb.close();
+        close();
+        return option;
+    }
+
     //return array list of options for a particular item
     public ArrayList<Option> getOptionsListByItemID(long itemID) {
         open();
@@ -126,14 +143,14 @@ public final class OptionsContract {
 
 
     //set data to specific option object
-    protected Option cursorToOption(Cursor cursor, long id) {
+    protected Option cursorToOption(Cursor cursor, long itemID) {
         Option option = new Option();
         option.setM_Id(cursor.getLong(0));
         option.setM_Option(cursor.getString(1));
 
         //get The Customer by id
         ItemsContract contract = new ItemsContract(mContext);
-        Item item = contract.getItemById(id);
+        Item item = contract.getItemById(itemID);
         if (contract != null) {
             option.setM_Item(item);
         }

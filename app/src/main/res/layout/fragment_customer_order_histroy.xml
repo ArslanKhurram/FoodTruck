@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD:app/src/main/res/layout/fragment_customer_order_histroy.xml
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+=======
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+>>>>>>> Jordan-Sprint3:app/src/main/res/layout/fragment_check_out_cart.xml
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+<Button
+    android:id="@+id/button12"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="add to cart"/>
 
+<<<<<<< HEAD:app/src/main/res/layout/fragment_customer_order_histroy.xml
 </RelativeLayout>
+=======
+</LinearLayout>
+>>>>>>> Jordan-Sprint3:app/src/main/res/layout/fragment_check_out_cart.xml
