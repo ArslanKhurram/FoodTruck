@@ -3,6 +3,7 @@ package com.example.foodtruck.Adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.R;
 
-import java.util.List;
-
-public class MenuAdapter extends ListAdapter<Item, MenuAdapter.ItemViewHolder> {
+public class CustomerMenuAdapter extends ListAdapter<Item, CustomerMenuAdapter.ItemViewHolder> {
 
     private Context itemContext;
     private OnItemListener mOnItemListener;
 
-    public MenuAdapter(Context context, OnItemListener onItemListener) {
+    public CustomerMenuAdapter(Context context, OnItemListener onItemListener) {
         super(DIFF_CALLBACK);
         itemContext = context;
         mOnItemListener = onItemListener;
@@ -49,7 +48,7 @@ public class MenuAdapter extends ListAdapter<Item, MenuAdapter.ItemViewHolder> {
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //inflate list item
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_card, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_customerview_card, parent, false);
 
         return new ItemViewHolder(itemView, mOnItemListener);
     }
@@ -66,7 +65,7 @@ public class MenuAdapter extends ListAdapter<Item, MenuAdapter.ItemViewHolder> {
 
     //viewHolder class whose objects represent each list items
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView itemName, itemPrice, itemAvailable, itemCount;
+        private TextView itemName, itemPrice, itemSoldOut;
         private ImageView itemPicture;
         private OnItemListener onItemListener;
 
@@ -74,22 +73,23 @@ public class MenuAdapter extends ListAdapter<Item, MenuAdapter.ItemViewHolder> {
             super(view);
             itemName = view.findViewById(R.id.itemName);
             itemPrice = view.findViewById(R.id.itemPrice);
-            itemAvailable = view.findViewById(R.id.availableTxt);
-            itemCount = view.findViewById(R.id.itemCount);
+            itemSoldOut = view.findViewById(R.id.availableTxt);
             itemPicture = view.findViewById(R.id.ivMenuItemPicture);
             this.onItemListener = onItemListener;
-
             view.setOnClickListener(this);
         }
 
         public void BindData(Item item, Context context) {
             itemName.setText(item.getM_Name());
-            itemPrice.setText("Price: " + item.getM_Price());
-            itemAvailable.setText("Available: " + item.getM_Available());
-            itemCount.setText(String.valueOf(item.getM_Id()));
-
+            itemPrice.setText(item.getM_Price());
+            itemSoldOut.setText("[Sold Out]");
             Bitmap bitmap = BitmapFactory.decodeByteArray(item.getM_Image(), 0, item.getM_Image().length);
             itemPicture.setImageBitmap(bitmap);
+            if (item.getM_Available().equals("No")) {
+                itemName.setTextColor(Color.GRAY);
+                itemPrice.setTextColor(Color.GRAY);
+                itemSoldOut.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override

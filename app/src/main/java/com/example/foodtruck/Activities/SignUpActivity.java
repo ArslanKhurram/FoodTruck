@@ -16,9 +16,9 @@ import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.OptionsContract;
-import com.example.foodtruck.DataBase.OrderedItemOptionsContract;
 import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
+import com.example.foodtruck.DataBase.RatingsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Fragments.LoginFragment;
 import com.example.foodtruck.Models.Admin;
@@ -68,22 +68,11 @@ public class SignUpActivity extends AppCompatActivity {
             vendorsContract.addVendor("J", "C", "3", "3", "0", "0", "0", "0", "0", "0");
             Vendor vendor = vendorsContract.getVendorIdByEmail("3");
 
-            Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck, null);
-            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] bitMapData = stream.toByteArray();
-
-            drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck1, null);
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-            stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] bitMapData1 = stream.toByteArray();
-
             FoodTrucksContract foodTrucksContract = new FoodTrucksContract(this);
-            foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", bitMapData, 10.5, 10.5, vendor.getM_Id());
-            foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", bitMapData1, 10.5, 10.5, vendor.getM_Id());
-            FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(vendor.getM_Id());
+            foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", picture(R.drawable.foodtruck), 10.5, 10.5, vendor.getM_Id());
+            foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", picture(R.drawable.foodtruck1), 10.5, 10.5, vendor.getM_Id());
+            FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(1);
+
 
             if (foodTruck1 != null) {
                 MenusContract menusContract = new MenusContract(this);
@@ -91,19 +80,19 @@ public class SignUpActivity extends AppCompatActivity {
                 Menu menu = menusContract.getMenuByFoodTruckId(foodTruck1.getM_ID());
 
                 ItemsContract itemsContract = new ItemsContract(this);
-                itemsContract.createItem("Cheese Burger", "9.99", "Yes", bitMapData1, menu.getM_Id());
-                itemsContract.createItem("Apple Pie", "1.99", "Yes", bitMapData1, menu.getM_Id());
-                itemsContract.createItem("Hot Dog", "6.99", "Yes", bitMapData1, menu.getM_Id());
+                itemsContract.createItem("Cheese Burger", "9.99", "Yes", picture(R.drawable.cheeseburger), menu.getM_Id());
+                itemsContract.createItem("Apple Pie", "1.99", "Yes", picture(R.drawable.applepie), menu.getM_Id());
+                itemsContract.createItem("Hot Dog", "6.99", "Yes", picture(R.drawable.hotdog), menu.getM_Id());
                 ArrayList<Item> itemArrayList = itemsContract.getItemListByMenuID(menu.getM_Id());
 
                 OptionsContract oc = new OptionsContract(this);
-
-                oc.createOption("Cheese", 1);
-                oc.createOption("Cream", 2);
-                oc.createOption("Ketchup", 3);
-                oc.createOption("Berries", 2);
-                oc.createOption("Mustard", 2);
-                oc.createOption("Beans", 2);
+                if (itemArrayList != null) {
+                    for (Item i : itemArrayList) {
+                        oc.createOption("Something", i.getM_Id());
+                        oc.createOption("Something", i.getM_Id());
+                        oc.createOption("Something", i.getM_Id());
+                    }
+                }
 
                 OrdersContract ordersContract = new OrdersContract(this);
                 ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
@@ -112,7 +101,6 @@ public class SignUpActivity extends AppCompatActivity {
                 ArrayList<Order> orderArrayList = ordersContract.getOrdersList(foodTruck1.getM_ID());
 
                 OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
-                OrderedItemOptionsContract orderedItemOptionsContract = new OrderedItemOptionsContract(this);
 
                 if (itemArrayList != null && orderArrayList != null) {
 
@@ -121,19 +109,16 @@ public class SignUpActivity extends AppCompatActivity {
                         orderedItemsContract.addOrderedItem("2", itemArrayList.get(2).getM_Id(), orderArrayList.get(i).getM_Id());
                     }
                 }
-
-                //adding options to orders
-                orderedItemOptionsContract.addOrderedItemOptions(2, 2, 1);
-                orderedItemOptionsContract.addOrderedItemOptions(4, 2, 1);
-                orderedItemOptionsContract.addOrderedItemOptions(3, 3, 2);
-                orderedItemOptionsContract.addOrderedItemOptions(4, 2, 3);
-                orderedItemOptionsContract.addOrderedItemOptions(5, 3, 4);
-                orderedItemOptionsContract.addOrderedItemOptions(6, 3, 4);
-                orderedItemOptionsContract.addOrderedItemOptions(2, 2, 5);
-                orderedItemOptionsContract.addOrderedItemOptions(4, 2, 5);
-                orderedItemOptionsContract.addOrderedItemOptions(6, 3, 6);
             }
         }
+    }
+
+    private byte[] picture(int id) {
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), id, null);
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
     }
 
     @Override
