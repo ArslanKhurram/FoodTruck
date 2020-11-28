@@ -6,7 +6,7 @@ public class Cart {
     private String m_Item;
     private String m_Price;
     private String m_Quantity;
-
+    private String m_Selected_Options;
 
 
 

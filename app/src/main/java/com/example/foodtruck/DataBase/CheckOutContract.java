@@ -37,6 +37,25 @@ public class CheckOutContract {
             CartEntry.COL_OPTION
     };
 
+    //Add checkout cart to database
+    public Cart addCartByObject (Cart cart){
+        open();
+        ContentValues av = new ContentValues();
+        av.put(CartEntry.COL_ITEM, cart.getM_Item());
+        av.put(CartEntry.COL_PRICE, cart.getM_Price());
+        av.put(CartEntry.COL_QUANTITY, cart.getM_Quantity());
+        av.put(CartEntry.COL_OPTION, cart.getM_Selected_Options());
+
+        long insertID = mDb.insert(CartEntry.TABLE_NAME,null,av);
+        Cursor cursor = mDb.query(CartEntry.TABLE_NAME,mAllColumns,CartEntry._ID + " = " + insertID, null,null,null,null);
+        cursor.moveToFirst();
+        Cart newCart = cursorToCart(cursor);
+        cursor.close();
+        mDb.close();
+        close();
+        return newCart;
+    }
+
     //used to add cart into database
     public Cart addCart(String item, String price, String qnty, long customerId, String option) {
         open();
@@ -156,6 +175,7 @@ public class CheckOutContract {
         cart.setM_Item(cursor.getString(1));
         cart.setM_Price(cursor.getString(2));
         cart.setM_Quantity(cursor.getString(3));
+        cart.setM_Selected_Options(cursor.getString(4));
 
         //get The Customer by id
         CustomersContract contract = new CustomersContract(mContext);
