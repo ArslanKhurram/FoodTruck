@@ -159,5 +159,4 @@
     <string name="prompt_nomenu"><b>No Menu Found</b>\n\nPlease Enter Menu Items \nSo Customer Can Place Orders</string>
     <string name="prompt_notruck"><b>No Food Truck Found</b>\n\nPlease Add Your Food Trucks \nSo You Can Setup Your Menu</string>
     <string name="delete">Delete</string>
-    <string name="no_food_trucks_saved">No Food Trucks Saved</string>
 </resources>

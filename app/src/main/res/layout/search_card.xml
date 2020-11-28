@@ -34,21 +34,6 @@
              android:textAlignment="center"
              android:padding="4dp"/>
 
-        <TextView
-            android:id="@+id/txtSearchCategory"
-            android:layout_width="85dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/txtSearchName"
-            android:shadowColor="@color/cardview_dark_background"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/black"
-            android:text="FT Category"
-            android:textSize="10dp"
-            android:textAlignment="center"
-            android:background="@drawable/radio_button_deselected"
-            android:padding="2dp"/>
-
     </RelativeLayout>
 
 

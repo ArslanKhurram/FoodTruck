@@ -23,7 +23,7 @@ public final class FoodTrucksContract {
     private DbHelper mDbHelper;
     private Context mContext;
 
-    //constructor to open table
+    //constructor to open payments table
     public FoodTrucksContract(Context context) {
         this.mContext = context;
         mDbHelper = new DbHelper(context);
@@ -164,21 +164,6 @@ public final class FoodTrucksContract {
         }
         mDb.close();
         close();
-    }
-
-    public FoodTruck findFoodTruckByName(String name) {
-        open();
-            Cursor cursor = mDb.query(FoodTrucksEntry.TABLE_NAME, mAllColumns, FoodTrucksEntry.COL_NAME + " = ?",
-                    new String[]{name}, null, null, null);
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                FoodTruck foodTruck = cursorToFoodTruck(cursor);
-                cursor.close();
-                mDb.close();
-                close();
-                return foodTruck;
-            }
-        return null;
     }
 
     //return total number of foodtruckcontracts in the FoodTrucks table
