@@ -62,7 +62,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
     private ItemsOrderedAdapter listAdapter;
     private OptionsAdapter optionsAdapter;
     private ListView optionsList;
-    private ArrayList<OrderedItemOptions> mOptions;
+    private ArrayList<Option> mOptions;
     View dv;
     private TextView customerName;
     private Spinner statusSpinner;
@@ -98,6 +98,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
 
         return v;
     }
+
     //need two arrayList, orderPending and orderComplete
     //get order list from order database
     public ArrayList<Order> getOrderList(String status) {
@@ -119,7 +120,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
                 completedOrderList = oc.getOrderListByStatus(foodTruck.getM_ID(), status);
                 return completedOrderList;
         }
-       return null;
+        return null;
     }
 
     @Override
@@ -130,20 +131,16 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
     @Override
     public void onOrderClick(View v, int position) {
         Order order;
-        if(v.getParent() == pendingRecyclerView)
-        {
+        if (v.getParent() == pendingRecyclerView) {
             order = pendingOrderAdapter.getOrderAt(position);
-        }
-        else
-        {
+        } else {
             order = CompletedOrderAdapter.getOrderAt(position);
         }
         showOrderDialog(order);
     }
 
     //show order dialog
-    private void showOrderDialog(Order order)
-    {
+    private void showOrderDialog(Order order) {
         dialogInflater = getLayoutInflater();
         dv = dialogInflater.inflate(R.layout.dialog_show_order, null);
         //ListView
@@ -156,21 +153,24 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         mOrderedItems = oic.getOrderedItems(order.getM_Id());
 
         //submits list and sets adapter
-        listAdapter =  new ItemsOrderedAdapter(getContext(), mOrderedItems);
+        listAdapter = new ItemsOrderedAdapter(getContext(), mOrderedItems);
         listView.setAdapter(listAdapter);
 
         //show options
         listView.setClickable(true);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                OrderedItemOptionsContract oioc = new OrderedItemOptionsContract(getContext());
-                OrderedItemsContract oic = new OrderedItemsContract(getContext());
-                OrderedItem orderedItems = oic.getOrderedItemById(order.getM_Id());
-                mOptions = oioc.getOrderedItemOptions(orderedItems.getM_id());
-                optionsAdapter = new OptionsAdapter(getContext(), mOptions);
-                optionsList.setAdapter(optionsAdapter);
-            }
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
+            OrderedItemOptionsContract oioc = new OrderedItemOptionsContract(getContext());
+            OrderedItemsContract oic1 = new OrderedItemsContract(getContext());
+
+            //get ordered item
+            OrderedItem currentOrderedItem = listAdapter.getItem(i);
+
+            //get options for current ordered item
+            mOptions = oioc.getOrderedItemOptions(currentOrderedItem.getM_Item().getM_Id(), currentOrderedItem.getM_id());
+
+            //set adapter
+            optionsAdapter = new OptionsAdapter(getContext(), mOptions);
+            optionsList.setAdapter(optionsAdapter);
         });
 
         customerName = dv.findViewById(R.id.tvCustomerName);
@@ -179,7 +179,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
 
         int selection = ((order.getM_Status().equals("Preparing")) ? 0 : 1);
         //set customer name and status
-        customerName.setText(order.getM_Customer().getM_FirstName()+order.getM_Customer().getM_LastName());
+        customerName.setText(order.getM_Customer().getM_FirstName() + order.getM_Customer().getM_LastName());
         statusSpinner.setSelection(selection);
 
         //update and cancel buttons
@@ -195,10 +195,11 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
                 pendingOrderAdapter.submitList(getOrderList("Preparing"));
                 CompletedOrderAdapter.submitList(getOrderList("Completed"));
                 alertDialog.cancel();
-                Toast.makeText(getContext(),"Order Updated", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Order Updated", Toast.LENGTH_LONG).show();
             }
         });
     }
+
     //method to update order
     private boolean updateOrderInDatabase(Order order) {
         //references to all Dialog views

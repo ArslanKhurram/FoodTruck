@@ -3,6 +3,7 @@ package com.example.foodtruck.DataBase;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
@@ -113,18 +114,19 @@ public final class OrderedItemOptionsContract {
     }
 
     //return array list for an order
-    public ArrayList<OrderedItemOptions> getOrderedItemOptions(long ordereditemID) {
+    public ArrayList<Option> getOrderedItemOptions(long itemID, long orderedItemID) {
         open();
-        ArrayList<OrderedItemOptions> orderedItemOptions = new ArrayList<>();
+        ArrayList<Option> orderedItemOptions = new ArrayList<>();
 
         Cursor cursor = mDb.query(OrderedItemOptionsEntry.TABLE_NAME, mAllColumns, OrderedItemOptionsEntry.COL_ORDERED_ITEM_ID + " =? ",
-                new String[]{String.valueOf(ordereditemID)}, null, null, null);
+                new String[]{String.valueOf(orderedItemID)}, null, null, null);
 
+        Log.i("123", DatabaseUtils.dumpCursorToString(cursor));
         if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                OrderedItemOptions mOrderedItemOptions = cursorToItemOptions(cursor, cursor.getLong(cursor.getColumnIndex(OrderedItemOptionsEntry.COL_ITEM_ID)), ordereditemID);
-                orderedItemOptions.add(mOrderedItemOptions);
+                OrderedItemOptions mOrderedItemOptions = cursorToItemOptions(cursor, cursor.getLong(cursor.getColumnIndex(OrderedItemOptionsEntry.COL_ITEM_ID)), orderedItemID);
+                orderedItemOptions.add(mOrderedItemOptions.getM_Option());
                 if (cursor.isLast() || cursor.isClosed())
                     break;
                 else

@@ -50,51 +50,52 @@ public class SignUpActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
         }
-
         CustomersContract customersContract = new CustomersContract(this);
-        customersContract.addCustomer("Bob", "Marley", "2", "2", "0", "0", "0", "0", "0", "0");
-        customersContract.addCustomer("John", "Hopkins", "22", "", "0", "0", "0", "0", "0", "0");
-        customersContract.addCustomer("Adam", "Jack", "33", "", "0", "0", "0", "0", "0", "0");
-        Customer customer1 = customersContract.getCustomerIdByEmail("2");
-        Customer customer2 = customersContract.getCustomerIdByEmail("22");
-        Customer customer3 = customersContract.getCustomerIdByEmail("33");
 
-        AdminContract adminContract = new AdminContract(this);
-        adminContract.addAdmin("1", "1");
+        if (customersContract.checkForEmptyTable()) {
+            customersContract.addCustomer("Bob", "Marley", "2", "2", "0", "0", "0", "0", "0", "0");
+            customersContract.addCustomer("John", "Hopkins", "22", "", "0", "0", "0", "0", "0", "0");
+            customersContract.addCustomer("Adam", "Jack", "33", "", "0", "0", "0", "0", "0", "0");
+            Customer customer1 = customersContract.getCustomerIdByEmail("2");
+            Customer customer2 = customersContract.getCustomerIdByEmail("22");
+            Customer customer3 = customersContract.getCustomerIdByEmail("33");
 
-        VendorsContract vendorsContract = new VendorsContract(this);
-        vendorsContract.addVendor("J", "C", "3", "3", "0", "0", "0", "0", "0", "0");
-        Vendor vendor = vendorsContract.getVendorIdByEmail("3");
+            AdminContract adminContract = new AdminContract(this);
+            adminContract.addAdmin("1", "1");
 
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck, null);
-        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] bitMapData = stream.toByteArray();
+            VendorsContract vendorsContract = new VendorsContract(this);
+            vendorsContract.addVendor("J", "C", "3", "3", "0", "0", "0", "0", "0", "0");
+            Vendor vendor = vendorsContract.getVendorIdByEmail("3");
 
-        drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck1, null);
-        bitmap = ((BitmapDrawable) drawable).getBitmap();
-        stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] bitMapData1 = stream.toByteArray();
+            Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck, null);
+            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] bitMapData = stream.toByteArray();
 
-        FoodTrucksContract foodTrucksContract = new FoodTrucksContract(this);
-        foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", bitMapData, 10.5, 10.5, vendor.getM_Id());
-        foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", bitMapData1, 10.5, 10.5, vendor.getM_Id());
-        FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(vendor.getM_Id());
+            drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.foodtruck1, null);
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+            stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] bitMapData1 = stream.toByteArray();
 
-        if (foodTruck1 != null) {
-            MenusContract menusContract = new MenusContract(this);
-            menusContract.createMenu(foodTruck1.getM_ID());
-            Menu menu = menusContract.getMenuByFoodTruckId(foodTruck1.getM_ID());
+            FoodTrucksContract foodTrucksContract = new FoodTrucksContract(this);
+            foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", bitMapData, 10.5, 10.5, vendor.getM_Id());
+            foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", bitMapData1, 10.5, 10.5, vendor.getM_Id());
+            FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(vendor.getM_Id());
 
-            ItemsContract itemsContract = new ItemsContract(this);
-            itemsContract.createItem("Cheese Burger", "9.99", "Yes", bitMapData1, menu.getM_Id());
-            itemsContract.createItem("Apple Pie", "1.99", "Yes", bitMapData1, menu.getM_Id());
-            itemsContract.createItem("Hot Dog", "6.99", "Yes", bitMapData1, menu.getM_Id());
-            ArrayList<Item> itemArrayList = itemsContract.getItemListByMenuID(menu.getM_Id());
+            if (foodTruck1 != null) {
+                MenusContract menusContract = new MenusContract(this);
+                menusContract.createMenu(foodTruck1.getM_ID());
+                Menu menu = menusContract.getMenuByFoodTruckId(foodTruck1.getM_ID());
 
-            OptionsContract oc = new OptionsContract(this);
+                ItemsContract itemsContract = new ItemsContract(this);
+                itemsContract.createItem("Cheese Burger", "9.99", "Yes", bitMapData1, menu.getM_Id());
+                itemsContract.createItem("Apple Pie", "1.99", "Yes", bitMapData1, menu.getM_Id());
+                itemsContract.createItem("Hot Dog", "6.99", "Yes", bitMapData1, menu.getM_Id());
+                ArrayList<Item> itemArrayList = itemsContract.getItemListByMenuID(menu.getM_Id());
+
+                OptionsContract oc = new OptionsContract(this);
 //            if (itemArrayList != null) {
 //                for (Item i : itemArrayList) {
 //                    oc.createOption("Something", i.getM_Id());
@@ -103,39 +104,43 @@ public class SignUpActivity extends AppCompatActivity {
 //                }
 //            }
 
-            oc.createOption("Cheese", 1);
-            oc.createOption("Cream", 2);
-            oc.createOption("Ketchup", 3);
+                oc.createOption("Cheese", 1);
+                oc.createOption("Cream", 2);
+                oc.createOption("Ketchup", 3);
+                oc.createOption("Berries", 2);
+                oc.createOption("Mustard", 2);
+                oc.createOption("Beans", 2);
 
-            OrdersContract ordersContract = new OrdersContract(this);
-            ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
-            ordersContract.createOrder("A03", "10/22/2020", "Preparing", customer2.getM_Id(), foodTruck1.getM_ID());
-            ordersContract.createOrder("B03", "10/22/2020", "Completed", customer3.getM_Id(), foodTruck1.getM_ID());
-            ArrayList<Order> orderArrayList = ordersContract.getOrdersList(foodTruck1.getM_ID());
+                OrdersContract ordersContract = new OrdersContract(this);
+                ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
+                ordersContract.createOrder("A03", "10/22/2020", "Preparing", customer2.getM_Id(), foodTruck1.getM_ID());
+                ordersContract.createOrder("B03", "10/22/2020", "Completed", customer3.getM_Id(), foodTruck1.getM_ID());
+                ArrayList<Order> orderArrayList = ordersContract.getOrdersList(foodTruck1.getM_ID());
 
-            OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
-            OrderedItemOptionsContract orderedItemOptionsContract = new OrderedItemOptionsContract(this);
+                OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
+                OrderedItemOptionsContract orderedItemOptionsContract = new OrderedItemOptionsContract(this);
 
+                if (itemArrayList != null && orderArrayList != null) {
 
-            if (itemArrayList != null && orderArrayList != null) {
-
-                for (int i = 0; i < orderArrayList.size(); i++) {
-                    orderedItemsContract.addOrderedItem("1", itemArrayList.get(1).getM_Id(), orderArrayList.get(i).getM_Id());
-                    orderedItemsContract.addOrderedItem("2", itemArrayList.get(2).getM_Id(), orderArrayList.get(i).getM_Id());
-
+                    for (int i = 0; i < orderArrayList.size(); i++) {
+                        orderedItemsContract.addOrderedItem("1", itemArrayList.get(1).getM_Id(), orderArrayList.get(i).getM_Id());
+                        orderedItemsContract.addOrderedItem("2", itemArrayList.get(2).getM_Id(), orderArrayList.get(i).getM_Id());
+                    }
                 }
 
-//                orderedItemOptionsContract.addOrderedItemOptions(1,1);
-//                orderedItemOptionsContract.addOrderedItemOptions(2,2);
-//                orderedItemOptionsContract.addOrderedItemOptions(3,3);
+                //adding options to orders
+                orderedItemOptionsContract.addOrderedItemOptions(2, 2, 1);
+                orderedItemOptionsContract.addOrderedItemOptions(4, 2, 1);
+                orderedItemOptionsContract.addOrderedItemOptions(3, 3, 2);
+                orderedItemOptionsContract.addOrderedItemOptions(4, 2, 3);
+                orderedItemOptionsContract.addOrderedItemOptions(5, 3, 4);
+                orderedItemOptionsContract.addOrderedItemOptions(6, 3, 4);
+                orderedItemOptionsContract.addOrderedItemOptions(2, 2, 5);
+                orderedItemOptionsContract.addOrderedItemOptions(4, 2, 5);
+                orderedItemOptionsContract.addOrderedItemOptions(6, 3, 6);
             }
-
-            orderedItemOptionsContract.addOrderedItemOptions(1,1, 1);
-            orderedItemOptionsContract.addOrderedItemOptions(2,2, 2);
-            orderedItemOptionsContract.addOrderedItemOptions(3,3, 3);
         }
     }
-
 
     @Override
     public void onBackPressed() {

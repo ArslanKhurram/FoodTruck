@@ -15,12 +15,12 @@ import com.example.foodtruck.R;
 
 import java.util.ArrayList;
 
-public class OptionsAdapter extends ArrayAdapter<OrderedItemOptions> {
+public class OptionsAdapter extends ArrayAdapter<Option> {
 
 
-    ArrayList<OrderedItemOptions> options;
+    ArrayList<Option> options;
 
-    public OptionsAdapter(Context context, ArrayList<OrderedItemOptions> mOptions) {
+    public OptionsAdapter(Context context, ArrayList<Option> mOptions) {
         super(context, 0);
         options = mOptions;
     }
@@ -40,9 +40,9 @@ public class OptionsAdapter extends ArrayAdapter<OrderedItemOptions> {
             layoutHandler = (OptionsAdapter.LayoutHandler) mview.getTag();
         }
 
-        OrderedItemOptionsContract orderedItemOptionsContract = new OrderedItemOptionsContract(getContext());
-        OrderedItemOptions option = (OrderedItemOptions) this.getItem(position);
-        layoutHandler.option.setText(option.getM_Option().getM_Option());
+
+        Option option = (Option) this.getItem(position);
+        layoutHandler.option.setText(option.getM_Option());
         return mview;
     }
 
@@ -52,7 +52,7 @@ public class OptionsAdapter extends ArrayAdapter<OrderedItemOptions> {
     }
 
     @Override
-    public OrderedItemOptions getItem(int position) {
+    public Option getItem(int position) {
         return options.get(position);
     }
 
