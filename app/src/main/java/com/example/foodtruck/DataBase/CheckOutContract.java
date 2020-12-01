@@ -6,6 +6,7 @@ package com.example.foodtruck.DataBase;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
@@ -118,7 +119,6 @@ public class CheckOutContract {
 
             Cursor cursor = mDb.query(CartEntry.TABLE_NAME, mAllColumns, CartEntry.COL_CUST_ID + " =?",
                     new String[]{String.valueOf(itemID)}, null, null, null);
-
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Cart cart = cursorToCart(cursor);
@@ -194,7 +194,6 @@ public class CheckOutContract {
         if (contract != null) {
             cart.setCustId(customer);
         }
-        cursor.close();
         return cart;
     }
 
