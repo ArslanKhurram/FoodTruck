@@ -1,5 +1,6 @@
 package com.example.foodtruck.Fragments.Vendor;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -32,6 +33,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +43,7 @@ import com.example.foodtruck.Adapter.MenuAdapter;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
+import com.example.foodtruck.DataBase.OptionsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Item;
@@ -54,6 +58,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.Inflater;
 
 public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
     private RecyclerView recyclerView;
@@ -61,6 +66,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
     private MenuAdapter menuAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Item> itemList = new ArrayList<>();
+    private ArrayList<EditText> editTexts = new ArrayList<>();
     private EditText itemName, itemPrice;
     private TextView tv;
     private Spinner itemAvailability, foodTruckSpinner;
@@ -73,6 +79,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
     private Matcher m;
     private Bitmap bitmap;
     private ImageView imageView;
+    private String addedItemName;
 
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -180,11 +187,55 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         foodTruckSpinner.setAdapter(spinnerAdapter);
     }
 
+    //add options dialog with dynamic edit text boxes
+    private void addOptionDialog(Item item) {
+        LayoutInflater optionDialogInflater = getLayoutInflater();
+        View optionView = optionDialogInflater.inflate(R.layout.dialog_options, null);
+        Button addOption = optionView.findViewById(R.id.addRow);
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(optionView)
+                .setPositiveButton("Add", null)
+                .setNegativeButton("Cancel", null)
+                .show();
+
+        addOption.setOnClickListener(v -> {
+            EditText t = new EditText(getContext());
+            editTexts.add(t);
+            t.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            t.setHint("Option");
+            t.setFocusable(true);
+            LinearLayout root = optionView.findViewById(R.id.mLL);
+            root.addView(t);
+        });
+
+        Button submit = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        submit.setOnClickListener(v -> {
+            OptionsContract optionsContract = new OptionsContract(getContext());
+
+            for (EditText editText : editTexts) {
+                if (editText.getText().length() > 0) {
+                    optionsContract.createOption(editText.getText().toString().trim(), item.getM_Id());
+                }
+            }
+            alertDialog.dismiss();
+            Toast.makeText(getContext(), "Options Added", Toast.LENGTH_LONG).show();
+        });
+
+        Button cancel = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        cancel.setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+    }
+
+    private void updateOptionDialog(Item item) {
+
+    }
 
     private void addItemDialog() {
         dialogInflater = getLayoutInflater();
         dV = dialogInflater.inflate(R.layout.dialog_addmenu_item, null);
         imageView = dV.findViewById(R.id.menuLoadImage);
+        Button addOption = dV.findViewById(R.id.btnAddOptions);
 
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
                 .setPositiveButton("Add", null)
@@ -193,12 +244,34 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
 
         Button image = dV.findViewById(R.id.dl_btnAddItemImage);
 
+        //launch gallery when ADD IMAGE button is pressed
         image.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent, 10);
         });
 
+        //open option dialog and pass in item that was just added
+        addOption.setOnClickListener(v -> {
+            if (addItemToDatabase()) {
+                menuAdapter.submitList(getMenuList());
+                alertDialog.cancel();
+                Toast.makeText(getContext(), "Menu Item Added", Toast.LENGTH_LONG).show();
+                tv.setVisibility(View.INVISIBLE);
+
+                Item item = new Item();
+                for (Item i : getMenuList()) {
+                    if (i.getM_Name().equals(addedItemName)) {
+                        item = i;
+                        break;
+                    }
+                }
+                addOptionDialog(item);
+                alertDialog.dismiss();
+            }
+        });
+
+        //submit item into database when SUBMIT is pressed
         Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         b.setOnClickListener(v -> {
             if (addItemToDatabase()) {
@@ -219,6 +292,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         itemAvailability = dV.findViewById(R.id.dl_spinnerAvailability);
         imageView = dV.findViewById(R.id.menuLoadImage);
         Button imageUpload = dV.findViewById(R.id.dl_btnAddItemImage);
+        Button addOptions = dV.findViewById(R.id.btnAddOptions);
 
         //set image
         bitmap = BitmapFactory.decodeByteArray(item.getM_Image(), 0, item.getM_Image().length);
@@ -238,6 +312,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
                 .setNegativeButton("Cancel", null)
                 .show();
 
+
         imageUpload.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
@@ -251,6 +326,10 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
                 Toast.makeText(getContext(), "Menu Item Updated", Toast.LENGTH_LONG).show();
                 tv.setVisibility(View.INVISIBLE);
             }
+        });
+
+        addOptions.setOnClickListener(v -> {
+            addOptionDialog(item);
         });
 
         alertDialog.setOnDismissListener(dialog -> {
@@ -282,6 +361,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
                 byte[] bitMapData = stream.toByteArray();
                 ItemsContract ic = new ItemsContract(getContext());
                 ic.createItem(itemName.getText().toString(), itemPrice.getText().toString(), itemAvailability.getSelectedItem().toString(), bitMapData, menu.getM_Id());
+                addedItemName = itemName.getText().toString();
                 return true;
             } else
                 Snackbar.make(dV, "                      Please Upload an Image", Snackbar.LENGTH_LONG).show();
@@ -353,7 +433,6 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         currentFoodTruck = (FoodTruck) parent.getSelectedItem();
-        Log.i("123: ", currentFoodTruck.getM_Name());
         menuAdapter.submitList(getMenuList());
     }
 

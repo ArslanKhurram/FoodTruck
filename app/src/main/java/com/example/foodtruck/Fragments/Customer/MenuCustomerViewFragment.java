@@ -86,10 +86,14 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         if (bundle != null)
             truckID = bundle.getLong("mKey");
         tv = v.findViewById(R.id.noMenuPrompt);
-        hsv = v.findViewById(R.id.scrlMenu);
         btnSave = v.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
         tv.setVisibility(View.INVISIBLE);
+        TextView truckName = v.findViewById(R.id.foodTruckName);
+
+        FoodTrucksContract fc = new FoodTrucksContract(getContext());
+        FoodTruck foodTruck = fc.getFoodTruckById(truckID);
+        truckName.setText(foodTruck.getM_Name() + " Menu");
 
         if (checkFavorited()) {
             @SuppressLint("UseCompatLoadingForDrawables") Drawable favorite = getContext().getResources().getDrawable(R.drawable.ic_favorite, null);
