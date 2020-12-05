@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtruck.Adapter.CustomerMenuAdapter;
 import com.example.foodtruck.Adapter.MenuAdapter;
+import com.example.foodtruck.DataBase.CheckOutCartItemOptionsContract;
 import com.example.foodtruck.DataBase.CheckOutContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.FavoritesContract;
@@ -42,6 +43,7 @@ import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.OptionsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Models.CartItemOption;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Item;
@@ -225,6 +227,13 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         itemNameDb.setText(item.getM_Name());
         priceDb.setText("$" + item.getM_Price());
         spnQnty.getSelectedItem().toString();
+
+        //test code area
+
+
+
+
+        //end test code
 
         //Dynamically Displays Checkboxes & Pulls options from database
         arrayOptionsUpdated(item);

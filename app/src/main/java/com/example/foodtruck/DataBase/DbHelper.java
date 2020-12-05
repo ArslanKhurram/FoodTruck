@@ -22,6 +22,7 @@ import static com.example.foodtruck.DataBase.OrderedItemsContract.OrderedItemsEn
 import static com.example.foodtruck.DataBase.RatingsContract.RatingsEntry;
 import static com.example.foodtruck.DataBase.FavoritesContract.FavoritesEntry;
 import static com.example.foodtruck.DataBase.OrderedItemOptionsContract.OrderedItemOptionsEntry;
+import static com.example.foodtruck.DataBase.CheckOutCartItemOptionsContract.CheckOutOptionEntry;
 
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -144,6 +145,15 @@ public class DbHelper extends SQLiteOpenHelper {
             CartEntry.COL_QUANTITY + " TEXT NOT NULL, " +
             CartEntry.COL_OPTION + " TEXT NOT NULL " +
             ");";
+
+    //query to create checkout cart item options
+    public static final String SQL_CREATE_CHECKOUT_ITEM_OPTION_TABLE = "CREATE TABLE " + CheckOutOptionEntry.TABLE_NAME + " (" +
+            CheckOutOptionEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            CheckOutOptionEntry.COL_CUST_ID + " INTEGER NOT NULL, " +
+            CheckOutOptionEntry.COL_ITEM_ID + " INTEGER NOT NULL, " +
+            CheckOutOptionEntry.COL_ITEM_OPTION_ID + " INTEGER NOT NULL, " +
+            ");";
+
 
     //query to create rating table
     public static final String SQL_CREATE_RATING_TABLE = "CREATE TABLE " + RatingsEntry.TABLE_NAME + " (" +

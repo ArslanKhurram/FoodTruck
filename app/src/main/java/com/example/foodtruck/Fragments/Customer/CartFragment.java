@@ -3,7 +3,6 @@ package com.example.foodtruck.Fragments.Customer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodtruck.Adapter.CustomerMenuAdapter;
 import com.example.foodtruck.Adapter.MenuAdapter;
 import com.example.foodtruck.Adapter.MyCartAdapter;
 import com.example.foodtruck.DataBase.CheckOutContract;
@@ -27,8 +25,8 @@ import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.Models.Cart;
 import com.example.foodtruck.Models.Customer;
-import com.example.foodtruck.Models.Menu;
 import com.example.foodtruck.R;
+
 import java.util.ArrayList;
 
 public class CartFragment extends Fragment implements MenuAdapter.OnItemListener, View.OnClickListener {
@@ -59,8 +57,7 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_cart, container, false);
 
-        cMenuAdapter = new MyCartAdapter(getContext());
-       // if (getCartOrders() != null)
+        cMenuAdapter = new MyCartAdapter(getContext(), this::onItemClick);
         cMenuAdapter.submitList(getCartOrders());
         seeMenu = v.findViewById(R.id.seeMenu);
         seeMenu.setOnClickListener(this);
@@ -68,8 +65,7 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext()); // LinearLayout for cards
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerAdapter = cMenuAdapter;
-        recyclerView.setAdapter(recyclerAdapter);
+        recyclerView.setAdapter(cMenuAdapter);
 
         return v;
     }

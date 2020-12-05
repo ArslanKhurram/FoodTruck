@@ -194,7 +194,6 @@ public class CheckOutContract {
         if (contract != null) {
             cart.setCustId(customer);
         }
-        cursor.close();
         return cart;
     }
 
