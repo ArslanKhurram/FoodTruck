@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.Adapter.CustomerMenuAdapter;
 import com.example.foodtruck.Adapter.MenuAdapter;
 import com.example.foodtruck.DataBase.CheckOutContract;
@@ -64,7 +65,6 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     private ArrayList<Item> itemList = new ArrayList<>();
     private EditText itemName, itemPrice;
     private TextView tv, itemNameDb, priceDb;
-    private HorizontalScrollView hsv;
     private LayoutInflater dialogInflater;
     private Menu menu;
     View dV;
@@ -81,6 +81,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_menu_customerview, container, false);
+
         Bundle bundle = getArguments();
         Long truckID = null;
         if (bundle != null)
@@ -107,7 +108,6 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
             cMenuAdapter.submitList(getMenuList(truckID));
         else {
             tv.setVisibility(View.VISIBLE);
-            hsv.setVisibility(View.INVISIBLE);
         }
 
         recyclerView = v.findViewById(R.id.CustomerItemsRecyclerView);

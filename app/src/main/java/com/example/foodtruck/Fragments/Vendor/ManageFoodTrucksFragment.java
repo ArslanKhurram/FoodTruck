@@ -133,7 +133,6 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
                     imageView.setImageBitmap(bitmap);
-                    Log.i("Image", String.valueOf(bitmap));
                 } catch (IOException e) {
                     Log.i("TAG", "Some exception " + e);
                 }

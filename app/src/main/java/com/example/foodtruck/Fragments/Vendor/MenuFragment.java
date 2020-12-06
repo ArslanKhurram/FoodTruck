@@ -203,9 +203,9 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
             editTexts.add(t);
             t.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             t.setHint("Option");
-            t.setFocusable(true);
             LinearLayout root = optionView.findViewById(R.id.mLL);
             root.addView(t);
+            t.requestFocus();
         });
 
         Button submit = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);

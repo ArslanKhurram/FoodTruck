@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.activity.OnBackPressedDispatcherOwner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatRadioButton;
@@ -19,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.Adapter.MenuAdapter;
 import com.example.foodtruck.Adapter.MyAccountAdapter;
 import com.example.foodtruck.Adapter.MySearchAdapter;
@@ -43,7 +45,6 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
     String searchType = "Name";
     SearchView searchView;
     RecyclerView recyclerView;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,7 +56,6 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
         radioCategory = v.findViewById(R.id.rbCategory);
         v.findViewById(R.id.rbName).setOnClickListener(this);
         v.findViewById(R.id.rbCategory).setOnClickListener(this);
-
         fillSearchList(searchList);
         resetList(resultsList);
         searchAdapter.submitList(resultsList);
@@ -98,6 +98,7 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
 
         return v;
     }
+
 
     @Override
     public void onClick(View v) {
@@ -183,7 +184,7 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
         bundle.putLong("mKey", ft.getM_ID());
         MenusContract mc = new MenusContract(getContext());
         menuFrag.setArguments(bundle);
-        transaction.replace(R.id.mainFragment_container, menuFrag).commit();
+        transaction.replace(R.id.mainFragment_container, menuFrag).addToBackStack("tag").commit();
     }
 
 

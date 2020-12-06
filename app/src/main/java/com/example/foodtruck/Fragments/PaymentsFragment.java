@@ -168,10 +168,6 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         String monthString = payment.getM_CCEXPDATE().substring(0, 2);
         String yearString = payment.getM_CCEXPDATE().substring(3, 7);
 
-        Log.i("Card", monthString);
-        Log.i("Card", yearString);
-        Log.i("Card", String.valueOf(payment.getM_CCEXPDATE().length()));
-
         //set the spinners for month and year
         for (int i = 0; i < monthArray.length; i++) {
             if (monthString.equals(monthArray[i])) {

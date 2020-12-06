@@ -139,9 +139,6 @@ public final class MenusContract {
     //set data to specific menu object
     protected Menu cursorToMenu(Cursor cursor) {
         Menu menu = new Menu();
-        Log.i("Test", DatabaseUtils.dumpCursorToString(cursor));
-        Log.i("Test", String.valueOf(cursor.getCount()));
-
         if (cursor.getCount() > 0) { //check if cursor is empty
             menu.setM_Id(cursor.getLong(0));
             //get The FoodTruck by id
