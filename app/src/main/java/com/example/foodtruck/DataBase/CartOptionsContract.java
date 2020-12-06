@@ -9,9 +9,10 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 
+import com.example.foodtruck.Models.Cart;
 import com.example.foodtruck.Models.CartOptions;
-import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Item;
+import com.example.foodtruck.Models.Option;
 
 
 public class CartOptionsContract {
@@ -24,19 +25,19 @@ public class CartOptionsContract {
 
     private String[] mAllColumns = {
             CartOptionsEntry._ID,
-            CartOptionsEntry.COL_CUST_ID,
+            CartOptionsEntry.COL_CART_ID,
             CartOptionsEntry.COL_ITEM_ID,
             CartOptionsEntry.COL_OPTION_ID
     };
 
 
     //Add to Database
-    public CartOptions savedSelectedItemsOptions(long customerId, long itemId, long cartId) {
+    public CartOptions savedSelectedItemsOptions(long cartID, long itemId, long numberID) {
         open();
         ContentValues av = new ContentValues();
-        av.put(CartOptionsEntry.COL_CUST_ID, customerId);
+        av.put(CartOptionsEntry.COL_CART_ID, cartID);
         av.put(CartOptionsEntry.COL_ITEM_ID, itemId);
-        av.put(CartOptionsEntry.COL_OPTION_ID, cartId);
+        av.put(CartOptionsEntry.COL_OPTION_ID, numberID);
         long insertID = mDb.insert(CartOptionsEntry.TABLE_NAME, null, av);
         Cursor cursor = mDb.query(CartOptionsEntry.TABLE_NAME, mAllColumns, CartOptionsEntry._ID + " = " + insertID, null, null, null, null);
         cursor.moveToFirst();
@@ -74,7 +75,7 @@ public class CartOptionsContract {
     //return cart item options by id
     public CartOptions getCartItemOptions(long id) {
         open();
-        Cursor cursor = mDb.query(CartOptionsEntry.TABLE_NAME, mAllColumns, CartOptionsEntry.COL_CUST_ID + " + ?",
+        Cursor cursor = mDb.query(CartOptionsEntry.TABLE_NAME, mAllColumns, CartOptionsEntry.COL_CART_ID + " + ?",
                 new String[]{String.valueOf(id)}, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -106,10 +107,12 @@ public class CartOptionsContract {
         CartOptions cartOptions = new CartOptions();
         cartOptions.setM_Id(cursor.getLong(0));
 
-        CustomersContract cC = new CustomersContract(mContext);
-        Customer cc = cC.getCustomerById(cursor.getLong(cursor.getColumnIndex(CartOptionsEntry.COL_CUST_ID)));
+        CheckOutContract cC = new CheckOutContract(mContext);
+        Cart cc = cC.getCartById(cursor.getLong(cursor.getColumnIndex(CartOptionsEntry.COL_CART_ID)));
+
         if (cC != null) {
-            cartOptions.setM_Customer(cc);
+            cartOptions.setM_Cart(cc);
+
         }
 
         ItemsContract iC = new ItemsContract(mContext);
@@ -118,7 +121,10 @@ public class CartOptionsContract {
             cartOptions.setM_itemId(item);
         }
 
-        cartOptions.setM_cartId(cursor.getLong(3));
+        OptionsContract optionsContract = new OptionsContract(mContext);
+        Option option = optionsContract.getOptionById(cursor.getLong(cursor.getColumnIndex(CartOptionsEntry.COL_OPTION_ID)));
+
+        cartOptions.setM_Option(option);
 
         cursor.close();
         return cartOptions;
@@ -127,7 +133,7 @@ public class CartOptionsContract {
 
     public static final class CartOptionsEntry implements BaseColumns {
         public static final String TABLE_NAME = "cart_options";
-        public static final String COL_CUST_ID = "custID";
+        public static final String COL_CART_ID = "cartID";
         public static final String COL_ITEM_ID = "itemID";
         public static final String COL_OPTION_ID = "optionID" ;
 

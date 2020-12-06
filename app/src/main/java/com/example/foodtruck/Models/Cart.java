@@ -6,7 +6,7 @@ public class Cart {
     private Item m_Item;
     private Customer m_Customer;
     private String m_Quantity;
-    private long m_OrderNumber; //remove
+    private long m_OrderNumber;
 
 
     public Cart(){}

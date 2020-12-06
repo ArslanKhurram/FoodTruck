@@ -149,7 +149,7 @@ public class DbHelper extends SQLiteOpenHelper {
     //query to create cartOptions table
     public static final String SQL_CREATE_CART_OPTIONS_TABLE = "CREATE TABLE " + CartOptionsEntry.TABLE_NAME + " (" +
             CartOptionsEntry._ID + " INTEGER PRIMARY KEY , " +
-            CartOptionsEntry.COL_CUST_ID + " INTEGER NOT NULL, " +
+            CartOptionsEntry.COL_CART_ID + " INTEGER NOT NULL, " +
             CartOptionsEntry.COL_ITEM_ID + " INTEGER NOT NULL, " +
             CartOptionsEntry.COL_OPTION_ID + " INTEGER NOT NULL " +
             ");";

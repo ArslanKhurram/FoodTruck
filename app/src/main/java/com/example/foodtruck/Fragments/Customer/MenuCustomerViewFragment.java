@@ -61,10 +61,6 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     private Spinner spnQnty;
     private CheckOutContract cart;
 
-    private Random random = new Random();
-    private long orderNumber = random.nextInt(10000);
-
-
     //hardcoded
     private Customer currentCustomer;
     private CustomersContract cC;
@@ -229,7 +225,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         Button btnAdd = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         btnAdd.setOnClickListener(v -> {
 
-            if (checkedOption != null) {
+            if (checkedOption != null && Arrays.asList(checkedOption).contains(true)) {
                 addToCart(checkedOption, currentCustomer, item, spnQnty.getSelectedItem().toString());
             } else {
                 addCartToDb(item);
@@ -253,7 +249,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
             editor.commit();
         }
 
-        cart.addCart(item.getM_Id(), spnQnty.getSelectedItem().toString(), currentCustomer.getM_Id(), orderNumber);
+        cart.addCart(item.getM_Id(), spnQnty.getSelectedItem().toString(), currentCustomer.getM_Id(), 23);
         Toast.makeText(getContext(), "Added To Cart", Toast.LENGTH_SHORT).show();
     }
 
@@ -267,7 +263,6 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         LinearLayout ll = dV.findViewById(R.id.checkBoxes);
         long optionId = item.getM_Id();
 
-        CartOptionsContract cartOptionsContract = new CartOptionsContract(getContext());
         OptionsContract oC = new OptionsContract(getContext());
 
         ArrayList<Option> optionRay;
@@ -305,22 +300,23 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     }
 
     private void addToCart(Boolean[] checkedOptions, Customer customer, Item item, String qty) {
+        Random random = new Random();
+        long orderNumber = random.nextInt(1000);
 
         CheckOutContract checkOutContract = new CheckOutContract(getContext());
-        checkOutContract.addCart(item.getM_Id(), qty, customer.getM_Id(), 123);
+        checkOutContract.addCart(item.getM_Id(), qty, customer.getM_Id(), orderNumber);
 
         OptionsContract optionsContract = new OptionsContract(getContext());
 
         ArrayList<Option> optionRay = optionsContract.getOptionsListByItemID(item.getM_Id());
 
-        Cart cart = checkOutContract.getCart(customer.getM_Id(), item.getM_Id());
+        Cart cart = checkOutContract.getCartByNumberId(orderNumber);
 
         CartOptionsContract cartOptionsContract = new CartOptionsContract(getContext());
 
         if (optionRay.size() != 0) {
             for (int i = 0; i < optionRay.size(); i++) {
-                if (checkedOptions[i]) {
-
+                if (checkedOptions[i]) {//change entire db to cart instead of cust
                     cartOptionsContract.savedSelectedItemsOptions(cart.getM_ID(), item.getM_Id(), optionRay.get(i).getM_Id());
                 }
             }

@@ -71,10 +71,18 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         recyclerView.setAdapter(cMenuAdapter);
 
 
+
+        //total display function here
+        //capp view height
+        // add tax
+
+
         btnPlaceOrder = v.findViewById(R.id.btnPlaceOrder);
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //clear cart when order place
+                //trasnfer to order items and options dislay options //and total //delete delivery add text view totals as stuff get added in dynamically
                 System.out.println("this works");
             }
         });

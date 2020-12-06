@@ -6,6 +6,7 @@ package com.example.foodtruck.DataBase;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
@@ -66,10 +67,11 @@ public class CheckOutContract {
     }
 
     //return cart by id
-    public Cart getCart(long id){
+    public Cart getCart(long custId){
+
         open();
         Cursor cursor = mDb.query(CartEntry.TABLE_NAME,mAllColumns,CartEntry.COL_CUST_ID + " = ?",
-        new String[]{String.valueOf(id)},null,null,null);
+        new String[]{String.valueOf(custId)},null,null,null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -82,10 +84,10 @@ public class CheckOutContract {
     }
 
     //return cart b
-    public Cart getCart(long custId, long itemId){
+    public Cart getCartByNumberId(long numberId){
         open();
-        Cursor cursor = mDb.query(CartEntry.TABLE_NAME,mAllColumns,CartEntry.COL_CUST_ID + " = ? AND " + CartEntry.COL_ITEM_ID + " =?" ,
-                new String[]{String.valueOf(custId),String.valueOf(itemId)},null,null,null);
+        Cursor cursor = mDb.query(CartEntry.TABLE_NAME,mAllColumns,CartEntry.COL_ORDER_NUMBER + " = ? " ,
+                new String[]{String.valueOf(numberId)},null,null,null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -97,34 +99,23 @@ public class CheckOutContract {
 
     }
 
-    //return array list of options
-    public ArrayList<Option> getOptionSelected(long itemID) {
+
+    public Cart getCartById(long id){
         open();
-        boolean check = checkIfOptionsExist(itemID);
-        if (check) {
-            ArrayList<Option> optionsList = new ArrayList<Option>();
-
-            Cursor cursor = mDb.query(CartEntry.TABLE_NAME, mAllColumns, CartEntry.COL_CUST_ID + " =?",
-                    new String[]{String.valueOf(itemID)}, null, null, null);
-
+        Cursor cursor = mDb.query(CartEntry.TABLE_NAME,mAllColumns,CartEntry._ID + " = ?",
+                new String[]{String.valueOf(id)},null,null,null);
+        if (cursor != null) {
             cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                Option option = cursorToOption(cursor, itemID);
-                optionsList.add(option);
-                if (cursor.isLast() || cursor.isClosed())
-                    break;
-                else
-                    cursor.moveToNext();
-            }
-            cursor.close();
-            return optionsList;
         }
+        Cart cart = cursorToCart(cursor);
+        cursor.close();
         mDb.close();
         close();
-        return null;
-
+        return cart;
 
     }
+
+
 
     //return array list of options
     public ArrayList<Cart> getEntireCart(long itemID){
@@ -155,20 +146,6 @@ public class CheckOutContract {
 
     }
 
-    //set data to specific option object
-    protected Option cursorToOption(Cursor cursor, long id) {
-        Option option = new Option();
-        option.setM_Id(cursor.getLong(0));
-        option.setM_Option(cursor.getString(1));
-
-        //get The Customer by id
-        ItemsContract contract = new ItemsContract(mContext);
-        Item item = contract.getItemById(id);
-        if (contract != null) {
-            option.setM_Item(item);
-        }
-        return option;
-    }
 
     //check is options exist for an item
     public boolean checkIfOptionsExist(long ItemID) {
