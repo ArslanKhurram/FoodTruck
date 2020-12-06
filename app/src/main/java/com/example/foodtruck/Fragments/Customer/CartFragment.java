@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.Spinner;
@@ -47,9 +48,11 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
     private ArrayList<Cart> arrayCb = new ArrayList<>();
     private String selectedOptions = "";
 
+
     //hardcoded
     private Customer currentCustomer;
     private CustomersContract cC;
+    private Button btnPlaceOrder;
 
 
     @Nullable
@@ -67,6 +70,16 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(cMenuAdapter);
 
+
+        btnPlaceOrder = v.findViewById(R.id.btnPlaceOrder);
+        btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("this works");
+            }
+        });
+
+
         return v;
     }
 
@@ -83,6 +96,8 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         MenusContract mc = new MenusContract(getContext());
         menuFrag.setArguments(bundle);
         transaction.replace(R.id.mainFragment_container, menuFrag).commit();
+
+
     }
     }
 
@@ -109,4 +124,5 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         } else
             return null;
     }
+
 }

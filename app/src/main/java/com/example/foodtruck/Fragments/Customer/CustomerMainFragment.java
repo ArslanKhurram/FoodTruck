@@ -30,6 +30,7 @@ public class CustomerMainFragment extends Fragment implements BottomNavigationVi
         if (savedInstanceState == null) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new FavoritesFragment()).commit();
             navigationView.getMenu().getItem(0).setChecked(true);
+
         }
         navigationView.setOnNavigationItemSelectedListener(this); //set a listener on the navigation bar
 

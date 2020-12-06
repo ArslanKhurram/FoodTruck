@@ -6,7 +6,7 @@ public class Cart {
     private Item m_Item;
     private Customer m_Customer;
     private String m_Quantity;
-    private String m_Selected_Options;
+    private long m_OrderNumber; //remove
 
 
     public Cart(){}
@@ -28,8 +28,8 @@ public class Cart {
     public Customer getCustId(){return m_Customer;}
     public void setCustId(Customer cust_Id){this.m_Customer = cust_Id;}
 
-    public String getM_Selected_Options(){return m_Selected_Options;}
-    public void setM_Selected_Options(String m_Options){this.m_Selected_Options = m_Options;}
+    public long getM_OrderNumber(){return m_OrderNumber;}
+    public void setM_OrderNumber(long m_Options){this.m_OrderNumber = m_Options;}
 
 
 }

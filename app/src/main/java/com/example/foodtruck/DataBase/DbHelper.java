@@ -22,7 +22,7 @@ import static com.example.foodtruck.DataBase.OrderedItemsContract.OrderedItemsEn
 import static com.example.foodtruck.DataBase.RatingsContract.RatingsEntry;
 import static com.example.foodtruck.DataBase.FavoritesContract.FavoritesEntry;
 import static com.example.foodtruck.DataBase.OrderedItemOptionsContract.OrderedItemOptionsEntry;
-import static com.example.foodtruck.DataBase.CheckOutCartItemOptionsContract.CheckOutOptionEntry;
+import static com.example.foodtruck.DataBase.CartOptionsContract.CartOptionsEntry;
 
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -143,15 +143,15 @@ public class DbHelper extends SQLiteOpenHelper {
             CartEntry.COL_CUST_ID + " INTEGER NOT NULL, " +
             CartEntry.COL_ITEM_ID + " INTERGER NOT NULL, " +
             CartEntry.COL_QUANTITY + " TEXT NOT NULL, " +
-            CartEntry.COL_OPTION + " TEXT NOT NULL " +
+            CartEntry.COL_ORDER_NUMBER + " INTERGER NOT NULL " +
             ");";
 
-    //query to create checkout cart item options
-    public static final String SQL_CREATE_CHECKOUT_ITEM_OPTION_TABLE = "CREATE TABLE " + CheckOutOptionEntry.TABLE_NAME + " (" +
-            CheckOutOptionEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            CheckOutOptionEntry.COL_CUST_ID + " INTEGER NOT NULL, " +
-            CheckOutOptionEntry.COL_ITEM_ID + " INTEGER NOT NULL, " +
-            CheckOutOptionEntry.COL_ITEM_OPTION_ID + " INTEGER NOT NULL, " +
+    //query to create cartOptions table
+    public static final String SQL_CREATE_CART_OPTIONS_TABLE = "CREATE TABLE " + CartOptionsEntry.TABLE_NAME + " (" +
+            CartOptionsEntry._ID + " INTEGER PRIMARY KEY , " +
+            CartOptionsEntry.COL_CUST_ID + " INTEGER NOT NULL, " +
+            CartOptionsEntry.COL_ITEM_ID + " INTEGER NOT NULL, " +
+            CartOptionsEntry.COL_OPTION_ID + " INTEGER NOT NULL " +
             ");";
 
 
@@ -196,6 +196,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_RATING_TABLE);
         db.execSQL(SQL_CREATE_FAVORITES_TABLE);
         db.execSQL(SQL_CREATE_ORDERED_ITEM_OPTIONS_TABLE);
+        db.execSQL(SQL_CREATE_CART_OPTIONS_TABLE);
 
     }
 
@@ -215,6 +216,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + RatingsEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FavoritesEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + OrderedItemOptionsEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CartOptionsEntry.TABLE_NAME);
 
         onCreate(db);
     }

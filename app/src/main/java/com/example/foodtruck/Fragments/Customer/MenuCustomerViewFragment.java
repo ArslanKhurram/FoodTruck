@@ -4,13 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,44 +15,36 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtruck.Adapter.CustomerMenuAdapter;
 import com.example.foodtruck.Adapter.MenuAdapter;
-import com.example.foodtruck.DataBase.CheckOutCartItemOptionsContract;
+import com.example.foodtruck.DataBase.CartOptionsContract;
 import com.example.foodtruck.DataBase.CheckOutContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.FavoritesContract;
-import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.OptionsContract;
-import com.example.foodtruck.DataBase.VendorsContract;
-import com.example.foodtruck.Models.CartItemOption;
+import com.example.foodtruck.Models.Cart;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Menu;
 import com.example.foodtruck.Models.Option;
-import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Arrays;
+import java.util.Random;
 
 public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.OnItemListener, View.OnClickListener {
     private RecyclerView recyclerView;
@@ -72,13 +60,16 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     View dV;
     private Spinner spnQnty;
     private CheckOutContract cart;
-    private ArrayList<Option> arrayCb = new ArrayList<>();
-    private String selectedOptions = "";
+
+    private Random random = new Random();
+    private long orderNumber = random.nextInt(10000);
+
 
     //hardcoded
     private Customer currentCustomer;
     private CustomersContract cC;
     private Button btnSave;
+
 
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -115,7 +106,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         recyclerAdapter = cMenuAdapter;
         recyclerView.setAdapter(recyclerAdapter);
 
-        //hardcoded
+
         cart = new CheckOutContract(getContext());
         cC = new CustomersContract(getContext());
 
@@ -129,8 +120,8 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         // Menu id from clicked foodTruck, compile list of items associated in that menu
         menu = mc.getMenuByFoodTruckId(ft);
         if (menu != null) {
-            for(Item item : ic.getItemListByMenuID(menu.getM_Id())) {
-                if(item.getM_Available().equals("No")) {
+            for (Item item : ic.getItemListByMenuID(menu.getM_Id())) {
+                if (item.getM_Available().equals("No")) {
 
                 }
             }
@@ -222,22 +213,13 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         spnQnty = dV.findViewById(R.id.spnQnty);
 
 
-        //hardcoded
         currentCustomer = cC.getCustomerById(1);
         itemNameDb.setText(item.getM_Name());
         priceDb.setText("$" + item.getM_Price());
         spnQnty.getSelectedItem().toString();
 
-        //test code area
 
-
-
-
-        //end test code
-
-        //Dynamically Displays Checkboxes & Pulls options from database
-        arrayOptionsUpdated(item);
-
+        Boolean[] checkedOption = displayOptions(item);
 
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
                 .setPositiveButton("Add to Cart", null)
@@ -247,62 +229,111 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         Button btnAdd = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         btnAdd.setOnClickListener(v -> {
 
-            addCartToDb(item);
+            if (checkedOption != null) {
+                addToCart(checkedOption, currentCustomer, item, spnQnty.getSelectedItem().toString());
+            } else {
+                addCartToDb(item);
+            }
             //Clears checkout cart database but shouldnt be use yet until we forward the cart to foodtrucks
-           // clearCheckoutDatabase();
+            // clearCheckoutDatabase();
 
             alertDialog.cancel();
         });
-    }//end itemOptionDialog
+    }
 
     //Add Cart To CheckOut Cart Db
     private void addCartToDb(Item item) {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("foodTruck",Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("foodTruck", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Bundle bundle = getArguments();
         Long truckID = null;
         if (bundle != null) {
             truckID = bundle.getLong("mKey");
-            editor.putLong("truck_Id",truckID);
+            editor.putLong("truck_Id", truckID);
             editor.commit();
         }
-        cart.addCart(item.getM_Id(), spnQnty.getSelectedItem().toString(), currentCustomer.getM_Id(),selectedOptions);
+
+        cart.addCart(item.getM_Id(), spnQnty.getSelectedItem().toString(), currentCustomer.getM_Id(), orderNumber);
         Toast.makeText(getContext(), "Added To Cart", Toast.LENGTH_SHORT).show();
-       //Temporary Fix, if this code is not emplace the previous selection will stack on to the newly added items
-        selectedOptions ="";
     }
 
     //Empty Database
     private void clearCheckoutDatabase() {
-        cart.clearTable(1);
+        cart.clearTable(currentCustomer.getM_Id());
     }
 
-    //obtains option from database and display them in a dynamic checkbox
-    private void arrayOptionsUpdated(Item item) {
+
+    private Boolean[] displayOptions(Item item) {
         LinearLayout ll = dV.findViewById(R.id.checkBoxes);
-        Long optionId = item.getM_Id();
-        ArrayList<Option> selectedOption;
-        OptionsContract oc = new OptionsContract(getContext());
-        selectedOption = oc.getOptionsListByItemID(optionId);
-        selectedOption.get(0).getM_Option();
-        CheckBox[] cb = new CheckBox[selectedOption.size()];
+        long optionId = item.getM_Id();
 
-        for (int i = 0; i < selectedOption.size(); i++) {
-            cb[i] = new CheckBox(getContext());
-            cb[i].setText(selectedOption.get(i).getM_Option());
-            int finalI = i;
+        CartOptionsContract cartOptionsContract = new CartOptionsContract(getContext());
+        OptionsContract oC = new OptionsContract(getContext());
 
-            cb[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (cb[finalI].isChecked()) {
-                        selectedOptions += (selectedOption.get(finalI).getM_Option() + " ");
+        ArrayList<Option> optionRay;
+
+
+        optionRay = oC.getOptionsListByItemID(optionId);
+        if (optionRay != null) {
+
+            Boolean[] checkedOptions = new Boolean[optionRay.size()];
+            Arrays.fill(checkedOptions, false);
+
+            CheckBox[] checkBoxes = new CheckBox[optionRay.size()];
+
+            for (int i = 0; i < optionRay.size(); i++) {
+                checkBoxes[i] = new CheckBox(getContext());
+                checkBoxes[i].setText(optionRay.get(i).getM_Option());
+                ll.addView(checkBoxes[i]);
+
+                int finalI = i;
+                checkBoxes[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (checkBoxes[finalI].isChecked()) {
+                            checkedOptions[finalI] = true;
+                        } else if (checkBoxes[finalI].isChecked() == false) {
+                            checkedOptions[finalI] = false;
+                        }
                     }
+                });
+            }
+            return checkedOptions;
+        }
+
+        return null;
+    }
+
+    private void addToCart(Boolean[] checkedOptions, Customer customer, Item item, String qty) {
+
+        CheckOutContract checkOutContract = new CheckOutContract(getContext());
+        checkOutContract.addCart(item.getM_Id(), qty, customer.getM_Id(), 123);
+
+        OptionsContract optionsContract = new OptionsContract(getContext());
+
+        ArrayList<Option> optionRay = optionsContract.getOptionsListByItemID(item.getM_Id());
+
+        Cart cart = checkOutContract.getCart(customer.getM_Id(), item.getM_Id());
+
+        CartOptionsContract cartOptionsContract = new CartOptionsContract(getContext());
+
+        if (optionRay.size() != 0) {
+            for (int i = 0; i < optionRay.size(); i++) {
+                if (checkedOptions[i]) {
+
+                    cartOptionsContract.savedSelectedItemsOptions(cart.getM_ID(), item.getM_Id(), optionRay.get(i).getM_Id());
                 }
-            });
-            ll.addView(cb[i]);
+            }
+        }
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("foodTruck", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Bundle bundle = getArguments();
+        Long truckID = null;
+        if (bundle != null) {
+            truckID = bundle.getLong("mKey");
+            editor.putLong("truck_Id", truckID);
+            editor.commit();
         }
 
     }
-
 }
