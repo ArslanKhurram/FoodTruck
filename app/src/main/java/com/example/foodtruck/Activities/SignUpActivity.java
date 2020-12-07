@@ -83,11 +83,15 @@ public class SignUpActivity extends AppCompatActivity {
 
             VendorsContract vendorsContract = new VendorsContract(this);
             vendorsContract.addVendor("J", "C", "3", "3", "0", "0", "0", "0", "0", "0");
+            vendorsContract.addVendor("J", "C", "4", "4", "0", "0", "0", "0", "0", "0");
             Vendor vendor = vendorsContract.getVendorIdByEmail("3");
+            Vendor vendor2 = vendorsContract.getVendorIdByEmail("4");
 
             FoodTrucksContract foodTrucksContract = new FoodTrucksContract(this);
             foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", picture(R.drawable.foodtruck), 40.8, -73.2, vendor.getM_Id());
             foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", picture(R.drawable.foodtruck1), 40.7, -73.2, vendor.getM_Id());
+            foodTrucksContract.createFoodTruck("Nacho Town", "Italian", picture(R.drawable.foodtruck1), 40.7, -73.3, vendor2.getM_Id());
+            foodTrucksContract.createFoodTruck("Pizza Town", "Italian", picture(R.drawable.foodtruck1), 40.7, -73.4, vendor2.getM_Id());
             FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(1);
 
 

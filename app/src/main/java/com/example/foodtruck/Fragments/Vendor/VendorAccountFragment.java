@@ -1,5 +1,7 @@
 package com.example.foodtruck.Fragments.Vendor;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtruck.Adapter.MyAccountAdapter;
+import com.example.foodtruck.DataBase.CustomersContract;
+import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Models.Card;
+import com.example.foodtruck.Models.Customer;
+import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 
 import java.util.ArrayList;
@@ -30,11 +36,17 @@ public class VendorAccountFragment extends Fragment implements MyAccountAdapter.
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_vendor_account, container, false);
 
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+        String email = sharedPref.getString("Email", "");
+
+        VendorsContract vendorsContract = new VendorsContract(getContext());
+        Vendor vendor = vendorsContract.getVendorIdByEmail(email);
+
         mRecyclerView = v.findViewById(R.id.accountRecycleView);
-        cardList.add(new Card("Name"));
-        cardList.add(new Card("Email"));
-        cardList.add(new Card("Food Truck"));
-        cardList.add(new Card("Sign Out"));
+        cardList.add(new Card("Name: ", vendor.getM_FirstName() + " " + vendor.getM_LastName()));
+        cardList.add(new Card("Email: ", vendor.getM_Email()));
+        cardList.add(new Card("Food Truck", " "));
+        cardList.add(new Card("Sign Out", ""));
 
         //improve performance of app by setting fixed size
         mRecyclerView.setHasFixedSize(true);

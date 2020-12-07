@@ -60,7 +60,7 @@ public class MyAccountAdapter extends RecyclerView.Adapter<MyAccountAdapter.MyVi
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView cardImageView;
-        public TextView cardTextView;
+        public TextView cardTextView, infoTextView;
         OnCardListener onCardListener;
 
         //holds reference to objects inside card
@@ -69,6 +69,7 @@ public class MyAccountAdapter extends RecyclerView.Adapter<MyAccountAdapter.MyVi
             //add reference to view so adapter can use them
             cardImageView = itemView.findViewById(R.id.accountCardImageView);
             cardTextView = itemView.findViewById(R.id.accountCardTextView);
+            infoTextView = itemView.findViewById(R.id.accountInfoCardTextView);
             this.onCardListener = onCardListener;
 
             itemView.setOnClickListener(this);
@@ -77,6 +78,7 @@ public class MyAccountAdapter extends RecyclerView.Adapter<MyAccountAdapter.MyVi
         public void bindData(Card card, Context context) {
             cardImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_arrow));
             cardTextView.setText(card.getOption());
+            infoTextView.setText(card.getInfo());
         }
 
         //when card is clicked, get that position in the adapter
