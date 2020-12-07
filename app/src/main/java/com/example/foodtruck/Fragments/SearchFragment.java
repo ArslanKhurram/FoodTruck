@@ -61,7 +61,7 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
         searchAdapter.submitList(resultsList);
 
         // Search view's X button set by Android Studio
-        ImageView btnClear = (ImageView) searchView.findViewById(R.id.search_close_btn);
+        ImageView btnClear = searchView.findViewById(R.id.search_close_btn);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         recyclerView.setAdapter(searchAdapter);
