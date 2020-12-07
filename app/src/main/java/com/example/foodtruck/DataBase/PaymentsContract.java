@@ -131,7 +131,7 @@ public final class PaymentsContract {
             cursor.moveToFirst();
         }
 
-        Payment payment = cursorToPayment(cursor, cursor.getLong(cursor.getColumnIndex(OrdersContract.OrdersEntry.COL_CUSTOMER_ID)));
+        Payment payment = cursorToPayment(cursor, cursor.getLong(cursor.getColumnIndex(PaymentsEntry.COL_CUSTOMER_ID)));
         cursor.close();
         mDb.close();
         close();

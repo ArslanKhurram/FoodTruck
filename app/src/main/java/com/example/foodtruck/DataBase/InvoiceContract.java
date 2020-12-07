@@ -121,7 +121,7 @@ public class InvoiceContract {
 
     //column and table names
     public static final class InvoiceEntry implements BaseColumns {
-        public static final String TABLE_NAME = "orders";
+        public static final String TABLE_NAME = "invoice";
         public static final String COL_INVOICE_DATE = "invoiceDate";
         public static final String COL_TOTAL = "total";
         public static final String COL_SERVICE_CHARGE = "serviceCharge";
