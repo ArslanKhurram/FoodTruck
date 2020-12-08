@@ -182,9 +182,11 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         FoodTrucksContract foodTrucksContract = new FoodTrucksContract(getContext());
         ArrayList<FoodTruck> foodTrucks = foodTrucksContract.FoodTruckList(vendor.getM_Id());
 
-        ArrayAdapter<FoodTruck> spinnerAdapter = new ArrayAdapter<FoodTruck>(getContext(), android.R.layout.simple_spinner_dropdown_item);
-        spinnerAdapter.addAll(foodTrucks);
-        foodTruckSpinner.setAdapter(spinnerAdapter);
+        if (foodTrucks != null) {
+            ArrayAdapter<FoodTruck> spinnerAdapter = new ArrayAdapter<FoodTruck>(getContext(), android.R.layout.simple_spinner_dropdown_item);
+            spinnerAdapter.addAll(foodTrucks);
+            foodTruckSpinner.setAdapter(spinnerAdapter);
+        }
     }
 
     //add options dialog with dynamic edit text boxes

@@ -74,7 +74,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         View v = inflater.inflate(R.layout.fragment_login, container, false);
         FoodTrucksContract contract = new FoodTrucksContract(getActivity());
-        if(contract.CountContracts() <= 3)
+        if(contract.CountContracts() <= 8)
             GenerateTestData(contract);
         AdminContract ac = new AdminContract(getContext());
         ac.addAdmin("1", "1");
@@ -87,6 +87,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         v.findViewById(R.id.btnLogin).setOnClickListener(this); //set onclick listener to login button
         SignInButton googleSignInBtn = v.findViewById(R.id.sign_in_button);
         googleSignInBtn.setOnClickListener(this); //set onclick listener to google sign in button
+        googleSignInBtn.setVisibility(View.INVISIBLE);
         return v;
     }
 

@@ -177,15 +177,17 @@ public class SignUpActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new SearchFragment()).commit();
                     break;
-
+                case "SignOut":
+                    fragment = new LoginFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             }
         }
 
         //replacing the fragement
-        if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
-            ft.commit();
-        }
+//        if (fragment != null) {
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.fragment_container, fragment);
+//            ft.commit();
+//        }
     }
 }

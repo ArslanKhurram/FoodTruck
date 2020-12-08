@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.Adapter.MyAccountAdapter;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.Fragments.PaymentsFragment;
@@ -82,6 +83,7 @@ public class CustomerAccountFragment extends Fragment implements MyAccountAdapte
                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new OrderHistory()).commit();
                 break;
             case "Sign Out":
+                SignUpActivity.currentFragment = "SignOut";
                 getActivity().onBackPressed();
                 break;
         }
