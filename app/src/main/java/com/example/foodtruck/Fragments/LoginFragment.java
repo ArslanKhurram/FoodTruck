@@ -74,7 +74,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         View v = inflater.inflate(R.layout.fragment_login, container, false);
         FoodTrucksContract contract = new FoodTrucksContract(getActivity());
-        if(contract.CountContracts() <= 8)
+        if(contract.CountContracts() <= 3)
             GenerateTestData(contract);
         AdminContract ac = new AdminContract(getContext());
         ac.addAdmin("1", "1");

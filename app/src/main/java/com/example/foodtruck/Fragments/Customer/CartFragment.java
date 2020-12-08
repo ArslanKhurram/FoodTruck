@@ -83,7 +83,8 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             bundle.putLong("mKey", sharedPreferences.getLong("truck_Id", 0));
             MenusContract mc = new MenusContract(getContext());
             menuFrag.setArguments(bundle);
-            transaction.replace(R.id.mainFragment_container, menuFrag).commit();
+            if (bundle.getLong("truck_Id", 0) != 0)
+                transaction.replace(R.id.mainFragment_container, menuFrag).commit();
         }
     }
 
