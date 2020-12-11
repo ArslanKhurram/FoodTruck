@@ -92,6 +92,7 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             public void onClick(View v) {
                 //clear cart when order place
                 //placeOrder();
+                clearCart(customer.getM_Id());
                 //transfer to order items and options display options //and total //delete delivery add text view totals as stuff get added in dynamically
                 Toast.makeText(getContext(), "Order Placed", Toast.LENGTH_SHORT).show();
             }
@@ -167,5 +168,12 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
 
     }
 
+    public void clearCart(long id){
+        CheckOutContract mc = new CheckOutContract(getContext());
+
+        mc.clearTable(id);
+
+
+    }
 }
 

@@ -209,7 +209,11 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         spnQnty = dV.findViewById(R.id.spnQnty);
 
 
-        currentCustomer = cC.getCustomerById(1);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+        String email = sharedPreferences.getString("Email", "");
+
+
+        currentCustomer = cC.getCustomerIdByEmail(email);
         itemNameDb.setText(item.getM_Name());
         priceDb.setText("$" + item.getM_Price());
         spnQnty.getSelectedItem().toString();
