@@ -11,7 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:padding="25dp"
-        android:text="@string/your_cart" />
+        android:textSize="25dp"
+        android:text="@string/Cart"
+        />
 
     <ImageView
         android:id="@+id/z1"
@@ -25,22 +27,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/z1"
+        android:orientation="horizontal"
         android:padding="10dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_delivery" />
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="wrap_content" />
-
         <TextView
+            android:id="@+id/totalTxt"
             style="@style/DeliveryText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/delivery" />
+            android:text="Subtotal " />
+
+
+        <TextView
+            android:id="@+id/totalTxt2"
+            style="@style/DeliveryText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="$ 0.00" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/deliveryLL2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/deliveryLL"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/salesTxt"
+            style="@style/DeliveryText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Tax " />
+
+        <TextView
+            android:id="@+id/taxTxt2"
+            style="@style/DeliveryText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="$ 0.00" />
+
 
     </LinearLayout>
 
@@ -48,80 +75,15 @@
         android:id="@+id/z2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/deliveryLL"
+        android:layout_below="@id/deliveryLL2"
         android:background="@drawable/horizontal_line" />
 
-    <RelativeLayout
-        android:id="@+id/deliveryChoices"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/z2"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/t1"
-            style="@style/DeliveryText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delivery Options" />
-
-        <HorizontalScrollView
-            android:id="@+id/cartHorizontalSV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/t1"
-            android:scrollbarAlwaysDrawHorizontalTrack="true">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="120dp"
-                    android:layout_height="35dp"
-                    app:cardBackgroundColor="@color/gray"
-                    app:cardCornerRadius="20dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="@string/pick_at_truck" />
-
-                </androidx.cardview.widget.CardView>
-
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="10dp" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="120dp"
-                    android:layout_height="35dp"
-                    app:cardBackgroundColor="@color/gray"
-                    app:cardCornerRadius="20dp">
-
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="@string/delivery_home" />
-
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
-    </RelativeLayout>
 
     <ImageView
         android:id="@+id/z3"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/deliveryChoices"
+        android:layout_below="@id/deliveryLL2"
         android:background="@drawable/horizontal_line" />
 
     <RelativeLayout
@@ -153,19 +115,17 @@
         android:id="@+id/cartRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btnPlaceOrder"
         android:layout_below="@id/r1"
-        android:padding="5dp"
-        android:layout_above="@+id/btnPlaceOrder"/>
+        android:padding="5dp" />
 
 
-
-        <Button
-            android:id="@+id/btnPlaceOrder"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:text="Place Order"
-            />
+    <Button
+        android:id="@+id/btnPlaceOrder"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:text="Place Order" />
 
 
 </RelativeLayout>

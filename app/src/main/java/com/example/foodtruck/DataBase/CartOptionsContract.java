@@ -88,6 +88,22 @@ public class CartOptionsContract {
         return cartOptions;
     }
 
+    //return cart item options by id
+    public CartOptions getCartByCustId(long id) {
+        open();
+        Cursor cursor = mDb.query(CartOptionsEntry.TABLE_NAME, mAllColumns, CartOptionsEntry.COL_CART_ID + " + ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        CartOptions cartOptions = cursorToTable(cursor);
+        cursor.close();
+        mDb.close();
+        close();
+
+        return cartOptions;
+    }
+
 
     //Open Table
     public CartOptionsContract(Context context) {

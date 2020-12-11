@@ -33,25 +33,10 @@ import java.util.ArrayList;
 public class CartFragment extends Fragment implements MenuAdapter.OnItemListener, View.OnClickListener {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter recyclerAdapter;
     private MyCartAdapter cMenuAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Cart> cartList = new ArrayList<>();
-    private EditText itemName, itemPrice;
-    private TextView tv, itemNameDb, priceDb, seeMenu;
-    private HorizontalScrollView hsv;
-    private LayoutInflater dialogInflater;
-    private Cart checkoutCart;
-    View dV;
-    private Spinner spnQnty;
-    private CheckOutContract cart;
-    private ArrayList<Cart> arrayCb = new ArrayList<>();
-    private String selectedOptions = "";
-
-
-    //hardcoded
-    private Customer currentCustomer;
-    private CustomersContract cC;
+    private TextView subTotal, totalTax, seeMenu;
     private Button btnPlaceOrder;
 
 
@@ -59,6 +44,16 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_cart, container, false);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+        String email = sharedPreferences.getString("Email","");
+
+        Bundle bundle = getArguments();
+
+        CustomersContract customersContract = new CustomersContract(getContext());
+        Customer customer = customersContract.getCustomerIdByEmail(email);
+
+
 
         cMenuAdapter = new MyCartAdapter(getContext(), this::onItemClick);
         cMenuAdapter.submitList(getCartOrders());
@@ -69,10 +64,17 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         mLayoutManager = new LinearLayoutManager(getContext()); // LinearLayout for cards
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(cMenuAdapter);
+        totalTax = v.findViewById(R.id.taxTxt2);
+        subTotal = v.findViewById(R.id.totalTxt2);
 
 
+        double tempSub = calSubTotal(getCartOrders());
+        subTotal.setText(String.format(" $%.2f", tempSub));
 
-        //total display function here
+        double tempTax = calSalesTax(calSubTotal(getCartOrders()));
+        totalTax.setText(String.format(" $%.2f", tempTax));
+
+
         //capp view height
         // add tax
 
@@ -82,7 +84,7 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             @Override
             public void onClick(View v) {
                 //clear cart when order place
-                //trasnfer to order items and options dislay options //and total //delete delivery add text view totals as stuff get added in dynamically
+                //transfer to order items and options display options //and total //delete delivery add text view totals as stuff get added in dynamically
                 System.out.println("this works");
             }
         });
@@ -92,23 +94,21 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
     }
 
 
-
     @Override
     public void onClick(View v) {
-    if (v.getId() == R.id.seeMenu ){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("foodTruck",Context.MODE_PRIVATE);
-        MenuCustomerViewFragment menuFrag = new MenuCustomerViewFragment();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putLong("mKey", sharedPreferences.getLong("truck_Id",0));
-        MenusContract mc = new MenusContract(getContext());
-        menuFrag.setArguments(bundle);
-        transaction.replace(R.id.mainFragment_container, menuFrag).commit();
+        if (v.getId() == R.id.seeMenu) {
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("foodTruck", Context.MODE_PRIVATE);
+            MenuCustomerViewFragment menuFrag = new MenuCustomerViewFragment();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            Bundle bundle = new Bundle();
+            bundle.putLong("mKey", sharedPreferences.getLong("truck_Id", 0));
+            MenusContract mc = new MenusContract(getContext());
+            menuFrag.setArguments(bundle);
+            transaction.replace(R.id.mainFragment_container, menuFrag).commit();
 
 
+        }
     }
-    }
-
 
 
     @Override
@@ -133,4 +133,24 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             return null;
     }
 
+
+    public double calSubTotal(ArrayList<Cart> cart) {
+        double total = 0;
+
+        for (int i =0; i < cart.size(); i++){
+
+            total += Double.parseDouble(cart.get(i).getM_Item().getM_Price()) * Double.parseDouble(cart.get(i).getM_Quantity());
+        }
+
+
+        return total;
+    }
+
+    public double calSalesTax(double d) {
+        double salesTax = .08875;
+        double tax = d * salesTax;
+        return tax;
+    }
+
 }
+
