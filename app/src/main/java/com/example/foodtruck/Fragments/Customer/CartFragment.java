@@ -24,8 +24,11 @@ import com.example.foodtruck.Adapter.MyCartAdapter;
 import com.example.foodtruck.DataBase.CheckOutContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.MenusContract;
+import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.Models.Cart;
 import com.example.foodtruck.Models.Customer;
+import com.example.foodtruck.Models.Order;
+import com.example.foodtruck.Models.OrderedItem;
 import com.example.foodtruck.R;
 
 import java.util.ArrayList;
@@ -68,12 +71,13 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         subTotal = v.findViewById(R.id.totalTxt2);
 
 
-        double tempSub = calSubTotal(getCartOrders());
-        subTotal.setText(String.format(" $%.2f", tempSub));
+        if(cartList != null) {
+            double tempSub = calSubTotal(getCartOrders());
+            subTotal.setText(String.format(" $%.2f", tempSub));
 
-        double tempTax = calSalesTax(calSubTotal(getCartOrders()));
-        totalTax.setText(String.format(" $%.2f", tempTax));
-
+            double tempTax = calSalesTax(calSubTotal(getCartOrders()));
+            totalTax.setText(String.format(" $%.2f", tempTax));
+        }
 
         //capp view height
         // add tax
@@ -150,6 +154,12 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         double salesTax = .08875;
         double tax = d * salesTax;
         return tax;
+    }
+
+    public void placeOrder(){
+        OrderedItemsContract orderedItemsContract = new OrderedItemsContract(getContext());
+
+
     }
 
 }
