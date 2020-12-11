@@ -11,9 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:padding="25dp"
-        android:textSize="25dp"
         android:text="@string/Cart"
-        />
+        android:textSize="25dp" />
 
     <ImageView
         android:id="@+id/z1"
@@ -23,7 +22,7 @@
         android:background="@drawable/horizontal_line" />
 
     <LinearLayout
-        android:id="@+id/deliveryLL"
+        android:id="@+id/totalLL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/z1"
@@ -35,7 +34,7 @@
             style="@style/DeliveryText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Subtotal " />
+            android:text="Order Subtotal " />
 
 
         <TextView
@@ -47,10 +46,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/deliveryLL2"
+        android:id="@+id/totalLL2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/deliveryLL"
+        android:layout_below="@id/totalLL"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -71,11 +70,34 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/totalLL3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/totalLL2"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/salesTxt2"
+            style="@style/DeliveryText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Order Total " />
+
+        <TextView
+            android:id="@+id/orderTotal"
+            style="@style/DeliveryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$ 0.00" />
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/z2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/deliveryLL2"
+        android:layout_below="@id/totalLL3"
         android:background="@drawable/horizontal_line" />
 
 
@@ -83,7 +105,14 @@
         android:id="@+id/z3"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/deliveryLL2"
+        android:layout_below="@id/totalLL3"
+        android:background="@drawable/horizontal_line" />
+
+    <ImageView
+        android:id="@+id/z4"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/totalLL2"
         android:background="@drawable/horizontal_line" />
 
     <RelativeLayout

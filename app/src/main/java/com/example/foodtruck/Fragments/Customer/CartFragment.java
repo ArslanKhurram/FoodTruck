@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +40,7 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
     private MyCartAdapter cMenuAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Cart> cartList = new ArrayList<>();
-    private TextView subTotal, totalTax, seeMenu;
+    private TextView subTotal, totalTax, seeMenu, orderTotal;
     private Button btnPlaceOrder;
 
 
@@ -49,13 +50,12 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         View v = inflater.inflate(R.layout.fragment_cart, container, false);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
-        String email = sharedPreferences.getString("Email","");
+        String email = sharedPreferences.getString("Email", "");
 
         Bundle bundle = getArguments();
 
         CustomersContract customersContract = new CustomersContract(getContext());
         Customer customer = customersContract.getCustomerIdByEmail(email);
-
 
 
         cMenuAdapter = new MyCartAdapter(getContext(), this::onItemClick);
@@ -69,14 +69,17 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         recyclerView.setAdapter(cMenuAdapter);
         totalTax = v.findViewById(R.id.taxTxt2);
         subTotal = v.findViewById(R.id.totalTxt2);
+        orderTotal = v.findViewById(R.id.orderTotal);
 
-
-        if(cartList != null) {
+        if (cartList != null) {
             double tempSub = calSubTotal(getCartOrders());
             subTotal.setText(String.format(" $%.2f", tempSub));
 
             double tempTax = calSalesTax(calSubTotal(getCartOrders()));
             totalTax.setText(String.format(" $%.2f", tempTax));
+
+            double tempOrdertoal = tempSub+tempTax;
+            orderTotal.setText(String.format(" $%.2f", tempOrdertoal));
         }
 
         //capp view height
@@ -88,8 +91,9 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             @Override
             public void onClick(View v) {
                 //clear cart when order place
+                //placeOrder();
                 //transfer to order items and options display options //and total //delete delivery add text view totals as stuff get added in dynamically
-                System.out.println("this works");
+                Toast.makeText(getContext(), "Order Placed", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -141,7 +145,7 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
     public double calSubTotal(ArrayList<Cart> cart) {
         double total = 0;
 
-        for (int i =0; i < cart.size(); i++){
+        for (int i = 0; i < cart.size(); i++) {
 
             total += Double.parseDouble(cart.get(i).getM_Item().getM_Price()) * Double.parseDouble(cart.get(i).getM_Quantity());
         }
@@ -156,8 +160,9 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         return tax;
     }
 
-    public void placeOrder(){
+    public void placeOrder() {
         OrderedItemsContract orderedItemsContract = new OrderedItemsContract(getContext());
+        OrderedItem order = orderedItemsContract.addOrderedItem("12", 123, 13);
 
 
     }
