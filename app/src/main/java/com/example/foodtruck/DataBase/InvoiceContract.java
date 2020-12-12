@@ -8,10 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Invoice;
 import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.Payment;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class InvoiceContract {
@@ -50,11 +52,12 @@ public class InvoiceContract {
             InvoiceEntry.COL_TAX_AMOUNT,
             InvoiceEntry.COL_TOTAL_INVOICE_AMOUNT,
             InvoiceEntry.COL_ORDER_ID,
-            InvoiceEntry.COL_PAYMENT_ID
+            InvoiceEntry.COL_PAYMENT_ID,
+            InvoiceEntry.COL_CUSTOMER_ID
     };
 
     //add order into database
-    public Invoice createInvoice(String invoiceDate, String total, String serviceCharge, String taxAmount, String totalInvoiceAmount, long orderId, long paymentId) {
+    public Invoice createInvoice(String invoiceDate, String total, String serviceCharge, String taxAmount, String totalInvoiceAmount, long orderId, long paymentId, long customerId) {
         open();
         ContentValues cv = new ContentValues();
         cv.put(InvoiceEntry.COL_INVOICE_DATE, invoiceDate);
@@ -64,12 +67,13 @@ public class InvoiceContract {
         cv.put(InvoiceEntry.COL_TOTAL_INVOICE_AMOUNT, totalInvoiceAmount);
         cv.put(InvoiceEntry.COL_ORDER_ID, orderId);
         cv.put(InvoiceEntry.COL_PAYMENT_ID, paymentId);
+        cv.put(InvoiceEntry.COL_CUSTOMER_ID, customerId);
 
         long insertId = mDb.insert(InvoiceEntry.TABLE_NAME, null, cv);
         Cursor cursor = mDb.query(InvoiceEntry.TABLE_NAME, mAllColumns, InvoiceEntry._ID +
                 " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
-        Invoice newInvoice = cursorToInvoice(cursor, orderId, paymentId);
+        Invoice newInvoice = cursorToInvoice(cursor, orderId, paymentId, customerId);
         cursor.close();
         mDb.close();
         close();
@@ -85,15 +89,64 @@ public class InvoiceContract {
             cursor.moveToFirst();
         }
 
-        Invoice invoice = cursorToInvoice(cursor, cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_ORDER_ID)), cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_PAYMENT_ID)));
+        Invoice invoice = cursorToInvoice(cursor, cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_ORDER_ID)), cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_PAYMENT_ID)), cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_CUSTOMER_ID)));
         cursor.close();
         mDb.close();
         close();
         return invoice;
     }
 
+//    public ArrayList<Invoice> getInvoiceList(long orderID) {
+//        open();
+//        ArrayList<Invoice> invoiceList = new ArrayList<Invoice>();
+//
+//        Cursor cursor = mDb.query(InvoiceEntry.TABLE_NAME, mAllColumns, InvoiceEntry.COL_ORDER_ID + " =?",
+//                new String[]{String.valueOf(orderID)}, null, null, null);
+//
+//        if (cursor != null) {
+//            cursor.moveToFirst();
+//            while (!cursor.isAfterLast()) {
+//                Invoice invoice = cursorToInvoice(cursor, orderID, cursor.getColumnIndex(InvoiceEntry.COL_PAYMENT_ID), cursor.getColumnIndex(InvoiceEntry.COL_CUSTOMER_ID));
+//                invoiceList.add(invoice);
+//                if (cursor.isLast() || cursor.isClosed())
+//                    break;
+//                else
+//                    cursor.moveToNext();
+//            }
+//
+//        }
+//        cursor.close();
+//        mDb.close();
+//        close();
+//        return invoiceList;
+//    }
+
+    //return array List of invoice for customer
+    public ArrayList<Invoice> getInvoiceListByCustomerId(long customerId) {
+        open();
+        ArrayList<Invoice> invoiceList = new ArrayList<Invoice>();
+
+        Cursor cursor = mDb.query(OrdersContract.OrdersEntry.TABLE_NAME, mAllColumns,   InvoiceEntry.COL_CUSTOMER_ID + " =? ", new String[]{String.valueOf(customerId)}, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Invoice invoice = cursorToInvoice(cursor, cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_ORDER_ID)), cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_ORDER_ID)), customerId );
+                invoiceList.add(invoice);
+                if (cursor.isLast() || cursor.isClosed())
+                    break;
+                else
+                    cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        mDb.close();
+        close();
+        return invoiceList;
+    }
+
     //set data to specific invoice object
-    protected Invoice cursorToInvoice(Cursor cursor, long orderId, long paymentId) {
+    protected Invoice cursorToInvoice(Cursor cursor, long orderId, long paymentId, long customerId) {
         Invoice invoice = new Invoice();
         invoice.setM_Id(cursor.getLong(0));
         invoice.setM_InvoiceDate(cursor.getString(1));
@@ -116,6 +169,13 @@ public class InvoiceContract {
             invoice.setM_Payment(payment);
         }
 
+        //get the customer by id
+        CustomersContract cc = new CustomersContract(mContext);
+        Customer customer = cc.getCustomerById(customerId);
+        if (cc != null){
+            invoice.setM_Customer(customer);
+        }
+
         return invoice;
     }
 
@@ -129,6 +189,7 @@ public class InvoiceContract {
         public static final String COL_TOTAL_INVOICE_AMOUNT = "totalInvoiceAmount";
         public static final String COL_ORDER_ID = "orderId";
         public static final String COL_PAYMENT_ID = "paymentId";
+        public static final String COL_CUSTOMER_ID = "customerId";
 
     }
 

@@ -128,7 +128,7 @@ public class SignUpActivity extends AppCompatActivity {
                 PaymentsContract paymentsContract = new PaymentsContract(this);
                 paymentsContract.createPayment("Debit", "Bob", "1283902093848639","12/2023", "453", "12/7/2020", 1);
                 InvoiceContract invoiceContract = new InvoiceContract(this);
-                invoiceContract.createInvoice("12/7/2020", "19.99", "2.99", "2.99", "25.97", 1, 1);
+                invoiceContract.createInvoice("12/7/2020", "19.99", "2.99", "2.99", "25.97", 1, 1, 1);
             }
 
         }

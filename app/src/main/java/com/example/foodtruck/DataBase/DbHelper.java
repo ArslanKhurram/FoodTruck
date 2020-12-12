@@ -180,7 +180,8 @@ public class DbHelper extends SQLiteOpenHelper {
             InvoiceEntry.COL_TAX_AMOUNT + " TEXT NOT NULL, " +
             InvoiceEntry.COL_TOTAL_INVOICE_AMOUNT + " TEXT NOT NULL, " +
             InvoiceEntry.COL_ORDER_ID + " INTEGER NOT NULL, " +
-            InvoiceEntry.COL_PAYMENT_ID + " INTEGER NOT NULL " +
+            InvoiceEntry.COL_PAYMENT_ID + " INTEGER NOT NULL, " +
+            InvoiceEntry.COL_CUSTOMER_ID + "INTEGER NOT NULL " +
             ");";
 
 

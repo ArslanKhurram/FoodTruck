@@ -9,6 +9,7 @@ public class Invoice {
     private String m_TotalInvoiceAmount;
     private Order m_Order;
     private Payment m_Payment;
+    private Customer m_Customer;
 
     public Invoice() {
     }
@@ -67,5 +68,12 @@ public class Invoice {
     }
     public void setM_Payment(Payment m_Payment) {
         this.m_Payment = m_Payment;
+    }
+
+    public Customer getM_Customer() {
+        return m_Customer;
+    }
+    public void setM_Customer(Customer m_Customer) {
+        this.m_Customer = m_Customer;
     }
 }
