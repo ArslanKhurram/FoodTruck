@@ -96,42 +96,17 @@ public class InvoiceContract {
         return invoice;
     }
 
-//    public ArrayList<Invoice> getInvoiceList(long orderID) {
-//        open();
-//        ArrayList<Invoice> invoiceList = new ArrayList<Invoice>();
-//
-//        Cursor cursor = mDb.query(InvoiceEntry.TABLE_NAME, mAllColumns, InvoiceEntry.COL_ORDER_ID + " =?",
-//                new String[]{String.valueOf(orderID)}, null, null, null);
-//
-//        if (cursor != null) {
-//            cursor.moveToFirst();
-//            while (!cursor.isAfterLast()) {
-//                Invoice invoice = cursorToInvoice(cursor, orderID, cursor.getColumnIndex(InvoiceEntry.COL_PAYMENT_ID), cursor.getColumnIndex(InvoiceEntry.COL_CUSTOMER_ID));
-//                invoiceList.add(invoice);
-//                if (cursor.isLast() || cursor.isClosed())
-//                    break;
-//                else
-//                    cursor.moveToNext();
-//            }
-//
-//        }
-//        cursor.close();
-//        mDb.close();
-//        close();
-//        return invoiceList;
-//    }
-
     //return array List of invoice for customer
     public ArrayList<Invoice> getInvoiceListByCustomerId(long customerId) {
         open();
         ArrayList<Invoice> invoiceList = new ArrayList<Invoice>();
 
-        Cursor cursor = mDb.query(OrdersContract.OrdersEntry.TABLE_NAME, mAllColumns,   InvoiceEntry.COL_CUSTOMER_ID + " =? ", new String[]{String.valueOf(customerId)}, null, null, null);
+        Cursor cursor = mDb.query(InvoiceEntry.TABLE_NAME, mAllColumns, InvoiceEntry.COL_CUSTOMER_ID + " =? ", new String[]{String.valueOf(customerId)}, null, null, null);
 
         if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                Invoice invoice = cursorToInvoice(cursor, cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_ORDER_ID)), cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_ORDER_ID)), customerId );
+                Invoice invoice = cursorToInvoice(cursor, cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_ORDER_ID)), cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_PAYMENT_ID)), customerId);
                 invoiceList.add(invoice);
                 if (cursor.isLast() || cursor.isClosed())
                     break;

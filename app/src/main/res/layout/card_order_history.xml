@@ -12,10 +12,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/tvFoodtruckName"
+            android:layout_toLeftOf="@id/tvPriceOfOrder"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="80dp"
+            android:textAlignment="center"
             android:text="TextView" />
 
         <TextView
@@ -33,12 +34,11 @@
             android:id="@+id/tvPriceOfOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tvDateOfOrder"
+            android:layout_alignParentRight="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="80dp"
+            android:layout_marginRight="10dp"
             android:text="TextView" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
