@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.DataBase.AdminContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.Fragments.Customer.CartFragment;
@@ -72,7 +74,8 @@ public class AdminMainFragment extends Fragment implements BottomNavigationView.
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MapFragment()).commit();
                 break;
             case "account":
-                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new VendorAccountFragment()).commit();
+                SignUpActivity.currentFragment = "SignOut";
+                getActivity().onBackPressed();
                 break;
             case "cart":
                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new CartFragment()).commit();

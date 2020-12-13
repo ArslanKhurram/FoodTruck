@@ -206,7 +206,7 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
 
         Button add = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         add.setOnClickListener(v -> {
-            if (imageView.getDrawable() != null) {
+            if (imageView.getDrawable() != null && !TextUtils.isEmpty(name.getText().toString()) && !TextUtils.isEmpty(category.getText().toString()) && !TextUtils.isEmpty(location.getText().toString())) {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] bitMapData = stream.toByteArray();
@@ -221,7 +221,7 @@ public class ManageFoodTrucksFragment extends Fragment implements MyFoodTruckAda
                     alertDialog.cancel();
                 }
             } else
-                Snackbar.make(v, "                         Please Upload an Image", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(v, "Please Upload an Image and Fill in all Fields", Snackbar.LENGTH_LONG).show();
 
         });
     }

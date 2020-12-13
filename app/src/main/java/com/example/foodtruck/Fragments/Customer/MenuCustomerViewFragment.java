@@ -145,6 +145,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     @Override
     public void onItemClick(int position) {
         Item itemPos = cMenuAdapter.getItemAt(position);
+
         itemOptionsDialog(itemPos);
 
     }
@@ -230,8 +231,10 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         priceDb.setText("$" + item.getM_Price());
         spnQnty.getSelectedItem().toString();
 
+        OptionsContract optionsContract = new OptionsContract(getContext());
         //Dynamically Displays Checkboxes & Pulls options from database
-        arrayOptionsUpdated(item);
+        if(optionsContract.checkIfOptionsExist(item.getM_Id()))
+            arrayOptionsUpdated(item);
 
 
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
@@ -240,14 +243,22 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
                 .show();
 
         Button btnAdd = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        btnAdd.setOnClickListener(v -> {
 
-            addCartToDb(item);
-            //Clears checkout cart database but shouldnt be use yet until we forward the cart to foodtrucks
-           // clearCheckoutDatabase();
+        SharedPreferences sharedPrf = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+        String userType = sharedPrf.getString("UserType", "");
 
-            alertDialog.cancel();
-        });
+        if(userType.equals("Vendor")) {
+            btnAdd.setVisibility(View.INVISIBLE);
+        } else {
+            btnAdd.setOnClickListener(v -> {
+
+                addCartToDb(item);
+                //Clears checkout cart database but shouldnt be use yet until we forward the cart to foodtrucks
+                // clearCheckoutDatabase();
+
+                alertDialog.cancel();
+            });
+        }
     }//end itemOptionDialog
 
     //Add Cart To CheckOut Cart Db

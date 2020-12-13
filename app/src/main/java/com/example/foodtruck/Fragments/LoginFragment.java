@@ -147,7 +147,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         CustomersContract cc = new CustomersContract(getContext());
         if (cc.checkForEmptyTable()) { //check is the table is empty
             return false;
-        } else if (cc.validateCustomer(email.getText().toString(), password.getText().toString())) {
+        } else if (cc.validateCustomer(email.getText().toString().trim(), password.getText().toString().trim())) {
             return true;
         } else
             return false;
@@ -157,7 +157,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         VendorsContract vc = new VendorsContract(getContext());
         if (vc.checkForEmptyTable()) { //check is the table is empty
             return false;
-        } else if (vc.validateVendor(email.getText().toString(), password.getText().toString())) {
+        } else if (vc.validateVendor(email.getText().toString().trim(), password.getText().toString().trim())) {
             return true;
         } else
             return false;

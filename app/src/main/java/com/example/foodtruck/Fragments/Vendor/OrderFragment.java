@@ -112,13 +112,20 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         FoodTrucksContract fc = new FoodTrucksContract(getContext());
         FoodTruck foodTruck = fc.getFoodTruckByVendorId(vendor.getM_Id());
 
-        switch (status) {
-            case "Preparing":
-                pendingOrderList = oc.getOrderListByStatus(foodTruck.getM_ID(), status);
-                return pendingOrderList;
-            case "Completed":
-                completedOrderList = oc.getOrderListByStatus(foodTruck.getM_ID(), status);
-                return completedOrderList;
+        if (foodTruck != null) {
+            switch (status) {
+                case "Preparing":
+                    ArrayList<Order> orderPList = oc.getOrderListByStatus(foodTruck.getM_ID(), status);
+                    if (orderPList != null)
+                        pendingOrderList = orderPList;
+                    return pendingOrderList;
+                case "Completed":
+                    ArrayList<Order> orderCList = oc.getOrderListByStatus(foodTruck.getM_ID(), status);
+                    if (orderCList != null)
+                        completedOrderList = orderCList;
+                    completedOrderList = orderCList;
+                    return completedOrderList;
+            }
         }
         return null;
     }

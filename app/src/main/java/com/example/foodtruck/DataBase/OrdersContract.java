@@ -122,11 +122,12 @@ public final class OrdersContract {
                 else
                     cursor.moveToNext();
             }
+            cursor.close();
+            mDb.close();
+            close();
+            return ordersList;
         }
-        cursor.close();
-        mDb.close();
-        close();
-        return ordersList;
+        return null;
     }
 
     //return Order by searching by id

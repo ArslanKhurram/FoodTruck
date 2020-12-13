@@ -159,7 +159,16 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
 
     @Override
     public void onClick(View view) {
-        addItemDialog();
+        String email = sharedPref.getString("Email", "");
+        VendorsContract vc = new VendorsContract(getContext());
+        Vendor vendor = vc.getVendorIdByEmail(email);
+        FoodTrucksContract fc = new FoodTrucksContract(getContext());
+        FoodTruck foodTruck = fc.getFoodTruckByVendorId(vendor.getM_Id());
+        if(foodTruck != null)
+            addItemDialog();
+        else {
+            Snackbar.make(getView(), "     Please Add a Food Truck Before Editing Mneu", Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override
