@@ -14,9 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.Models.Cart;
-import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.R;
 
 public class MyCartAdapter extends ListAdapter<Cart, MyCartAdapter.ItemViewHolder> {
@@ -29,6 +27,7 @@ public class MyCartAdapter extends ListAdapter<Cart, MyCartAdapter.ItemViewHolde
         itemContext = context;
         mOnItemListener = onItemListener;
 
+
     }
 
    public static DiffUtil.ItemCallback<Cart>DIFF_CALLBACK=new DiffUtil.ItemCallback<Cart>() {
@@ -39,9 +38,9 @@ public class MyCartAdapter extends ListAdapter<Cart, MyCartAdapter.ItemViewHolde
 
         @Override
         public boolean areContentsTheSame(@NonNull Cart oldItem, @NonNull Cart newItem) {
-            return  oldItem.getM_Item().getM_Name().equals(newItem.getM_Item().getM_Name()) &&
+            return oldItem.getM_Item().getM_Name().equals(newItem.getM_Item().getM_Name()) &&
                     oldItem.getM_Item().getM_Price().equals(newItem.getM_Item().getM_Price()) &&
-                    oldItem.getM_Quantity().equals(newItem.getM_Selected_Options());
+                    oldItem.getM_Quantity().equals(newItem.getM_OrderNumber());
         }
     };
 

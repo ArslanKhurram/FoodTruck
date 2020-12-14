@@ -34,18 +34,18 @@ public class CheckOutContract {
             CartEntry.COL_CUST_ID,
             CartEntry.COL_ITEM_ID,
             CartEntry.COL_QUANTITY,
-            CartEntry.COL_OPTION
+            CartEntry.COL_ORDER_NUMBER
     };
 
 
     //used to add cart into database
-    public Cart addCart (long item_ID , String qnty, long customerId, String option){
+    public Cart addCart (long item_ID , String qnty, long customerId, long orderNum){
         open();
         ContentValues av = new ContentValues();
         av.put(CartEntry.COL_ITEM_ID, item_ID);
         av.put(CartEntry.COL_QUANTITY,qnty);
         av.put(CartEntry.COL_CUST_ID, customerId);
-        av.put(CartEntry.COL_OPTION, option);
+        av.put(CartEntry.COL_ORDER_NUMBER, orderNum);
         long insertID = mDb.insert(CartEntry.TABLE_NAME, null, av);
         Cursor cursor = mDb.query(CartEntry.TABLE_NAME, mAllColumns, CartEntry._ID + " = " + insertID, null, null, null, null);
         cursor.moveToFirst();
@@ -67,10 +67,11 @@ public class CheckOutContract {
     }
 
     //return cart by id
-    public Cart getCart(long id){
+    public Cart getCart(long custId){
+
         open();
         Cursor cursor = mDb.query(CartEntry.TABLE_NAME,mAllColumns,CartEntry.COL_CUST_ID + " = ?",
-        new String[]{String.valueOf(id)},null,null,null);
+        new String[]{String.valueOf(custId)},null,null,null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -81,34 +82,40 @@ public class CheckOutContract {
         return cart;
 
     }
-    //return array list of options
-    public ArrayList<Option> getOptionSelected(long itemID) {
+
+    //return cart b
+    public Cart getCartByNumberId(long numberId){
         open();
-        boolean check = checkIfOptionsExist(itemID);
-        if (check) {
-            ArrayList<Option> optionsList = new ArrayList<Option>();
-
-            Cursor cursor = mDb.query(CartEntry.TABLE_NAME, mAllColumns, CartEntry.COL_CUST_ID + " =?",
-                    new String[]{String.valueOf(itemID)}, null, null, null);
-
+        Cursor cursor = mDb.query(CartEntry.TABLE_NAME,mAllColumns,CartEntry.COL_ORDER_NUMBER + " = ? " ,
+                new String[]{String.valueOf(numberId)},null,null,null);
+        if (cursor != null) {
             cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                Option option = cursorToOption(cursor, itemID);
-                optionsList.add(option);
-                if (cursor.isLast() || cursor.isClosed())
-                    break;
-                else
-                    cursor.moveToNext();
-            }
-            cursor.close();
-            return optionsList;
         }
+        Cart cart = cursorToCart(cursor);
+        cursor.close();
         mDb.close();
         close();
-        return null;
-
+        return cart;
 
     }
+
+
+    public Cart getCartById(long id){
+        open();
+        Cursor cursor = mDb.query(CartEntry.TABLE_NAME,mAllColumns,CartEntry._ID + " = ?",
+                new String[]{String.valueOf(id)},null,null,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        Cart cart = cursorToCart(cursor);
+        cursor.close();
+        mDb.close();
+        close();
+        return cart;
+
+    }
+
+
 
     //return array list of options
     public ArrayList<Cart> getEntireCart(long itemID){
@@ -138,20 +145,6 @@ public class CheckOutContract {
 
     }
 
-    //set data to specific option object
-    protected Option cursorToOption(Cursor cursor, long id) {
-        Option option = new Option();
-        option.setM_Id(cursor.getLong(0));
-        option.setM_Option(cursor.getString(1));
-
-        //get The Customer by id
-        ItemsContract contract = new ItemsContract(mContext);
-        Item item = contract.getItemById(id);
-        if (contract != null) {
-            option.setM_Item(item);
-        }
-        return option;
-    }
 
     //check is options exist for an item
     public boolean checkIfOptionsExist(long ItemID) {
@@ -181,7 +174,7 @@ public class CheckOutContract {
         Cart cart = new Cart();
         cart.setM_ID(cursor.getLong(0));
         cart.setM_Quantity(cursor.getString(3));
-        cart.setM_Selected_Options(cursor.getString(4));
+        cart.setM_OrderNumber(cursor.getLong(4));
         //get cart by item id
         ItemsContract ic = new ItemsContract(mContext);
         Item item = ic.getItemById(cursor.getLong(cursor.getColumnIndex(CartEntry.COL_ITEM_ID)));
@@ -217,7 +210,8 @@ public class CheckOutContract {
         public static final String COL_CUST_ID = "custID";
         public static final String COL_ITEM_ID = "itemID";
         public static final String COL_QUANTITY = "Quantity";
-        public static final String COL_OPTION = "Options";
+        public static final String COL_ORDER_NUMBER = "OrderNumber";
+
 
     }// ends CartEntry
 }

@@ -31,21 +31,15 @@ public class CustomerMainFragment extends Fragment implements BottomNavigationVi
         SignUpActivity.currentFragmentView = v;
         //reference to bottom navigation bar
         BottomNavigationView navigationView = v.findViewById(R.id.bottom_navigation);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new SearchFragment()).commit();
-        navigationView.getMenu().getItem(1).setChecked(true);
-
+        if (savedInstanceState == null) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new FavoritesFragment()).commit();
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
         navigationView.setOnNavigationItemSelectedListener(this); //set a listener on the navigation bar
 
         return v;
     }
 
-    private void setSelected(BottomNavigationView view) {
-        view.getMenu().getItem(0).setChecked(false);
-        view.getMenu().getItem(1).setChecked(true);
-        view.getMenu().getItem(0).setChecked(false);
-        view.getMenu().getItem(0).setChecked(false);
-        view.getMenu().getItem(0).setChecked(false);
-    }
 
     //method will handel pressed menu items
     @Override
