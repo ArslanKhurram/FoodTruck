@@ -48,6 +48,7 @@ import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Models.FoodTruck;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Menu;
+import com.example.foodtruck.Models.Option;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -230,6 +231,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
             }
             alertDialog.dismiss();
             Toast.makeText(getContext(), "Options Added", Toast.LENGTH_LONG).show();
+            editTexts.clear();
         });
 
         Button cancel = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
@@ -238,8 +240,63 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         });
     }
 
+    //load options for an item if they exist and allow to edit or delete
     private void updateOptionDialog(Item item) {
+        LayoutInflater optionDialogInflater = getLayoutInflater();
+        View optionView = optionDialogInflater.inflate(R.layout.dialog_options, null);
+        Button addOption = optionView.findViewById(R.id.addRow);
 
+        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(optionView)
+                .setPositiveButton("Add", null)
+                .setNegativeButton("Cancel", null)
+                .show();
+        OptionsContract optionsContract = new OptionsContract(getContext());
+        ArrayList<Option> options =  optionsContract.getOptionsListByItemID(item.getM_Id());
+
+        //check if options exist for item and display them
+        if (options != null) {
+            for(Option a : options){
+                EditText t = new EditText(getContext());
+                t.setText(a.getM_Option());
+                editTexts.add(t);
+                t.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout root = optionView.findViewById(R.id.mLL);
+                root.addView(t);
+                t.requestFocus();
+
+            }
+            options.clear();
+        }
+
+        addOption.setOnClickListener(v -> {
+            EditText t = new EditText(getContext());
+            editTexts.add(t);
+            t.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            t.setHint("Option");
+            LinearLayout root = optionView.findViewById(R.id.mLL);
+            root.addView(t);
+            t.requestFocus();
+        });
+
+        Button submit = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        submit.setOnClickListener(v -> {
+            //remove options from item then add new or updated records
+            optionsContract.removeOptionsByItemID(item.getM_Id());
+
+            for (EditText editText : editTexts) {
+                if (editText.getText().length() > 0) {
+                    optionsContract.createOption(editText.getText().toString().trim(), item.getM_Id());
+                }
+            }
+            alertDialog.dismiss();
+            Toast.makeText(getContext(), "Options Added", Toast.LENGTH_LONG).show();
+            editTexts.clear();
+        });
+
+        Button cancel = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        cancel.setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
     }
 
     private void addItemDialog() {
@@ -340,7 +397,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         });
 
         addOptions.setOnClickListener(v -> {
-            addOptionDialog(item);
+            updateOptionDialog(item);
         });
 
         alertDialog.setOnDismissListener(dialog -> {
