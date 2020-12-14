@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -52,7 +54,10 @@ import com.example.foodtruck.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,7 +69,6 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     private ArrayList<Item> itemList = new ArrayList<>();
     private EditText itemName, itemPrice;
     private TextView tv, itemNameDb, priceDb;
-    private HorizontalScrollView hsv;
     private LayoutInflater dialogInflater;
     private Menu menu;
     View dV;
@@ -86,10 +90,32 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         if (bundle != null)
             truckID = bundle.getLong("mKey");
         tv = v.findViewById(R.id.noMenuPrompt);
-        hsv = v.findViewById(R.id.scrlMenu);
         btnSave = v.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
         tv.setVisibility(View.INVISIBLE);
+        TextView truckName = v.findViewById(R.id.foodTruckName);
+        TextView truckAddress = v.findViewById(R.id.foodTruckAddress);
+
+        FoodTrucksContract fc = new FoodTrucksContract(getContext());
+        FoodTruck foodTruck = fc.getFoodTruckById(truckID);
+        truckName.setText(foodTruck.getM_Name() + " Menu");
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(foodTruck.getM_Latitude(), foodTruck.getM_Longitude(), 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (addresses != null && addresses.size() > 0) {
+            String address = addresses.get(0).getAddressLine(0);
+            truckAddress.setText(address);
+            truckAddress.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    truckAddress.setSelected(true);
+                }
+            }, 3000);
+        }
 
         if (checkFavorited()) {
             @SuppressLint("UseCompatLoadingForDrawables") Drawable favorite = getContext().getResources().getDrawable(R.drawable.ic_favorite, null);
@@ -103,7 +129,6 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
             cMenuAdapter.submitList(getMenuList(truckID));
         else {
             tv.setVisibility(View.VISIBLE);
-            hsv.setVisibility(View.INVISIBLE);
         }
 
         recyclerView = v.findViewById(R.id.CustomerItemsRecyclerView);
