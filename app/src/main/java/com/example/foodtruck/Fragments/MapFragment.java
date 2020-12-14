@@ -100,7 +100,7 @@ public class MapFragment extends Fragment {
                 FoodTrucksContract fc = new FoodTrucksContract(getActivity());
                 VendorsContract vc = new VendorsContract(getActivity());
                 Bitmap bitmap = onCreateBitmap();
-                Toast.makeText(getContext(), "Location succeess", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Location success", Toast.LENGTH_SHORT).show();
 
                     // Instantiates a new CircleOptions object and defines the center and radius, required to create a circle visible on the map
 //                     circleOptions = new CircleOptions()
