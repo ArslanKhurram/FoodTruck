@@ -81,11 +81,7 @@ public class OrderAdapter extends ListAdapter<Order, OrderAdapter.OrderViewHolde
         public void BindData(Order order, Context context) {
             orderNum.setText(order.getM_OrderNumber());
             orderName.setText(order.getM_Customer().getM_FirstName() + " " + order.getM_Customer().getM_LastName());
-//            OrderedItemsContract oc = new OrderedItemsContract(context);
-//            ArrayList<OrderedItem> orderedItems = oc.getOrderedItems(order.getM_Id());
-//            for (OrderedItem item :orderedItems) {
-//                orderName.setText(orderName.getText() + item.getM_Item().getM_Name() + "  ");
-//            }
+
         }
 
         @Override
