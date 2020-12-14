@@ -1,6 +1,7 @@
 package com.example.foodtruck.Fragments.Customer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -91,7 +92,7 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             @Override
             public void onClick(View v) {
                 //clear cart when order place
-                //placeOrder();
+                placeOrder();
                 clearCart(customer.getM_Id());
                 //transfer to order items and options display options //and total //delete delivery add text view totals as stuff get added in dynamically
                 Toast.makeText(getContext(), "Order Placed", Toast.LENGTH_SHORT).show();
@@ -175,5 +176,6 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
 
 
     }
+
 }
 
