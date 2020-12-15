@@ -142,8 +142,6 @@ public class CheckOutContract {
         mDb.close();
         close();
         return null;
-
-
     }
 
 
