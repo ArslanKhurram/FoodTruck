@@ -138,20 +138,23 @@ public final class OrderedItemsContract {
     }
 
 
-    //return ordereditem ID by order id and item id
+    //return ordered item ID by order id and item id
     public OrderedItem getOrderedItemByOrderAndItemId(long orderId, long itemId) {
         open();
-        Cursor cursor = mDb.query(OrderedItemsEntry.TABLE_NAME, mAllColumns, OrderedItemsEntry.COL_ORDER_ID + " = ? AND " + OrderedItemsEntry.COL_ITEM_ID + "= ?",
-                new String[]{String.valueOf(orderId), String.valueOf(itemId)}, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
+        Cursor cursor = mDb.rawQuery("SELECT * FROM " + OrderedItemsEntry.TABLE_NAME +
+                " WHERE " + OrderedItemsEntry.COL_ORDER_ID + " = " + String.valueOf(orderId) +
+                " AND " + OrderedItemsEntry.COL_ITEM_ID + " = " + String.valueOf(itemId), null);
+        if (cursor.moveToFirst()) {
+            OrderedItem orderedItem = cursorToOrderedItem(cursor, cursor.getLong(cursor.getColumnIndex(OrderedItemsEntry.COL_ITEM_ID)), cursor.getLong(cursor.getColumnIndex(OrderedItemsEntry.COL_ORDER_ID)));
+            cursor.close();
+            mDb.close();
+            close();
+            return orderedItem;
         }
-
-        OrderedItem orderedItem = cursorToOrderedItem(cursor, cursor.getLong(cursor.getColumnIndex(OrderedItemsEntry.COL_ITEM_ID)), cursor.getLong(cursor.getColumnIndex(OrderedItemsEntry.COL_ORDER_ID)));
         cursor.close();
         mDb.close();
         close();
-        return orderedItem;
+        return null;
     }
 
 

@@ -191,7 +191,6 @@ public class CartOptionsContract {
 
         cartOptions.setM_Option(option);
 
-        cursor.close();
         return cartOptions;
     }
 

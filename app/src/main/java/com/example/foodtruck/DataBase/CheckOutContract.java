@@ -104,15 +104,17 @@ public class CheckOutContract {
         open();
         Cursor cursor = mDb.query(CartEntry.TABLE_NAME,mAllColumns,CartEntry._ID + " = ?",
                 new String[]{String.valueOf(id)},null,null,null);
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor.moveToFirst()) {
+            Cart cart = cursorToCart(cursor);
+            cursor.close();
+            mDb.close();
+            close();
+            return cart;
         }
-        Cart cart = cursorToCart(cursor);
         cursor.close();
         mDb.close();
         close();
-        return cart;
-
+        return null;
     }
 
 
@@ -146,15 +148,57 @@ public class CheckOutContract {
 
 
     //check is options exist for an item
-    public boolean checkIfOptionsExist(long ItemID) {
+    public boolean checkIfCartExist(long cartId) {
         open();
         Cursor cursor = mDb.query(CartEntry.TABLE_NAME, mAllColumns, CartEntry._ID + "=? ",
-                new String[]{String.valueOf(ItemID)}, null, null, null);
+                new String[]{String.valueOf(cartId)}, null, null, null);
 
         boolean check = cursor.getCount() > 0;
         cursor.close();
         return check;
     }
+    //check is options exist for an item
+    public boolean checkIfCartExistByCustomerIdAndItemId(long customerId, long itemId) {
+        open();
+        Cursor cursor = mDb.rawQuery("SELECT * FROM " + CartEntry.TABLE_NAME +
+                " WHERE " + CartEntry.COL_CUST_ID + " = " + String.valueOf(customerId) +
+                " AND " + CartEntry.COL_ITEM_ID + " = " + String.valueOf(itemId), null);
+
+        boolean check = cursor.getCount() > 0;
+        cursor.close();
+        return check;
+    }
+
+    public Cart getCartByCustomerIdAndItemId(long customerId, long itemId){
+        open();
+        Cursor cursor = mDb.rawQuery("SELECT * FROM " + CartEntry.TABLE_NAME +
+                " WHERE " + CartEntry.COL_CUST_ID + " = " + String.valueOf(customerId) +
+                " AND " + CartEntry.COL_ITEM_ID + " = " + String.valueOf(itemId), null);
+        if (cursor.moveToFirst()) {
+            Cart cart = cursorToCart(cursor);
+            cursor.close();
+            mDb.close();
+            close();
+            return cart;
+        }
+        cursor.close();
+        mDb.close();
+        close();
+        return null;
+    }
+
+    //update cart record
+    public void updateCartQuantity(long id, String quantity) {
+        open();
+        ContentValues cv = new ContentValues();
+        cv.put(CartEntry.COL_QUANTITY, quantity);
+
+        mDb.update(CartEntry.TABLE_NAME, cv, CartEntry._ID + " = " + id, null);
+        close();
+
+    }
+
+
 
     //open cart table
     public CheckOutContract(Context context){
