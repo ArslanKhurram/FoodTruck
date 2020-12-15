@@ -5,10 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/page_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="PAGE 1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:id="@+id/inputLayout"
-        android:layout_width="300dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
@@ -16,62 +25,72 @@
             android:id="@+id/etFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="50px"
+            android:layout_marginTop="10dp"
             android:hint="First Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:maxLength="30"
+            android:textSize="50px" />
 
         <EditText
             android:id="@+id/etLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="50px"
+            android:layout_below="@id/etFirstName"
+            android:layout_marginTop="10dp"
             android:hint="Last Name"
             android:inputType="textPersonName"
-            android:layout_below="@id/etFirstName" />
+            android:maxLength="30"
+            android:textSize="50px" />
 
         <EditText
             android:id="@+id/etEmailAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="50px"
+            android:layout_below="@id/etLastName"
+            android:layout_marginTop="10dp"
             android:hint="Email"
+            android:maxLength="40"
             android:inputType="textEmailAddress"
-            android:layout_below="@id/etLastName" />
+            android:textSize="50px" />
 
         <EditText
             android:id="@+id/etNewPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="50px"
+            android:layout_below="@id/etEmailAdd"
+            android:layout_marginTop="10dp"
             android:hint="Password"
+            android:maxLength="20"
             android:inputType="textPassword"
-            android:layout_below="@id/etEmailAdd" />
+            android:textSize="50px" />
 
         <EditText
             android:id="@+id/testNewPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="50px"
+            android:layout_below="@id/etNewPassword"
+            android:layout_marginTop="10dp"
             android:hint="Confirm Password"
+            android:maxLength="20"
             android:inputType="textPassword"
-            android:layout_below="@id/etNewPassword" />
+            android:textSize="50px" />
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/btnLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_above="@id/sOne"
         android:gravity="center"
-        android:padding="5dp"
-        android:layout_above="@id/sOne">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <Button
             android:id="@+id/btnBack"
-            android:layout_height="40dp"
             android:layout_width="wrap_content"
-            android:text="Back"
-            android:background="@drawable/btn_round" />
+            android:layout_height="40dp"
+            android:background="@drawable/btn_round"
+            android:text="Back" />
 
         <Space
             android:layout_width="20dp"
@@ -80,10 +99,10 @@
 
         <Button
             android:id="@+id/btnNext"
-            android:layout_height="40dp"
             android:layout_width="wrap_content"
-            android:text="Next"
-            android:background="@drawable/btn_round" />
+            android:layout_height="40dp"
+            android:background="@drawable/btn_round"
+            android:text="Next" />
 
     </LinearLayout>
 

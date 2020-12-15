@@ -101,6 +101,50 @@ public final class RatingsContract {
         return newRating;
     }
 
+
+    // Return amount of ratings associated with a specific food truck
+    public int countRatingsForID(long foodTruckID) {
+        open();
+        String mQuery = "SELECT " + RatingsEntry.COL_FOODTRUCK_ID + " FROM " + RatingsEntry.TABLE_NAME + " WHERE " + RatingsEntry.COL_FOODTRUCK_ID + " = " + foodTruckID;
+        Cursor cursor = mDb.rawQuery(mQuery, null);
+        cursor.moveToFirst();
+        int count = cursor.getCount();
+        cursor.close();
+        mDb.close();
+        close();
+        return count;
+    }
+
+    // Return amount of ratings associated with a specific food truck
+    public boolean checkForExistingRating(long customerId, long foodTruckID) {
+        open();
+        String mQuery = "SELECT *"+ " FROM " + RatingsEntry.TABLE_NAME + " WHERE " + RatingsEntry.COL_CUSTOMER_ID + " = " + customerId + " AND " +
+                RatingsEntry.COL_FOODTRUCK_ID + " = " + foodTruckID;
+        Cursor cursor = mDb.rawQuery(mQuery, null);
+        cursor.moveToFirst();
+        mDb.close();
+        close();
+        boolean check = cursor.getCount() > 0;
+        cursor.close();
+        return check;
+    }
+
+    // Raw SQL query to get all reviews associated with a food truck and return the average
+    public double averageRatingsForID(long foodTruckID) {
+        open();
+        String mQuery = "SELECT AVG(" + RatingsEntry.COL_RATING + ") FROM " + RatingsEntry.TABLE_NAME + " WHERE " + RatingsEntry.COL_FOODTRUCK_ID + " = " + foodTruckID;
+        Cursor cursor = mDb.rawQuery(mQuery, null);
+        cursor.moveToFirst();
+        double average = cursor.getDouble(0);
+        cursor.close();
+        mDb.close();
+        close();
+        return average;
+    }
+
+    //make function to return average rating for a foodtruck by ID
+
+
     //column and table names
     public static final class RatingsEntry implements BaseColumns {
         public static final String TABLE_NAME = "ratings";

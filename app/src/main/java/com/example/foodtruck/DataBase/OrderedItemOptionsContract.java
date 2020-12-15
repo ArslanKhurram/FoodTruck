@@ -121,7 +121,6 @@ public final class OrderedItemOptionsContract {
         Cursor cursor = mDb.query(OrderedItemOptionsEntry.TABLE_NAME, mAllColumns, OrderedItemOptionsEntry.COL_ORDERED_ITEM_ID + " =? ",
                 new String[]{String.valueOf(orderedItemID)}, null, null, null);
 
-        Log.i("123", DatabaseUtils.dumpCursorToString(cursor));
         if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {

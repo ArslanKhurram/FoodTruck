@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.foodtruck.Activities.SignUpActivity;
 import com.example.foodtruck.Fragments.Admin.AdminUserDataFragment;
 import com.example.foodtruck.Fragments.Customer.FavoritesFragment;
 import com.example.foodtruck.Fragments.MapFragment;
@@ -25,13 +26,13 @@ public class VendorMainFragment extends Fragment implements BottomNavigationView
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_vendor_main, container, false);
+        SignUpActivity.currentFragment = "Fragment_VendorMain";
+        SignUpActivity.currentFragmentView = v;
 
         //reference to bottom navigation bar
         BottomNavigationView navigationView = v.findViewById(R.id.bottom_navigation);
-        if (savedInstanceState == null) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MenuFragment()).commit();
-            navigationView.getMenu().getItem(0).setChecked(true);
-        }
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MenuFragment()).commit();
+        navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setOnNavigationItemSelectedListener(this); //set a listener on the navigation bar
 
         //navigationView.

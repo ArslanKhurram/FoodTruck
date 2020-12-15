@@ -72,18 +72,28 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center">
     <Button
         android:id="@+id/dl_btnAddItemImage"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
         android:background="@drawable/btn_addimage"
         android:text="Add Image"
         android:textColor="@android:color/white" />
 
+    <Button
+        android:id="@+id/btnAddOptions"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Add Options"
+        android:background="@drawable/btn_addimage"
+        android:textColor="@android:color/white"
+        android:layout_marginStart="8dp"/>
 
+</LinearLayout>
 </LinearLayout>

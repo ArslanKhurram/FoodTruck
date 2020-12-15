@@ -37,6 +37,7 @@ public class AdminUserDataFragment extends Fragment  {
         cc = new CustomersContract(getContext());
         ac = new AdminContract(getContext());
 
+
 //test code
 
 //  Bar graph Template
