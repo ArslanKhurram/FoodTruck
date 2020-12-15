@@ -59,6 +59,7 @@ import com.example.foodtruck.Models.Option;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -267,52 +268,57 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     }
 
     private void itemOptionsDialog(Item item) {
-        dialogInflater = getLayoutInflater();
-        dV = dialogInflater.inflate(R.layout.dialog_checkout_cart, null);
-        itemName = dV.findViewById(R.id.dl_itemName);
-        itemPrice = dV.findViewById(R.id.dl_itemPrice);
-        itemNameDb = dV.findViewById(R.id.itemNameDb);
-        priceDb = dV.findViewById(R.id.priceDb);
-        spnQnty = dV.findViewById(R.id.spnQnty);
+
+        if (item.getM_Available().equals("Yes")) {
+            dialogInflater = getLayoutInflater();
+            dV = dialogInflater.inflate(R.layout.dialog_checkout_cart, null);
+            itemName = dV.findViewById(R.id.dl_itemName);
+            itemPrice = dV.findViewById(R.id.dl_itemPrice);
+            itemNameDb = dV.findViewById(R.id.itemNameDb);
+            priceDb = dV.findViewById(R.id.priceDb);
+            spnQnty = dV.findViewById(R.id.spnQnty);
 
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
-        String email = sharedPreferences.getString("Email", "");
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+            String email = sharedPreferences.getString("Email", "");
 
 
-        currentCustomer = cC.getCustomerIdByEmail(email);
-        itemNameDb.setText(item.getM_Name());
-        priceDb.setText("$" + item.getM_Price());
-        spnQnty.getSelectedItem().toString();
+            currentCustomer = cC.getCustomerIdByEmail(email);
+            itemNameDb.setText(item.getM_Name());
+            priceDb.setText("$" + item.getM_Price());
+            spnQnty.getSelectedItem().toString();
 
 
-        Boolean[] checkedOption = displayOptions(item);
+            Boolean[] checkedOption = displayOptions(item);
 
-        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
-                .setPositiveButton("Add to Cart", null)
-                .setNegativeButton("Cancel", null)
-                .show();
+            final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dV)
+                    .setPositiveButton("Add to Cart", null)
+                    .setNegativeButton("Cancel", null)
+                    .show();
 
-        Button btnAdd = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button btnAdd = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
 
-        SharedPreferences sharedPrf = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
-        String userType = sharedPrf.getString("UserType", "");
+            SharedPreferences sharedPrf = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+            String userType = sharedPrf.getString("UserType", "");
 
-        if(userType.equals("Vendor")) {
-            btnAdd.setVisibility(View.INVISIBLE);
+            if(userType.equals("Vendor")) {
+                btnAdd.setVisibility(View.INVISIBLE);
+            } else {
+                btnAdd.setOnClickListener(v -> {
+
+                    if (checkedOption != null && Arrays.asList(checkedOption).contains(true)) {
+                        addToCart(checkedOption, currentCustomer, item, spnQnty.getSelectedItem().toString());
+                    } else {
+                        addCartToDb(item);
+                    }
+                    //Clears checkout cart database but shouldnt be use yet until we forward the cart to foodtrucks
+                    // clearCheckoutDatabase();
+
+                    alertDialog.cancel();
+                });
+            }
         } else {
-            btnAdd.setOnClickListener(v -> {
-
-                if (checkedOption != null && Arrays.asList(checkedOption).contains(true)) {
-                    addToCart(checkedOption, currentCustomer, item, spnQnty.getSelectedItem().toString());
-                } else {
-                    addCartToDb(item);
-                }
-                //Clears checkout cart database but shouldnt be use yet until we forward the cart to foodtrucks
-                // clearCheckoutDatabase();
-
-                alertDialog.cancel();
-            });
+            Snackbar.make(getView(), "                         Sorry This Item is Unavailable", Snackbar.LENGTH_LONG).show();
         }
     }
 

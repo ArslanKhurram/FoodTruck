@@ -61,7 +61,7 @@ public class OrderConfirmationFragment extends Fragment implements View.OnClickL
         //load invoice
         loadInvoice(m_Order);
 
-        greeting.setText("Thank you for\nPlacing Your Order at " + m_Order.getM_FoodTruck().getM_Name());
+        greeting.setText("Thank you for\nPlacing Your Order at\n" + m_Order.getM_FoodTruck().getM_Name());
         subtotal.setText(m_Invoice.getM_Total());
         serviceCharge.setText(m_Invoice.getM_ServiceCharge());
         tax.setText(m_Invoice.getM_TaxAmount());

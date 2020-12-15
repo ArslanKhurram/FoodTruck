@@ -193,9 +193,12 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             Bundle bundle = new Bundle();
             bundle.putLong("mKey", sharedPreferences.getLong("truck_Id", 0));
-            MenusContract mc = new MenusContract(getContext());
-            menuFrag.setArguments(bundle);
-            transaction.replace(R.id.mainFragment_container, menuFrag).commit();
+            if((sharedPreferences.getLong("truck_Id", 0) != 0)) {
+                MenusContract mc = new MenusContract(getContext());
+                menuFrag.setArguments(bundle);
+                transaction.replace(R.id.mainFragment_container, menuFrag).commit();
+            } else
+                Toast.makeText(getContext(), "Menu Not Available", Toast.LENGTH_SHORT).show();
         }
     }
 
