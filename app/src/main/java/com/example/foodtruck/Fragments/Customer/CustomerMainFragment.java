@@ -32,8 +32,8 @@ public class CustomerMainFragment extends Fragment implements BottomNavigationVi
         //reference to bottom navigation bar
         BottomNavigationView navigationView = v.findViewById(R.id.bottom_navigation);
         if (savedInstanceState == null) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new FavoritesFragment()).commit();
-            navigationView.getMenu().getItem(0).setChecked(true);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new SearchFragment()).commit();
+            navigationView.getMenu().getItem(1).setChecked(true);
         }
         navigationView.setOnNavigationItemSelectedListener(this); //set a listener on the navigation bar
 

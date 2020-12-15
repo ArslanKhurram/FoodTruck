@@ -74,27 +74,42 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (customersContract.checkForEmptyTable()) {
             customersContract.addCustomer("Bob", "Marley", "2", "2", "0", "0", "0", "0", "0", "0");
-            customersContract.addCustomer("John", "Hopkins", "22", "", "0", "0", "0", "0", "0", "0");
-            customersContract.addCustomer("Adam", "Jack", "33", "", "0", "0", "0", "0", "0", "0");
+            customersContract.addCustomer("John", "Hopkins", "22", "22", "0", "0", "0", "0", "0", "0");
+            customersContract.addCustomer("Adam", "Jack", "33", "33", "0", "0", "0", "0", "0", "0");
             Customer customer1 = customersContract.getCustomerIdByEmail("2");
             Customer customer2 = customersContract.getCustomerIdByEmail("22");
             Customer customer3 = customersContract.getCustomerIdByEmail("33");
+
+            //payment and invoice Test code
+            PaymentsContract paymentsContract = new PaymentsContract(this);
+            paymentsContract.createPayment("Debit", "Bob", "1283902093848639","12/2023", "453", "12/7/2020", customer1.getM_Id());
 
             AdminContract adminContract = new AdminContract(this);
             adminContract.addAdmin("1", "1");
 
             VendorsContract vendorsContract = new VendorsContract(this);
-            vendorsContract.addVendor("J", "C", "3", "3", "0", "0", "0", "0", "0", "0");
-            vendorsContract.addVendor("J", "C", "4", "4", "0", "0", "0", "0", "0", "0");
+            vendorsContract.addVendor("Jacob", "Cob", "3", "3", "0", "0", "0", "0", "0", "0");
+            vendorsContract.addVendor("Hector", "Ramirez", "4", "4", "0", "0", "0", "0", "0", "0");
             Vendor vendor = vendorsContract.getVendorIdByEmail("3");
             Vendor vendor2 = vendorsContract.getVendorIdByEmail("4");
 
             FoodTrucksContract foodTrucksContract = new FoodTrucksContract(this);
-            foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", picture(R.drawable.foodtruck), 40.8, -73.2, vendor.getM_Id());
-            foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", picture(R.drawable.foodtruck1), 40.7, -73.2, vendor.getM_Id());
-            foodTrucksContract.createFoodTruck("Nacho Town", "Italian", picture(R.drawable.foodtruck1), 40.7, -73.3, vendor2.getM_Id());
-            foodTrucksContract.createFoodTruck("Pizza Town", "Italian", picture(R.drawable.foodtruck1), 40.7, -73.4, vendor2.getM_Id());
-            FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(1);
+            foodTrucksContract.createFoodTruck("Tutto's", "American", picture(R.drawable.tutto), 40.790939, -73.114691, vendor.getM_Id());
+            foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", picture(R.drawable.foodtruck1), 40.709792, -73.370373, vendor.getM_Id());
+            foodTrucksContract.createFoodTruck("Moodys", "Italian", picture(R.drawable.moodys), 40.869911, -73.318153, vendor.getM_Id());
+            foodTrucksContract.createFoodTruck("Poutine", "BBQ", picture(R.drawable.poutine), 40.925965, -72.815515, vendor.getM_Id());
+            foodTrucksContract.createFoodTruck("That Food Truck", "Breakfast", picture(R.drawable.thatfoodtruck), 40.948788, -72.342788, vendor2.getM_Id());
+            foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", picture(R.drawable.foodtruck), 40.838749, -73.579575, vendor2.getM_Id());
+            foodTrucksContract.createFoodTruck("Wahoo", "Seafood", picture(R.drawable.wahoo), 40.678555, -73.747228, vendor2.getM_Id());
+            foodTrucksContract.createFoodTruck("Boo Yah!!", "Seafood", picture(R.drawable.booyahh), 40.780541, -73.620801, vendor2.getM_Id());
+            FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckById(1);
+            FoodTruck foodTruck2 = foodTrucksContract.getFoodTruckById(2);
+            FoodTruck foodTruck3 = foodTrucksContract.getFoodTruckById(3);
+            FoodTruck foodTruck4 = foodTrucksContract.getFoodTruckById(4);
+            FoodTruck foodTruck5 = foodTrucksContract.getFoodTruckById(5);
+            FoodTruck foodTruck6 = foodTrucksContract.getFoodTruckById(6);
+            FoodTruck foodTruck7 = foodTrucksContract.getFoodTruckById(7);
+            FoodTruck foodTruck8 = foodTrucksContract.getFoodTruckById(8);
 
 
             if (foodTruck1 != null) {
@@ -144,13 +159,74 @@ public class SignUpActivity extends AppCompatActivity {
                 orderedItemOptionsContract.addOrderedItemOptions(4, 2, 5); //pie
                 orderedItemOptionsContract.addOrderedItemOptions(6, 3, 6); //hotdog
 
-                //payment and invoice Test code
-                PaymentsContract paymentsContract = new PaymentsContract(this);
-                paymentsContract.createPayment("Debit", "Bob", "1283902093848639","12/2023", "453", "12/7/2020", 1);
-                InvoiceContract invoiceContract = new InvoiceContract(this);
-                invoiceContract.createInvoice("12/7/2020", "19.99", "2.99", "2.99", "25.97", 1, 1, 1);
+
             }
 
+            if (foodTruck2 != null) {
+                MenusContract menusContract = new MenusContract(this);
+                menusContract.createMenu(foodTruck2.getM_ID());
+                Menu menu = menusContract.getMenuByFoodTruckId(foodTruck2.getM_ID());
+
+                ItemsContract itemsContract = new ItemsContract(this);
+                itemsContract.createItem("Chicken Pizza", "19.99", "Yes", picture(R.drawable.chickenpizza), menu.getM_Id());
+                itemsContract.createItem("Pepperoni Pizza", "13.99", "Yes", picture(R.drawable.pepperoni), menu.getM_Id());
+                itemsContract.createItem("Margarita Pizza", "15.99", "Yes", picture(R.drawable.margherita), menu.getM_Id());
+
+                OptionsContract oc = new OptionsContract(this);
+                oc.createOption("Hot Sauce", 4);
+                oc.createOption("Extra Meat", 4);
+                oc.createOption("Cheese Crust", 4);
+                oc.createOption("Less Meat", 5);
+                oc.createOption("Extra Meat", 5);
+                oc.createOption("Cheese Crust", 5);
+                oc.createOption("Basil", 6);
+                oc.createOption("Extra Toasted", 6);
+                oc.createOption("Extra Mozzarella", 6);
+            }
+
+            if (foodTruck3 != null) {
+                MenusContract menusContract = new MenusContract(this);
+                menusContract.createMenu(foodTruck3.getM_ID());
+                Menu menu = menusContract.getMenuByFoodTruckId(foodTruck3.getM_ID());
+
+                ItemsContract itemsContract = new ItemsContract(this);
+                itemsContract.createItem("Chicken Pizza", "19.99", "Yes", picture(R.drawable.chickenpizza), menu.getM_Id());
+                itemsContract.createItem("Pepperoni Pizza", "13.99", "Yes", picture(R.drawable.pepperoni), menu.getM_Id());
+                itemsContract.createItem("Margarita Pizza", "15.99", "Yes", picture(R.drawable.margherita), menu.getM_Id());
+
+                OptionsContract oc = new OptionsContract(this);
+                oc.createOption("Hot Sauce", 7);
+                oc.createOption("Extra Meat", 7);
+                oc.createOption("Cheese Crust", 7);
+                oc.createOption("Less Meat", 8);
+                oc.createOption("Extra Meat", 8);
+                oc.createOption("Cheese Crust", 8);
+                oc.createOption("Basil", 9);
+                oc.createOption("Extra Toasted", 9);
+                oc.createOption("Extra Mozzarella", 9);
+            }
+
+            if (foodTruck4 != null) {
+                MenusContract menusContract = new MenusContract(this);
+                menusContract.createMenu(foodTruck4.getM_ID());
+                Menu menu = menusContract.getMenuByFoodTruckId(foodTruck4.getM_ID());
+
+                ItemsContract itemsContract = new ItemsContract(this);
+                itemsContract.createItem("Brisket", "21.99", "Yes", picture(R.drawable.brisket), menu.getM_Id());
+                itemsContract.createItem("BBQ Chicken Legs", "18.99", "Yes", picture(R.drawable.chickenlegs), menu.getM_Id());
+                itemsContract.createItem("Honey BBQ Ribs", "19.99", "Yes", picture(R.drawable.ribs), menu.getM_Id());
+
+                OptionsContract oc = new OptionsContract(this);
+                oc.createOption("BBQ Sauce", 10);
+                oc.createOption("Buns", 10);
+                oc.createOption("Hot Sauce", 10);
+                oc.createOption("Coleslaw", 11);
+                oc.createOption("BBQ Sauce", 11);
+                oc.createOption("Corn", 11);
+                oc.createOption("BBQ Sauce", 12);
+                oc.createOption("Double Order", 12);
+                oc.createOption("Coleslaw", 12);
+            }
         }
     }
 
