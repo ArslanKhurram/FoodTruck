@@ -1,8 +1,12 @@
 package com.example.foodtruck.Fragments.Vendor;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,6 +23,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -195,6 +201,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         customerName.setText(order.getM_Customer().getM_FirstName() + order.getM_Customer().getM_LastName());
         statusSpinner.setSelection(selection);
 
+
         //update and cancel buttons
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dv)
                 .setPositiveButton("Update", null)
@@ -207,6 +214,25 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
             if (updateOrderInDatabase(order)) {
                 pendingOrderAdapter.submitList(getOrderList("Preparing"));
                 CompletedOrderAdapter.submitList(getOrderList("Completed"));
+                if(selection == 0 && statusSpinner.getSelectedItem().equals("Completed")) { // If selection was initially preparing and has just completed after updating
+                    // Notifications require an android version check before initializing notifications
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel channel = new NotificationChannel("Completed", "Completed Orders", NotificationManager.IMPORTANCE_HIGH);
+                        NotificationManager manager = getContext().getSystemService(NotificationManager.class);
+                        manager.createNotificationChannel(channel);
+                        // Notification builder with the information on what becomes displayed
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "Completed")
+                                .setSmallIcon(R.drawable.ic_food_truck_icon_21)
+                                .setColor(Color.CYAN)
+                                .setContentTitle("Order Completed")
+                                .setContentText("Hope you're hungry, because your order is completed!")
+                                .setStyle(new NotificationCompat.BigTextStyle()
+                                        .bigText("" + order.getM_Customer().getM_FirstName() + "! Your order from " + currentFoodTruck.toString() + " is completed and ready for pickup!"))
+                                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                        NotificationManagerCompat notifManager = NotificationManagerCompat.from(getContext());
+                        notifManager.notify(1, builder.build());
+                    }
+                }
                 alertDialog.cancel();
                 Toast.makeText(getContext(), "Order Updated", Toast.LENGTH_LONG).show();
             }
