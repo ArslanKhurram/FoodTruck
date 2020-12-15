@@ -45,8 +45,8 @@ public class CustomerAccountFragment extends Fragment implements MyAccountAdapte
         mRecyclerView = v.findViewById(R.id.accountRecycleView);
         cardList.add(new Card("Name: ", customer.getM_FirstName() + " " + customer.getM_LastName()));
         cardList.add(new Card("Email: ", customer.getM_Email()));
-        cardList.add(new Card("Payments", ""));
-        cardList.add(new Card("Orders", ""));
+        cardList.add(new Card("Payment Methods", ""));
+        cardList.add(new Card("Order History", ""));
         cardList.add(new Card("Sign Out", ""));
 
         //improve performance of app by setting fixed size
@@ -76,10 +76,10 @@ public class CustomerAccountFragment extends Fragment implements MyAccountAdapte
             case "Email":
                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new LoginFragment()).commit();
                 break;
-            case "Payments":
+            case "Payment Methods":
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new PaymentsFragment()).commit();
                 break;
-            case "Orders":
+            case "Order History":
                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new OrderHistory()).commit();
                 break;
             case "Sign Out":

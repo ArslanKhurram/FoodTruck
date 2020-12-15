@@ -115,6 +115,20 @@ public final class RatingsContract {
         return count;
     }
 
+    // Return amount of ratings associated with a specific food truck
+    public boolean checkForExistingRating(long customerId, long foodTruckID) {
+        open();
+        String mQuery = "SELECT *"+ " FROM " + RatingsEntry.TABLE_NAME + " WHERE " + RatingsEntry.COL_CUSTOMER_ID + " = " + customerId + " AND " +
+                RatingsEntry.COL_FOODTRUCK_ID + " = " + foodTruckID;
+        Cursor cursor = mDb.rawQuery(mQuery, null);
+        cursor.moveToFirst();
+        mDb.close();
+        close();
+        boolean check = cursor.getCount() > 0;
+        cursor.close();
+        return check;
+    }
+
     // Raw SQL query to get all reviews associated with a food truck and return the average
     public double averageRatingsForID(long foodTruckID) {
         open();

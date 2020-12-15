@@ -316,10 +316,8 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         OrderedItemsContract orderedItemsContract = new OrderedItemsContract(getContext());
         int i = 1;
         for (CartOptions cartOptions1 : cartOptions) {
-            Log.i("zz", "Iteration: " + i);
             OrderedItem orderedItem = orderedItemsContract.getOrderedItemByOrderAndItemId(order.getM_Id(), cartOptions1.getM_itemId().getM_Id());
             if (orderedItem != null) {
-                Log.i("zz", "I was here");
                 orderedItemOptionsContract.addOrderedItemOptions(cartOptions1.getM_Option().getM_Id(), cartOptions1.getM_itemId().getM_Id(), orderedItem.getM_id());
             }
         }

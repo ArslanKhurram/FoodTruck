@@ -5,9 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/page_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PAGE 2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold"/>
+
     <LinearLayout
         android:id="@+id/inputLayout"
-        android:layout_width="300dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical">
@@ -16,15 +26,20 @@
             android:id="@+id/etVenStreetNum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="Street Number"
             android:inputType="textPersonName"
+            android:maxLength="10"
             android:textSize="50px" />
 
         <EditText
             android:id="@+id/etVenStreetName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="Street Name"
+            android:maxLength="50"
+            android:lines="2"
             android:inputType="textPersonName"
             android:textSize="50px" />
 
@@ -32,7 +47,10 @@
             android:id="@+id/etVenCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="City"
+            android:maxLength="50"
+            android:lines="2"
             android:inputType="textPersonName"
             android:textSize="50px" />
 
@@ -40,7 +58,9 @@
             android:id="@+id/etVenZip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="Zip"
+            android:maxLength="5"
             android:inputType="number"
             android:textSize="50px" />
 
@@ -48,7 +68,9 @@
             android:id="@+id/etVenPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="Phone Number"
+            android:maxLength="14"
             android:inputType="phone"
             android:textSize="50px" />
 
@@ -60,6 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/inputLayout"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="5dp">

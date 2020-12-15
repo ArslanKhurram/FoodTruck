@@ -5,6 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/page_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="PAGE 3"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="SKIP" />
 
     <RelativeLayout
         android:id="@+id/paymentLayout"
@@ -14,11 +31,11 @@
 
         <TextView
             android:id="@+id/txtPayment"
-            android:textSize="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Payment Type"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textSize="15dp" />
 
         <Space
             android:id="@+id/spaceOne"
@@ -84,9 +101,10 @@
         android:id="@+id/btnLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/sOne"
+        android:layout_below="@id/paymentLayout"
         android:gravity="center"
         android:orientation="horizontal"
+        android:layout_marginTop="50dp"
         android:padding="5dp">
 
         <Button
@@ -111,12 +129,6 @@
             />
 
     </LinearLayout>
-
-    <Space
-        android:id="@+id/sOne"
-        android:layout_width="1dp"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true" />
 
 
 </RelativeLayout>

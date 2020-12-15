@@ -44,6 +44,7 @@ public class SignUpPaymentFragment extends Fragment {
 
         Button backBtn = v.findViewById(R.id.btnBack);
         Button subBtn = v.findViewById(R.id.btnSubmit);
+        Button btnSkip = v.findViewById(R.id.skip);
 
         final Spinner payType = v.findViewById(R.id.spnPaymentType);
         final EditText fullName = v.findViewById(R.id.etFullName);
@@ -78,6 +79,13 @@ public class SignUpPaymentFragment extends Fragment {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
                 }
             }
+        });
+
+        btnSkip.setOnClickListener(v1 -> {
+            cc = new CustomersContract(getContext());
+            cc.addCustomerByObject(SignUpA.customer);
+            Toast.makeText(getContext(), "Account Created", Toast.LENGTH_SHORT).show();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
         });
         return v;
     }
