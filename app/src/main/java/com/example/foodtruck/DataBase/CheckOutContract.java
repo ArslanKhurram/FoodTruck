@@ -120,8 +120,7 @@ public class CheckOutContract {
     //return array list of options
     public ArrayList<Cart> getEntireCart(long itemID){
         open();
-        boolean check = checkIfOptionsExist(itemID);
-        if (check) {
+
             ArrayList<Cart> cartList = new ArrayList<Cart>();
 
             Cursor cursor = mDb.query(CartEntry.TABLE_NAME, mAllColumns, CartEntry.COL_CUST_ID + " =?",
@@ -136,9 +135,10 @@ public class CheckOutContract {
                 else
                     cursor.moveToNext();
             }
-            cursor.close();
-            return cartList;
-        }
+            if(cartList.size() > 0) {
+                cursor.close();
+                return cartList;
+            }
         mDb.close();
         close();
         return null;
@@ -201,6 +201,18 @@ public class CheckOutContract {
         mDb.close();
         close();
     }
+
+        //remove item from database
+        public void removeCartById(long id){
+            open();
+            mDb = mDbHelper.getWritableDatabase();
+            String dlQuery = "DELETE FROM " + CartEntry.TABLE_NAME + " WHERE " + CartEntry._ID + " = " + id;
+            Cursor cursor = mDb.rawQuery(dlQuery, null);
+            cursor.moveToFirst();
+            cursor.close();
+            mDb.close();
+            close();
+        }
 
 
     //column and tables names

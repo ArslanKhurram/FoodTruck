@@ -137,6 +137,24 @@ public final class OrderedItemsContract {
         return orderedItems;
     }
 
+
+    //return ordereditem ID by order id and item id
+    public OrderedItem getOrderedItemByOrderAndItemId(long orderId, long itemId) {
+        open();
+        Cursor cursor = mDb.query(OrderedItemsEntry.TABLE_NAME, mAllColumns, OrderedItemsEntry.COL_ORDER_ID + " = ? AND " + OrderedItemsEntry.COL_ITEM_ID + "= ?",
+                new String[]{String.valueOf(orderId), String.valueOf(itemId)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        OrderedItem orderedItem = cursorToOrderedItem(cursor, cursor.getLong(cursor.getColumnIndex(OrderedItemsEntry.COL_ITEM_ID)), cursor.getLong(cursor.getColumnIndex(OrderedItemsEntry.COL_ORDER_ID)));
+        cursor.close();
+        mDb.close();
+        close();
+        return orderedItem;
+    }
+
+
     //column and table names
     public static final class OrderedItemsEntry implements BaseColumns {
         public static final String TABLE_NAME = "ordered_items";

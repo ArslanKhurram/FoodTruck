@@ -13,6 +13,9 @@ import com.example.foodtruck.Models.Cart;
 import com.example.foodtruck.Models.CartOptions;
 import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Option;
+import com.example.foodtruck.Models.OrderedItem;
+
+import java.util.ArrayList;
 
 
 public class CartOptionsContract {
@@ -72,20 +75,40 @@ public class CartOptionsContract {
     }
 
 
+    //check if cartoptions exists for a vendor
+    public boolean checkIfCartOptionsExist(long cartId) {
+        open();
+        Cursor cursor = mDb.query(CartOptionsEntry.TABLE_NAME, mAllColumns, CartOptionsEntry.COL_CART_ID + " =? ",
+                new String[]{String.valueOf(cartId)}, null, null, null);
+
+
+        boolean check = cursor.getCount() > 0;
+        cursor.close();
+        return check;
+    }
+
+
     //return cart item options by id
     public CartOptions getCartItemOptions(long id) {
         open();
         Cursor cursor = mDb.query(CartOptionsEntry.TABLE_NAME, mAllColumns, CartOptionsEntry.COL_CART_ID + " + ?",
                 new String[]{String.valueOf(id)}, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (checkIfCartOptionsExist(id)) {
+            if (cursor != null) {
+                cursor.moveToFirst();
+            }
+            CartOptions cartOptions = cursorToTable(cursor);
+            cursor.close();
+            mDb.close();
+            close();
+
+            return cartOptions;
         }
-        CartOptions cartOptions = cursorToTable(cursor);
+
         cursor.close();
         mDb.close();
         close();
-
-        return cartOptions;
+        return null;
     }
 
     //return cart item options by id
@@ -115,6 +138,32 @@ public class CartOptionsContract {
         } catch (SQLException e) {
             Log.e("ChildContract", "SQLException on opening database " + e.getMessage());
         }
+    }
+
+
+    //return array list of cartOptions
+    public ArrayList<CartOptions> getAllEntriesByCartID(long cartID) {
+        open();
+        ArrayList<CartOptions> cartOptions = new ArrayList<CartOptions>();
+
+        Cursor cursor = mDb.query(CartOptionsEntry.TABLE_NAME, mAllColumns, CartOptionsEntry.COL_CART_ID + " =?",
+                new String[]{String.valueOf(cartID)}, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            CartOptions option = cursorToTable(cursor);
+            cartOptions.add(option);
+            if (cursor.isLast() || cursor.isClosed())
+                break;
+            else
+                cursor.moveToNext();
+        }
+        if (cartOptions.size() > 0) {
+            cursor.close();
+            return cartOptions;
+        }
+        mDb.close();
+        close();
+        return null;
     }
 
 
@@ -151,7 +200,7 @@ public class CartOptionsContract {
         public static final String TABLE_NAME = "cart_options";
         public static final String COL_CART_ID = "cartID";
         public static final String COL_ITEM_ID = "itemID";
-        public static final String COL_OPTION_ID = "optionID" ;
+        public static final String COL_OPTION_ID = "optionID";
 
 
     }
