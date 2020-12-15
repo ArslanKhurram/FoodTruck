@@ -19,12 +19,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.foodtruck.DataBase.AdminContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
+import com.example.foodtruck.DataBase.InvoiceContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.OptionsContract;
 import com.example.foodtruck.DataBase.OrderedItemOptionsContract;
 import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
+import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.DataBase.RatingsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Fragments.Customer.CartFragment;
@@ -141,7 +143,14 @@ public class SignUpActivity extends AppCompatActivity {
                 orderedItemOptionsContract.addOrderedItemOptions(2, 2, 5); //pie
                 orderedItemOptionsContract.addOrderedItemOptions(4, 2, 5); //pie
                 orderedItemOptionsContract.addOrderedItemOptions(6, 3, 6); //hotdog
+
+                //payment and invoice Test code
+                PaymentsContract paymentsContract = new PaymentsContract(this);
+                paymentsContract.createPayment("Debit", "Bob", "1283902093848639","12/2023", "453", "12/7/2020", 1);
+                InvoiceContract invoiceContract = new InvoiceContract(this);
+                invoiceContract.createInvoice("12/7/2020", "19.99", "2.99", "2.99", "25.97", 1, 1, 1);
             }
+
         }
     }
 

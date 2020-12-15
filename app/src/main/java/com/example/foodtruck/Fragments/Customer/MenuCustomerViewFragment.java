@@ -71,11 +71,12 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     View dV;
     private Spinner spnQnty;
     private CheckOutContract cart;
-
     //hardcoded
     private Customer currentCustomer;
     private CustomersContract cC;
     private Button btnSave;
+
+
 
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -286,7 +287,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
             editor.commit();
         }
 
-        cart.addCart(item.getM_Id(), spnQnty.getSelectedItem().toString(), currentCustomer.getM_Id(), 23);
+        cart.addCart(item.getM_Id(), spnQnty.getSelectedItem().toString(), currentCustomer.getM_Id(),23);
         Toast.makeText(getContext(), "Added To Cart", Toast.LENGTH_SHORT).show();
     }
 
@@ -338,7 +339,8 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
 
     private void addToCart(Boolean[] checkedOptions, Customer customer, Item item, String qty) {
         Random random = new Random();
-        long orderNumber = random.nextInt(1000);
+        //long orderNumber = random.nextInt(1000);
+        long orderNumber = getRandomNumberUsingNextInt(1000,9999);
 
         CheckOutContract checkOutContract = new CheckOutContract(getContext());
         checkOutContract.addCart(item.getM_Id(), qty, customer.getM_Id(), orderNumber);
@@ -369,4 +371,10 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         }
 
     }
+
+    public int getRandomNumberUsingNextInt(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min) + min;
+    }
+
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Item;
+import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.Payment;
 
 import java.util.ArrayList;
@@ -104,7 +105,7 @@ public final class PaymentsContract {
         Cursor cursor = mDb.query(PaymentsEntry.TABLE_NAME, mAllColumns, PaymentsEntry.COL_CUSTOMER_ID + " =?",
                 new String[]{String.valueOf(customerID)}, null, null, null);
 
-        if (cursor != null) {
+        if (cursor.getCount() > 0 ) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Payment payment = cursorToPayment(cursor, customerID);
@@ -114,12 +115,27 @@ public final class PaymentsContract {
                 else
                     cursor.moveToNext();
             }
-
+            cursor.close();
+            return paymentsList;
         }
+        mDb.close();
+        close();
+        return null;
+    }
+
+    public Payment getPaymentById(long id) {
+        open();
+        Cursor cursor = mDb.query(PaymentsEntry.TABLE_NAME, mAllColumns, PaymentsEntry._ID + " =? ",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Payment payment = cursorToPayment(cursor, cursor.getLong(cursor.getColumnIndex(PaymentsEntry.COL_CUSTOMER_ID)));
         cursor.close();
         mDb.close();
         close();
-        return paymentsList;
+        return payment;
     }
 
     //check for empty table

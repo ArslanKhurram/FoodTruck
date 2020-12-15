@@ -13,6 +13,7 @@ import static com.example.foodtruck.DataBase.ItemsContract.ItemsEntry;
 import static com.example.foodtruck.DataBase.MenusContract.MenusEntry;
 import static com.example.foodtruck.DataBase.PaymentsContract.PaymentsEntry;
 import static com.example.foodtruck.DataBase.VendorsContract.VendorsEntry;
+import static com.example.foodtruck.DataBase.InvoiceContract.InvoiceEntry;
 
 import static com.example.foodtruck.DataBase.AdminContract.AdminEntry;
 
@@ -172,6 +173,7 @@ public class DbHelper extends SQLiteOpenHelper {
             FavoritesEntry.COL_CUSTOMER_ID + " INTEGER NOT NULL " +
             ");";
 
+    //query to create orderedItemOptions table
     public static final String SQL_CREATE_ORDERED_ITEM_OPTIONS_TABLE = "CREATE TABLE " + OrderedItemOptionsEntry.TABLE_NAME + " (" +
             OrderedItemOptionsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             OrderedItemOptionsEntry.COL_OPTION_ID + " INTEGER NOT NULL, " +
@@ -179,6 +181,18 @@ public class DbHelper extends SQLiteOpenHelper {
             OrderedItemOptionsEntry.COL_ORDERED_ITEM_ID + " INTEGER NOT NULL " +
             ");";
 
+    //query to create invoice table
+    public static final String SQL_CREATE_INVOICE_TABLE = "CREATE TABLE " + InvoiceEntry.TABLE_NAME + " (" +
+            InvoiceEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            InvoiceEntry.COL_INVOICE_DATE + " TEXT NOT NULL, " +
+            InvoiceEntry.COL_TOTAL + " TEXT NOT NULL, " +
+            InvoiceEntry.COL_SERVICE_CHARGE + " TEXT NOT NULL, " +
+            InvoiceEntry.COL_TAX_AMOUNT + " TEXT NOT NULL, " +
+            InvoiceEntry.COL_TOTAL_INVOICE_AMOUNT + " TEXT NOT NULL, " +
+            InvoiceEntry.COL_ORDER_ID + " INTEGER NOT NULL, " +
+            InvoiceEntry.COL_PAYMENT_ID + " INTEGER NOT NULL, " +
+            InvoiceEntry.COL_CUSTOMER_ID + " INTEGER NOT NULL " +
+            ");";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -197,6 +211,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_FAVORITES_TABLE);
         db.execSQL(SQL_CREATE_ORDERED_ITEM_OPTIONS_TABLE);
         db.execSQL(SQL_CREATE_CART_OPTIONS_TABLE);
+        db.execSQL(SQL_CREATE_INVOICE_TABLE);
 
     }
 
@@ -216,6 +231,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + RatingsEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FavoritesEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + OrderedItemOptionsEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + InvoiceEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + CartOptionsEntry.TABLE_NAME);
 
         onCreate(db);

@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -25,18 +27,15 @@ import com.example.foodtruck.Adapter.ItemsOrderedAdapter;
 import com.example.foodtruck.Adapter.OptionsAdapter;
 import com.example.foodtruck.Adapter.OrderAdapter;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
-import com.example.foodtruck.DataBase.ItemsContract;
-import com.example.foodtruck.DataBase.OptionsContract;
+
 import com.example.foodtruck.DataBase.OrderedItemOptionsContract;
 import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Models.FoodTruck;
-import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.Models.Option;
 import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.OrderedItem;
-import com.example.foodtruck.Models.OrderedItemOptions;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
 
@@ -44,7 +43,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListener, View.OnClickListener {
+public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
     private RecyclerView pendingRecyclerView;
     private RecyclerView completedRecyclerView;
     private RecyclerView.Adapter recyclerAdapter;
@@ -65,7 +64,8 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
     private ArrayList<Option> mOptions;
     View dv;
     private TextView customerName;
-    private Spinner statusSpinner;
+    private Spinner statusSpinner, foodtruckSpinner;
+    private FoodTruck currentFoodTruck;
     private Pattern p;
     private Matcher m;
 
@@ -74,6 +74,10 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
 
 
         sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+
+        //set spinner and generate data
+        foodtruckSpinner = v.findViewById(R.id.spinnerFoodtruck);
+        generateFoodTruckSpinnerData();
 
         //first recycler
         pendingRecyclerView = v.findViewById(R.id.pendingRecycler);
@@ -95,6 +99,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         recyclerAdapter2 = CompletedOrderAdapter;
         completedRecyclerView.setAdapter(recyclerAdapter2);
 
+        foodtruckSpinner.setOnItemSelectedListener(this);
 
         return v;
     }
@@ -237,6 +242,29 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         }
 
         return true;
+    }
+    private void generateFoodTruckSpinnerData() {
+        VendorsContract vendorsContract = new VendorsContract(getContext());
+        Vendor vendor = vendorsContract.getVendorIdByEmail(sharedPref.getString("Email", ""));
+        FoodTrucksContract foodTrucksContract = new FoodTrucksContract(getContext());
+        ArrayList<FoodTruck> foodTrucks = foodTrucksContract.FoodTruckList(vendor.getM_Id());
+
+        ArrayAdapter<FoodTruck> spinnerAdapter = new ArrayAdapter<FoodTruck>(getContext(), android.R.layout.simple_spinner_dropdown_item);
+        spinnerAdapter.addAll(foodTrucks);
+        foodtruckSpinner.setAdapter(spinnerAdapter);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        currentFoodTruck = (FoodTruck) parent.getSelectedItem();
+        Log.i("123: ", currentFoodTruck.getM_Name());
+        pendingOrderAdapter.submitList(getOrderList("Preparing"));
+        CompletedOrderAdapter.submitList(getOrderList("Completed"));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
 }

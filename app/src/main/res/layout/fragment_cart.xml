@@ -49,7 +49,7 @@
         android:id="@+id/totalLL2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/totalLL"
+        android:layout_below="@id/totalLL4"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -69,6 +69,40 @@
 
 
     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/totalLL4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/totalLL"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/serviceTxt"
+            style="@style/DeliveryText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Service Charge " />
+
+        <TextView
+            android:id="@+id/service"
+            style="@style/DeliveryText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="$ 0.00" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/z4"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/totalLL2"
+        android:background="@drawable/horizontal_line" />
+
 
     <LinearLayout
         android:id="@+id/totalLL3"
@@ -108,12 +142,6 @@
         android:layout_below="@id/totalLL3"
         android:background="@drawable/horizontal_line" />
 
-    <ImageView
-        android:id="@+id/z4"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/totalLL2"
-        android:background="@drawable/horizontal_line" />
 
     <RelativeLayout
         android:id="@+id/r1"
