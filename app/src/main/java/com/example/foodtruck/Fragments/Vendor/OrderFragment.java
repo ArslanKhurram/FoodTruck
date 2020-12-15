@@ -115,28 +115,24 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
 
         Vendor vendor = vc.getVendorIdByEmail(email);
         FoodTrucksContract fc = new FoodTrucksContract(getContext());
-        FoodTruck foodTruck = fc.getFoodTruckByVendorId(vendor.getM_Id());
+        FoodTruck foodTruck = (FoodTruck) foodtruckSpinner.getSelectedItem();
 
-        if (currentFoodTruck != null) {
-            if (pendingOrderList != null || completedOrderList != null) {
-                switch (status) {
-                    case "Preparing":
-                        pendingOrderList = oc.getOrderListByStatus(foodTruck.getM_ID(), status);
-                        return pendingOrderList;
-                    case "Completed":
-                        completedOrderList = oc.getOrderListByStatus(foodTruck.getM_ID(), status);
-                        return completedOrderList;
-                }
-                }
-            else{
-                int size1 = pendingOrderList.size();
-                int size2 = completedOrderList.size();
-                pendingOrderList.clear();
-                completedOrderList.clear();
-                pendingOrderAdapter.notifyItemRangeChanged(0, size1);
-                CompletedOrderAdapter.notifyItemRangeChanged(0, size2);
+        if (foodTruck != null) {
+            switch (status) {
+                case "Preparing":
+                    ArrayList<Order> orderPList = oc.getOrderListByStatus(foodTruck.getM_ID(), status);
+                    if (orderPList != null)
+                        pendingOrderList = orderPList;
+                    return pendingOrderList;
+                case "Completed":
+                    ArrayList<Order> orderCList = oc.getOrderListByStatus(foodTruck.getM_ID(), status);
+                    if (orderCList != null)
+                        completedOrderList = orderCList;
+                    completedOrderList = orderCList;
+                    return completedOrderList;
             }
         }
+
         return null;
     }
 
@@ -254,9 +250,11 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         FoodTrucksContract foodTrucksContract = new FoodTrucksContract(getContext());
         ArrayList<FoodTruck> foodTrucks = foodTrucksContract.FoodTruckList(vendor.getM_Id());
 
-        ArrayAdapter<FoodTruck> spinnerAdapter = new ArrayAdapter<FoodTruck>(getContext(), android.R.layout.simple_spinner_dropdown_item);
-        spinnerAdapter.addAll(foodTrucks);
-        foodtruckSpinner.setAdapter(spinnerAdapter);
+        if (foodTrucks != null) {
+            ArrayAdapter<FoodTruck> spinnerAdapter = new ArrayAdapter<FoodTruck>(getContext(), android.R.layout.simple_spinner_dropdown_item);
+            spinnerAdapter.addAll(foodTrucks);
+            foodtruckSpinner.setAdapter(spinnerAdapter);
+        }
     }
 
     @Override

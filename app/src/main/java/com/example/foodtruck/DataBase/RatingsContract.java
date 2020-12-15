@@ -101,6 +101,8 @@ public final class RatingsContract {
         return newRating;
     }
 
+    //make function to return average rating for a foodtruck by ID
+
     //column and table names
     public static final class RatingsEntry implements BaseColumns {
         public static final String TABLE_NAME = "ratings";

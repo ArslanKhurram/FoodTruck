@@ -14,9 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.Models.Cart;
-import com.example.foodtruck.Models.Item;
 import com.example.foodtruck.R;
 
 public class MyCartAdapter extends ListAdapter<Cart, MyCartAdapter.ItemViewHolder> {
@@ -24,9 +22,10 @@ public class MyCartAdapter extends ListAdapter<Cart, MyCartAdapter.ItemViewHolde
     private Context itemContext;
     private OnItemListener mOnItemListener;
 
-    public MyCartAdapter( Context context) {
+    public MyCartAdapter( Context context, OnItemListener onItemListener) {
         super(DIFF_CALLBACK);
         itemContext = context;
+        mOnItemListener = onItemListener;
 
 
     }
@@ -39,10 +38,9 @@ public class MyCartAdapter extends ListAdapter<Cart, MyCartAdapter.ItemViewHolde
 
         @Override
         public boolean areContentsTheSame(@NonNull Cart oldItem, @NonNull Cart newItem) {
-            return
-                    oldItem.getM_Item().getM_Name().equals(newItem.getM_Item().getM_Name()) &&
+            return oldItem.getM_Item().getM_Name().equals(newItem.getM_Item().getM_Name()) &&
                     oldItem.getM_Item().getM_Price().equals(newItem.getM_Item().getM_Price()) &&
-                    oldItem.getM_Quantity().equals(newItem.getM_Selected_Options());
+                    oldItem.getM_Quantity().equals(newItem.getM_Quantity());
         }
     };
 
@@ -79,7 +77,7 @@ public class MyCartAdapter extends ListAdapter<Cart, MyCartAdapter.ItemViewHolde
             itemPrice = view.findViewById(R.id.itemPriceCard);
             itemQnty = view.findViewById(R.id.itemQntyCard);
             menuIcon = view.findViewById(R.id.ivMenuItemPicture);
-
+            this.onItemListener = onItemListener;
 
             view.setOnClickListener(this);
         }

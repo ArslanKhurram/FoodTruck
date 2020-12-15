@@ -105,7 +105,7 @@ public final class PaymentsContract {
         Cursor cursor = mDb.query(PaymentsEntry.TABLE_NAME, mAllColumns, PaymentsEntry.COL_CUSTOMER_ID + " =?",
                 new String[]{String.valueOf(customerID)}, null, null, null);
 
-        if (cursor != null) {
+        if (cursor.getCount() > 0 ) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Payment payment = cursorToPayment(cursor, customerID);
@@ -115,12 +115,12 @@ public final class PaymentsContract {
                 else
                     cursor.moveToNext();
             }
-
+            cursor.close();
+            return paymentsList;
         }
-        cursor.close();
         mDb.close();
         close();
-        return paymentsList;
+        return null;
     }
 
     public Payment getPaymentById(long id) {

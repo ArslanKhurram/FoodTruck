@@ -17,11 +17,23 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textColor="@android:color/black"
-            android:layout_toStartOf="@id/accountCardImageView"
             android:layout_alignParentStart="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:layout_centerVertical="true"
             android:text="Option" />
+
+        <TextView
+            android:id="@+id/accountInfoCardTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@android:color/black"
+            android:layout_toStartOf="@id/accountCardImageView"
+            android:layout_toEndOf="@id/accountCardTextView"
+            android:layout_marginLeft="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_centerVertical="true"
+            android:text="Test" />
 
         <ImageView
             android:id="@+id/accountCardImageView"
