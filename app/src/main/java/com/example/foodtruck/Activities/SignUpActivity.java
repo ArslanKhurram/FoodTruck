@@ -6,22 +6,37 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.foodtruck.DataBase.AdminContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
+import com.example.foodtruck.DataBase.InvoiceContract;
 import com.example.foodtruck.DataBase.ItemsContract;
 import com.example.foodtruck.DataBase.MenusContract;
 import com.example.foodtruck.DataBase.OptionsContract;
 import com.example.foodtruck.DataBase.OrderedItemOptionsContract;
 import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
+import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.DataBase.RatingsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
+import com.example.foodtruck.Fragments.Customer.CartFragment;
+import com.example.foodtruck.Fragments.Customer.CustomerAccountFragment;
+import com.example.foodtruck.Fragments.Customer.CustomerMainFragment;
+import com.example.foodtruck.Fragments.Customer.FavoritesFragment;
 import com.example.foodtruck.Fragments.LoginFragment;
+import com.example.foodtruck.Fragments.SearchFragment;
+import com.example.foodtruck.Fragments.Vendor.MenuFragment;
+import com.example.foodtruck.Fragments.Vendor.VendorMainFragment;
 import com.example.foodtruck.Models.Admin;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.FoodTruck;
@@ -31,6 +46,7 @@ import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.OrderedItem;
 import com.example.foodtruck.Models.Vendor;
 import com.example.foodtruck.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -40,6 +56,8 @@ public class SignUpActivity extends AppCompatActivity {
     public Customer customer = new Customer();
     public Vendor vendor = new Vendor();
     public Admin admin = new Admin();
+    public static String currentFragment = null;
+    public static View currentFragmentView = null;
 
     @SuppressLint("WrongThread")
     @Override
@@ -67,11 +85,15 @@ public class SignUpActivity extends AppCompatActivity {
 
             VendorsContract vendorsContract = new VendorsContract(this);
             vendorsContract.addVendor("J", "C", "3", "3", "0", "0", "0", "0", "0", "0");
+            vendorsContract.addVendor("J", "C", "4", "4", "0", "0", "0", "0", "0", "0");
             Vendor vendor = vendorsContract.getVendorIdByEmail("3");
+            Vendor vendor2 = vendorsContract.getVendorIdByEmail("4");
 
             FoodTrucksContract foodTrucksContract = new FoodTrucksContract(this);
-            foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", picture(R.drawable.foodtruck), 10.5, 10.5, vendor.getM_Id());
-            foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", picture(R.drawable.foodtruck1), 10.5, 10.5, vendor.getM_Id());
+            foodTrucksContract.createFoodTruck("Hot Indian Tacos", "Mexican", picture(R.drawable.foodtruck), 40.8, -73.2, vendor.getM_Id());
+            foodTrucksContract.createFoodTruck("Kono Pizza", "Italian", picture(R.drawable.foodtruck1), 40.7, -73.2, vendor.getM_Id());
+            foodTrucksContract.createFoodTruck("Nacho Town", "Italian", picture(R.drawable.foodtruck1), 40.7, -73.3, vendor2.getM_Id());
+            foodTrucksContract.createFoodTruck("Pizza Town", "Italian", picture(R.drawable.foodtruck1), 40.7, -73.4, vendor2.getM_Id());
             FoodTruck foodTruck1 = foodTrucksContract.getFoodTruckByVendorId(1);
 
 
@@ -95,9 +117,9 @@ public class SignUpActivity extends AppCompatActivity {
                 oc.createOption("Beans", 3); //hotdog
 
                 OrdersContract ordersContract = new OrdersContract(this);
-                ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
-                ordersContract.createOrder("A03", "10/22/2020", "Preparing", customer2.getM_Id(), foodTruck1.getM_ID());
-                ordersContract.createOrder("B03", "10/22/2020", "Completed", customer3.getM_Id(), foodTruck1.getM_ID());
+                ordersContract.createOrder("6366", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
+                ordersContract.createOrder("4364", "10/22/2020", "Preparing", customer2.getM_Id(), foodTruck1.getM_ID());
+                ordersContract.createOrder("1646", "10/22/2020", "Completed", customer3.getM_Id(), foodTruck1.getM_ID());
                 ArrayList<Order> orderArrayList = ordersContract.getOrdersList(foodTruck1.getM_ID());
 
                 OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);
@@ -121,7 +143,14 @@ public class SignUpActivity extends AppCompatActivity {
                 orderedItemOptionsContract.addOrderedItemOptions(2, 2, 5); //pie
                 orderedItemOptionsContract.addOrderedItemOptions(4, 2, 5); //pie
                 orderedItemOptionsContract.addOrderedItemOptions(6, 3, 6); //hotdog
+
+                //payment and invoice Test code
+                PaymentsContract paymentsContract = new PaymentsContract(this);
+                paymentsContract.createPayment("Debit", "Bob", "1283902093848639","12/2023", "453", "12/7/2020", 1);
+                InvoiceContract invoiceContract = new InvoiceContract(this);
+                invoiceContract.createInvoice("12/7/2020", "19.99", "2.99", "2.99", "25.97", 1, 1, 1);
             }
+
         }
     }
 
@@ -135,7 +164,39 @@ public class SignUpActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
+        displayPreviousFragment(currentFragment, currentFragmentView);
+    }
 
+    private void displayPreviousFragment(String currentFragment, View view) {
+        //create fragment object
+        Fragment fragment = null;
+        //initializing the fragment object which is selected
+        if (currentFragment != null) {
+            switch (currentFragment) {
+                case "Fragment_VendorMain":
+                    fragment = new VendorMainFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new MenuFragment()).commit();
+
+
+                    break;
+                case "Fragment_CustomerMain":
+                    fragment = new CustomerMainFragment();
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment_container, new SearchFragment()).commit();
+                    break;
+                case "SignOut":
+                    fragment = new LoginFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+            }
+        }
+
+        //replacing the fragement
+//        if (fragment != null) {
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.fragment_container, fragment);
+//            ft.commit();
+//        }
     }
 }

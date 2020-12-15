@@ -70,7 +70,7 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         tv = v.findViewById(R.id.noPaymentPrompt);
         tv.setVisibility(View.INVISIBLE);
 
-        if (paymentsList.size() < 1) {
+        if (paymentsList == null) {
             tv.setVisibility(View.VISIBLE);
         }
         //recycler view setup
@@ -167,10 +167,6 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         String[] yearArray = getResources().getStringArray(R.array.Year);
         String monthString = payment.getM_CCEXPDATE().substring(0, 2);
         String yearString = payment.getM_CCEXPDATE().substring(3, 7);
-
-        Log.i("Card", monthString);
-        Log.i("Card", yearString);
-        Log.i("Card", String.valueOf(payment.getM_CCEXPDATE().length()));
 
         //set the spinners for month and year
         for (int i = 0; i < monthArray.length; i++) {

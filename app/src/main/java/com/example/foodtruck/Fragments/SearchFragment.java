@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import androidx.activity.OnBackPressedDispatcherOwner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -28,6 +29,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.example.foodtruck.Activities.SignUpActivity;
+import com.example.foodtruck.Adapter.MenuAdapter;
+import com.example.foodtruck.Adapter.MyAccountAdapter;
 import com.example.foodtruck.Adapter.MySearchAdapter;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.MenusContract;
@@ -72,10 +77,13 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
         searchView = v.findViewById(R.id.search_view);
         radioName = v.findViewById(R.id.rbName);
         radioCategory = v.findViewById(R.id.rbCategory);
+
         btnSort = v.findViewById(R.id.btnSortSearch);
         radioName.setOnClickListener(this);
         radioCategory.setOnClickListener(this);
         v.findViewById(R.id.btnSortSearch).setOnClickListener(this);
+        v.findViewById(R.id.rbName).setOnClickListener(this);
+        v.findViewById(R.id.rbCategory).setOnClickListener(this);
 
         fillSearchList(searchList);
         resetList(resultsList);
@@ -125,6 +133,7 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
 
         return v;
     }
+
 
     @Override
     public void onClick(View v) {
@@ -328,7 +337,7 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
         bundle.putLong("mKey", ft.getM_ID());
         MenusContract mc = new MenusContract(getContext());
         menuFrag.setArguments(bundle);
-        transaction.replace(R.id.mainFragment_container, menuFrag).commit();
+        transaction.replace(R.id.mainFragment_container, menuFrag).addToBackStack("tag").commit();
     }
 
 }

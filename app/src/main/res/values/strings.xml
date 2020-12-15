@@ -147,7 +147,7 @@
     <string name="cart">cart</string>
     <string name="title_activity_maps">Map</string>
     <string name="my_account">MY ACCOUNT</string>
-    <string name="your_cart">Your Cart</string>
+    <string name="Cart">Cart</string>
     <string name="delivery">Delivery</string>
     <string name="pick_at_truck">Pick at Truck</string>
     <string name="delivery_home">Delivery Home</string>

@@ -101,6 +101,7 @@ public final class RatingsContract {
         return newRating;
     }
 
+
     // Return amount of ratings associated with a specific food truck
     public int countRatingsForID(long foodTruckID) {
         open();
@@ -126,6 +127,9 @@ public final class RatingsContract {
         close();
         return average;
     }
+
+    //make function to return average rating for a foodtruck by ID
+
 
     //column and table names
     public static final class RatingsEntry implements BaseColumns {
