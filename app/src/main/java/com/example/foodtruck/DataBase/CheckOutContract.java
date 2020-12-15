@@ -258,19 +258,6 @@ public class CheckOutContract {
         close();
     }
 
-        //remove item from database
-        public void removeCartById(long id){
-            open();
-            mDb = mDbHelper.getWritableDatabase();
-            String dlQuery = "DELETE FROM " + CartEntry.TABLE_NAME + " WHERE " + CartEntry._ID + " = " + id;
-            Cursor cursor = mDb.rawQuery(dlQuery, null);
-            cursor.moveToFirst();
-            cursor.close();
-            mDb.close();
-            close();
-        }
-
-
     //column and tables names
     public static final class CartEntry implements BaseColumns {
         public static final String TABLE_NAME = "cart";
