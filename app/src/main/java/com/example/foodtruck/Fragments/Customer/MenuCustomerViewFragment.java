@@ -95,6 +95,12 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         FoodTruck foodTruck = fc.getFoodTruckById(truckID);
         truckName.setText(foodTruck.getM_Name() + " Menu");
 
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+        String userType = sharedPref.getString("UserType", "");
+
+        if (userType.equals("Vendor"))
+            btnSave.setVisibility(View.INVISIBLE);
+
         if (checkFavorited()) {
             @SuppressLint("UseCompatLoadingForDrawables") Drawable favorite = getContext().getResources().getDrawable(R.drawable.ic_favorite, null);
             favorite.setBounds(0, 0, 70, 70);
@@ -145,7 +151,11 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
     public void onItemClick(int position) {
         Item itemPos = cMenuAdapter.getItemAt(position);
 
-        itemOptionsDialog(itemPos);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
+        String userType = sharedPref.getString("UserType", "");
+
+        if (userType.equals("Customer"))
+            itemOptionsDialog(itemPos);
 
     }
 

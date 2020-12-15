@@ -67,7 +67,6 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
     private MenuAdapter menuAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Item> itemList = new ArrayList<>();
-    private ArrayList<EditText> editTexts = new ArrayList<>();
     private EditText itemName, itemPrice;
     private TextView tv;
     private Spinner itemAvailability, foodTruckSpinner;
@@ -204,6 +203,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         LayoutInflater optionDialogInflater = getLayoutInflater();
         View optionView = optionDialogInflater.inflate(R.layout.dialog_options, null);
         Button addOption = optionView.findViewById(R.id.addRow);
+        ArrayList<EditText> editTexts = new ArrayList<>();
 
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(optionView)
                 .setPositiveButton("Add", null)
@@ -245,6 +245,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemListener
         LayoutInflater optionDialogInflater = getLayoutInflater();
         View optionView = optionDialogInflater.inflate(R.layout.dialog_options, null);
         Button addOption = optionView.findViewById(R.id.addRow);
+        ArrayList<EditText> editTexts = new ArrayList<>();
 
         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(optionView)
                 .setPositiveButton("Add", null)
