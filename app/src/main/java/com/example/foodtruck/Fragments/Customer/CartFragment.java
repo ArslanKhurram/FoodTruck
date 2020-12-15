@@ -35,6 +35,8 @@ import com.example.foodtruck.Models.CartOptions;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.OrderedItem;
+import com.example.foodtruck.Models.Invoice;
+import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.Payment;
 import com.example.foodtruck.R;
 
@@ -55,7 +57,6 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
     private double tempSub, tempTax, tempOrderTotal;
     private double sCharge = 0.99;
     private int orderNumber;
-
 
     @Nullable
     @Override
@@ -90,21 +91,28 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             calculateTotal();
         }
 
-
         btnPlaceOrder = v.findViewById(R.id.btnPlaceOrder);
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PaymentsContract paymentsContract = new PaymentsContract(getContext());
-                ArrayList<Payment> payment = paymentsContract.paymentsList(customer.getM_Id());
-                getCartOrders();
-                if ((payment != null) && (cartList != null)) {
-                    placeOrder(tempOrderTotal, tempTax, tempSub, payment.get(0).getM_ID(), customer.getM_Id());
-                    clearCart(customer.getM_Id());
-                    Toast.makeText(getContext(), "Order Placed", Toast.LENGTH_SHORT).show();
-                } else if (payment == null)
-                    Toast.makeText(getContext(), "Please Add a Payment Method", Toast.LENGTH_SHORT).show();
+                if (cartList != null) {
+                    PaymentsContract paymentsContract = new PaymentsContract(getContext());
+                    ArrayList<Payment> payment = paymentsContract.paymentsList(customer.getM_Id());
+                    if (payment != null) {
+                        placeOrder(tempOrderTotal, tempTax, tempSub, payment.get(0).getM_ID(), customer.getM_Id());
+                        clearCart(customer.getM_Id());
+                        Toast.makeText(getContext(), "Order Placed", Toast.LENGTH_SHORT).show();
 
+                        OrderConfirmationFragment confirmationFragment = new OrderConfirmationFragment();
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("orderNumber", String.valueOf(orderNumber));
+                        confirmationFragment.setArguments(bundle1);
+                        transaction.replace(R.id.mainFragment_container, confirmationFragment).commit();
+                    } else
+                        Toast.makeText(getContext(), "Please Add a Payment Method", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(getContext(), "Cart is Empty Cannot Place Order", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -116,7 +124,8 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                Cart cart = cMenuAdapter.getItemAt(viewHolder.getAdapterPosition());
+
+                Cart cart = cMenuAdapter.getItemAt(viewHolder.getAdapterPosition()); //get cart swiped
 
                 CheckOutContract checkOutContract = new CheckOutContract(getContext());
                 checkOutContract.removeCartById(cart.getM_ID());
@@ -124,10 +133,30 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
                 Toast.makeText(getContext(), "Item Removed", Toast.LENGTH_SHORT).show();
                 if (cartList == null)
                     resetET();
-
             }
         }).attachToRecyclerView(recyclerView);
+
         return v;
+    }
+
+    //calculate the invoice totals
+    public void calculateTotals() {
+
+        //check is cart is empty then set everything to 0
+        if (cartList == null) {
+            tempSub = 0; subTotal.setText("$0.00");
+            tempTax = 0; totalTax.setText("$0.00");
+            tempOrderTotal = 0; orderTotal.setText("$0.00");
+        } else {
+            tempSub = calSubTotal(getCartOrders());
+            subTotal.setText(String.format(" $%.2f", tempSub));
+
+            tempTax = calSalesTax(calSubTotal(getCartOrders()));
+            totalTax.setText(String.format(" $%.2f", tempTax));
+
+            tempOrderTotal = tempSub + tempTax + sCharge;
+            orderTotal.setText(String.format(" $%.2f", tempOrderTotal));
+        }
     }
 
 
@@ -150,9 +179,9 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
     }
 
     private void resetET() {
-        subTotal.setText("$0.00");
-        totalTax.setText("$0.00");
-        orderTotal.setText("$0.00");
+        subTotal.setText(" $0.00");
+        totalTax.setText(" $0.00");
+        orderTotal.setText(" $0.00");
     }
 
 
@@ -209,7 +238,9 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
 
     }
 
+
     public void placeOrder(double tempOrderTotal, double tempTax, double tempSub, long paymentId, long customerId) {
+      
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, 0);
@@ -222,6 +253,7 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         ordersContract.createOrder(getRandomNumberUsingNextInt(), todayDate, "Preparing", customerId, sharedPreferences.getLong("truck_Id", 0));
 
         Order order = ordersContract.getOrderByOrderNumber(String.valueOf(orderNumber));
+
         //Create invoice
         InvoiceContract invoiceContract = new InvoiceContract(getContext());
         invoiceContract.createInvoice(todayDate, String.format("%.2f", tempSub), String.format("%.2f", sCharge), String.format("%.2f", tempTax), String.format("%.2f", tempOrderTotal), order.getM_Id(), paymentId, customerId);
@@ -231,7 +263,6 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
 
         addOrderItems(order);
         addOrderOptions(order);
-
     }
 
     public void clearCart(long id) {
@@ -244,8 +275,8 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             cMenuAdapter.notifyDataSetChanged();
             resetET();
         }
+        
     }
-
 
     public String getRandomNumberUsingNextInt() {
         Random random = new Random();

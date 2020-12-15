@@ -117,6 +117,18 @@ public class CheckOutContract {
         return null;
     }
 
+    //remove item from database
+    public void removeCartById(long id){
+        open();
+        mDb = mDbHelper.getWritableDatabase();
+        String dlQuery = "DELETE FROM " + CartEntry.TABLE_NAME + " WHERE " + CartEntry._ID + " = " + id;
+        Cursor cursor = mDb.rawQuery(dlQuery, null);
+        cursor.moveToFirst();
+        cursor.close();
+        mDb.close();
+        close();
+    }
+
 
 
     //return array list of options
@@ -127,7 +139,6 @@ public class CheckOutContract {
 
             Cursor cursor = mDb.query(CartEntry.TABLE_NAME, mAllColumns, CartEntry.COL_CUST_ID + " =?",
                     new String[]{String.valueOf(itemID)}, null, null, null);
-
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Cart cart = cursorToCart(cursor);
@@ -137,7 +148,8 @@ public class CheckOutContract {
                 else
                     cursor.moveToNext();
             }
-            if(cartList.size() > 0) {
+
+            if (cartList.size() > 0) {
                 cursor.close();
                 return cartList;
             }

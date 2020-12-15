@@ -40,7 +40,7 @@ public class MyCartAdapter extends ListAdapter<Cart, MyCartAdapter.ItemViewHolde
         public boolean areContentsTheSame(@NonNull Cart oldItem, @NonNull Cart newItem) {
             return oldItem.getM_Item().getM_Name().equals(newItem.getM_Item().getM_Name()) &&
                     oldItem.getM_Item().getM_Price().equals(newItem.getM_Item().getM_Price()) &&
-                    oldItem.getM_Quantity().equals(newItem.getM_OrderNumber());
+                    oldItem.getM_Quantity().equals(newItem.getM_Quantity());
         }
     };
 
