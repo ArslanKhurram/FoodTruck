@@ -80,6 +80,8 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         btnSave.setOnClickListener(this);
         tv.setVisibility(View.INVISIBLE);
 
+
+
         if (checkFavorited()) {
             @SuppressLint("UseCompatLoadingForDrawables") Drawable favorite = getContext().getResources().getDrawable(R.drawable.ic_favorite, null);
             favorite.setBounds(0, 0, 70, 70);

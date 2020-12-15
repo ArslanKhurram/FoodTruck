@@ -23,10 +23,12 @@ import com.example.foodtruck.DataBase.CheckOutContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.InvoiceContract;
 import com.example.foodtruck.DataBase.MenusContract;
+import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.Models.Cart;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Invoice;
+import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.Payment;
 import com.example.foodtruck.R;
 
@@ -34,6 +36,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 
 public class CartFragment extends Fragment implements MenuAdapter.OnItemListener, View.OnClickListener {
 
@@ -45,6 +48,7 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
     private Button btnPlaceOrder;
     private double tempSub, tempTax, tempOrderTotal;
     private double sCharge = 0.99;
+    private int orderNumber;
 
 
     @Nullable
@@ -77,14 +81,14 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         servicePrice.setText(String.format(" $%.2f", sCharge));
 
         if (cartList != null) {
-            double tempSub = calSubTotal(getCartOrders());
+            tempSub = calSubTotal(getCartOrders());
             subTotal.setText(String.format(" $%.2f", tempSub));
 
-            double tempTax = calSalesTax(calSubTotal(getCartOrders()));
+            tempTax = calSalesTax(calSubTotal(getCartOrders()));
             totalTax.setText(String.format(" $%.2f", tempTax));
 
-            double tempOrdertoal = tempSub+tempTax+sCharge;
-            orderTotal.setText(String.format(" $%.2f", tempOrdertoal));
+            tempOrderTotal = tempSub+tempTax+sCharge;
+            orderTotal.setText(String.format(" $%.2f", tempOrderTotal));
         }
 
 
@@ -94,17 +98,20 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             public void onClick(View v) {
                 PaymentsContract paymentsContract = new PaymentsContract(getContext());
                 ArrayList<Payment> payment =  paymentsContract.paymentsList(customer.getM_Id());
-                if(payment != null){
-                placeOrder(tempOrderTotal,tempTax,tempSub,1,1,customer.getM_Id());
+                if((payment != null)&&(tempSub != 0)){
+                placeOrder(tempOrderTotal,tempTax,tempSub,payment.get(0).getM_ID(),customer.getM_Id());
                 clearCart(customer.getM_Id());
                 Toast.makeText(getContext(), "Order Placed", Toast.LENGTH_SHORT).show();
             }
-                else Toast.makeText(getContext(),"Please Add a Payment Method", Toast.LENGTH_SHORT).show();
+                else if (payment == null) Toast.makeText(getContext(),"Please Add a Payment Method", Toast.LENGTH_SHORT).show();
+                else if (tempSub == 0)Toast.makeText(getContext(),"Cart Cannot Be Empty", Toast.LENGTH_SHORT).show();
             }
         });
 
         return v;
     }
+
+
 
 
     @Override
@@ -158,14 +165,23 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         return tax;
     }
 
-    public void placeOrder(double tempOrdertoal, double tempTax, double tempSub,  long orderId, long paymentId, long customerId ) {
+    public void placeOrder(double tempOrdertoal, double tempTax, double tempSub, long paymentId, long customerId) {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE,0);
+        cal.add(Calendar.DATE, 0);
         String todayDate = dateFormat.format(cal.getTime());
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("foodTruck", Context.MODE_PRIVATE);
+
+        //create order
+        OrdersContract ordersContract = new OrdersContract(getContext());
+        ordersContract.createOrder(getRandomNumberUsingNextInt(), todayDate, "Preparing", customerId, sharedPreferences.getLong("truck_Id", 0));
+
+
+        Order order = ordersContract.getOrderByOrderNumber(String.valueOf(orderNumber));
+        //create invoice
         InvoiceContract invoiceContract = new InvoiceContract(getContext());
-        Invoice invoice = invoiceContract.createInvoice(todayDate,String.valueOf(tempOrdertoal),String.valueOf(sCharge),String.valueOf(tempTax),String.valueOf(tempSub),orderId,paymentId,customerId);
-///if cart list empty dont place order
+        invoiceContract.createInvoice(todayDate, String.format("%.2f", tempSub), String.format("%.2f", sCharge), String.format("%.2f", tempTax), String.format("%.2f", tempOrdertoal), order.getM_Id(), paymentId, customerId);
     }
 
     public void clearCart(long id){
@@ -176,6 +192,18 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
        cartList.clear();
        cMenuAdapter.submitList(cartList);
        cMenuAdapter.notifyDataSetChanged();}
+    }
+
+    public String getRandomNumberUsingNextInt() {
+        Random random = new Random();
+        orderNumber = random.nextInt(9999 - 1000) + 1000;
+
+        OrdersContract ordersContract = new OrdersContract(getContext());
+        for (Order order : ordersContract.getAllOrders()) {
+            if (orderNumber == Integer.parseInt(order.getM_OrderNumber()))
+                getRandomNumberUsingNextInt();
+        }
+        return String.valueOf(orderNumber);
     }
 
 }
