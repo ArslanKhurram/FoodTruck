@@ -131,14 +131,8 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
                     completedOrderList = orderCList;
                     return completedOrderList;
             }
-        } else {
-            int size1 = pendingOrderList.size();
-            int size2 = completedOrderList.size();
-            pendingOrderList.clear();
-            completedOrderList.clear();
-            pendingOrderAdapter.notifyItemRangeChanged(0, size1);
-            CompletedOrderAdapter.notifyItemRangeChanged(0, size2);
         }
+
         return null;
     }
 
@@ -256,9 +250,11 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
         FoodTrucksContract foodTrucksContract = new FoodTrucksContract(getContext());
         ArrayList<FoodTruck> foodTrucks = foodTrucksContract.FoodTruckList(vendor.getM_Id());
 
-        ArrayAdapter<FoodTruck> spinnerAdapter = new ArrayAdapter<FoodTruck>(getContext(), android.R.layout.simple_spinner_dropdown_item);
-        spinnerAdapter.addAll(foodTrucks);
-        foodtruckSpinner.setAdapter(spinnerAdapter);
+        if (foodTrucks != null) {
+            ArrayAdapter<FoodTruck> spinnerAdapter = new ArrayAdapter<FoodTruck>(getContext(), android.R.layout.simple_spinner_dropdown_item);
+            spinnerAdapter.addAll(foodTrucks);
+            foodtruckSpinner.setAdapter(spinnerAdapter);
+        }
     }
 
     @Override
