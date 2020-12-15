@@ -101,6 +101,32 @@ public final class RatingsContract {
         return newRating;
     }
 
+    // Return amount of ratings associated with a specific food truck
+    public int countRatingsForID(long foodTruckID) {
+        open();
+        String mQuery = "SELECT " + RatingsEntry.COL_FOODTRUCK_ID + " FROM " + RatingsEntry.TABLE_NAME + " WHERE " + RatingsEntry.COL_FOODTRUCK_ID + " = " + foodTruckID;
+        Cursor cursor = mDb.rawQuery(mQuery, null);
+        cursor.moveToFirst();
+        int count = cursor.getCount();
+        cursor.close();
+        mDb.close();
+        close();
+        return count;
+    }
+
+    // Raw SQL query to get all reviews associated with a food truck and return the average
+    public double averageRatingsForID(long foodTruckID) {
+        open();
+        String mQuery = "SELECT AVG(" + RatingsEntry.COL_RATING + ") FROM " + RatingsEntry.TABLE_NAME + " WHERE " + RatingsEntry.COL_FOODTRUCK_ID + " = " + foodTruckID;
+        Cursor cursor = mDb.rawQuery(mQuery, null);
+        cursor.moveToFirst();
+        double average = cursor.getDouble(0);
+        cursor.close();
+        mDb.close();
+        close();
+        return average;
+    }
+
     //column and table names
     public static final class RatingsEntry implements BaseColumns {
         public static final String TABLE_NAME = "ratings";

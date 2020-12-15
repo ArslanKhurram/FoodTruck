@@ -22,31 +22,70 @@
              android:scaleType="fitXY"
              android:src="@android:drawable/ic_menu_gallery"/>
 
+        <TextView
+            android:id="@+id/txtSearchRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5.0"
+            android:textSize="12dp"
+            android:layout_below="@id/ivSearchItem"
+            android:layout_toLeftOf="@id/ivStarRating"
+            android:layout_marginRight="1dp"/>
+
+        <ImageView
+            android:id="@+id/ivStarRating"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_star_rate_24px"
+            android:layout_alignBottom="@id/txtSearchRating"
+            android:layout_toLeftOf="@id/txtRatingCount"
+            android:layout_marginRight="2dp"
+            />
+
+        <TextView
+            android:id="@+id/txtRatingCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(999)"
+            android:textSize="10dp"
+            android:layout_alignEnd="@id/ivSearchItem"
+            android:layout_below="@id/ivSearchItem"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"/>
+
          <TextView
              android:id="@+id/txtSearchName"
              android:layout_width="170dp"
-             android:layout_height="wrap_content"
+             android:layout_height="30dp"
              android:layout_centerHorizontal="true"
-             android:layout_below="@id/ivSearchItem"
+             android:layout_below="@id/txtSearchRating"
              android:textAppearance="@style/TextAppearance.AppCompat.Medium"
              android:textColor="@android:color/black"
+             android:textSize="16dp"
              android:text="FT Name"
+             android:autoSizeTextType="uniform"
+             android:maxLines="1"
              android:textAlignment="center"
              android:padding="4dp"/>
 
         <TextView
             android:id="@+id/txtSearchCategory"
-            android:layout_width="85dp"
-            android:layout_height="wrap_content"
+            android:layout_width="65dp"
+            android:layout_height="18dp"
             android:layout_below="@id/txtSearchName"
             android:shadowColor="@color/cardview_dark_background"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/black"
             android:text="FT Category"
             android:textSize="10sp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="4dp"
+            android:autoSizeMaxTextSize="12dp"
             android:textAlignment="center"
             android:background="@drawable/radio_button_deselected"
-            android:padding="2dp"/>
+            android:padding="2dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp"/>
 
         <TextView
             android:id="@+id/txtDistance"
@@ -58,7 +97,8 @@
             android:text="Distance"
             android:textSize="8sp"
             android:layout_toEndOf="@id/txtSearchCategory"
-            android:layout_marginStart="4dp"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"/>
 
     </RelativeLayout>
 

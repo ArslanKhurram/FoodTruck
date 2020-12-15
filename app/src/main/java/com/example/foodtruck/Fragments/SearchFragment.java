@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodtruck.Adapter.MySearchAdapter;
 import com.example.foodtruck.DataBase.FoodTrucksContract;
 import com.example.foodtruck.DataBase.MenusContract;
+import com.example.foodtruck.DataBase.RatingsContract;
 import com.example.foodtruck.DataBase.VendorsContract;
 import com.example.foodtruck.Fragments.Customer.MenuCustomerViewFragment;
 import com.example.foodtruck.Models.FoodTruck;
@@ -228,11 +230,12 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
                     resultsList.addAll(tempList);
                     searchAdapter.notifyDataSetChanged();
                     break;
-                case "Rating": // Need to change to gather ratings and assign it to a foodtruck, currently sorts by category
+                case "Rating":
                     Collections.sort(tempList, new Comparator<FoodTruck>() {
                         @Override
                         public int compare(FoodTruck ft1, FoodTruck ft2) {
-                            return ft1.getM_Category().compareTo(ft2.getM_Category());
+                            RatingsContract rc = new RatingsContract(getContext());
+                            return rc.averageRatingsForID(ft1.getM_ID()) > rc.averageRatingsForID(ft2.getM_ID()) ? -1 : 1;
                         }
                     });
                     resultsList.addAll(tempList);
