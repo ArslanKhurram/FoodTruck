@@ -360,6 +360,7 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
                 }
             }
         }
+
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("foodTruck", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Bundle bundle = getArguments();

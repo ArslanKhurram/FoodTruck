@@ -117,9 +117,9 @@ public class SignUpActivity extends AppCompatActivity {
                 oc.createOption("Beans", 3); //hotdog
 
                 OrdersContract ordersContract = new OrdersContract(this);
-                ordersContract.createOrder("A01", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
-                ordersContract.createOrder("A03", "10/22/2020", "Preparing", customer2.getM_Id(), foodTruck1.getM_ID());
-                ordersContract.createOrder("B03", "10/22/2020", "Completed", customer3.getM_Id(), foodTruck1.getM_ID());
+                ordersContract.createOrder("6366", "10/22/2020", "Preparing", customer1.getM_Id(), foodTruck1.getM_ID());
+                ordersContract.createOrder("4364", "10/22/2020", "Preparing", customer2.getM_Id(), foodTruck1.getM_ID());
+                ordersContract.createOrder("1646", "10/22/2020", "Completed", customer3.getM_Id(), foodTruck1.getM_ID());
                 ArrayList<Order> orderArrayList = ordersContract.getOrdersList(foodTruck1.getM_ID());
 
                 OrderedItemsContract orderedItemsContract = new OrderedItemsContract(this);

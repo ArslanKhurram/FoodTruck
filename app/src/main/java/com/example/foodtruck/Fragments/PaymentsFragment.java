@@ -70,7 +70,7 @@ public class PaymentsFragment extends Fragment implements PaymentAdapter.onPayme
         tv = v.findViewById(R.id.noPaymentPrompt);
         tv.setVisibility(View.INVISIBLE);
 
-        if (paymentsList.size() < 1) {
+        if (paymentsList == null) {
             tv.setVisibility(View.VISIBLE);
         }
         //recycler view setup

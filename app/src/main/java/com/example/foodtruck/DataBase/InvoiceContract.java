@@ -94,6 +94,21 @@ public class InvoiceContract {
         mDb.close();
         close();
         return invoice;
+    }//return Invoice by searching by id
+
+    public Invoice getInvoiceByOrderID(long orderID) {
+        open();
+        Cursor cursor = mDb.query(InvoiceEntry.TABLE_NAME, mAllColumns, InvoiceEntry.COL_ORDER_ID + " =? ",
+                new String[]{String.valueOf(orderID)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Invoice invoice = cursorToInvoice(cursor, cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_ORDER_ID)), cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_PAYMENT_ID)), cursor.getLong(cursor.getColumnIndex(InvoiceEntry.COL_CUSTOMER_ID)));
+        cursor.close();
+        mDb.close();
+        close();
+        return invoice;
     }
 
     //return array List of invoice for customer

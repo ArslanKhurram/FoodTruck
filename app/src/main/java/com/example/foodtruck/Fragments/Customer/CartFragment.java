@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,10 +24,12 @@ import com.example.foodtruck.DataBase.CheckOutContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.InvoiceContract;
 import com.example.foodtruck.DataBase.MenusContract;
+import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.Models.Cart;
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.Invoice;
+import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.Payment;
 import com.example.foodtruck.R;
 
@@ -34,6 +37,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 
 public class CartFragment extends Fragment implements MenuAdapter.OnItemListener, View.OnClickListener {
 
@@ -41,11 +45,11 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
     private MyCartAdapter cMenuAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Cart> cartList = new ArrayList<>();
-    private TextView subTotal, totalTax, seeMenu, orderTotal,servicePrice;
+    private TextView subTotal, totalTax, seeMenu, orderTotal, servicePrice;
     private Button btnPlaceOrder;
     private double tempSub, tempTax, tempOrderTotal;
     private double sCharge = 0.99;
-
+    private int orderNumber;
 
     @Nullable
     @Override
@@ -77,33 +81,75 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         servicePrice.setText(String.format(" $%.2f", sCharge));
 
         if (cartList != null) {
-            double tempSub = calSubTotal(getCartOrders());
-            subTotal.setText(String.format(" $%.2f", tempSub));
-
-            double tempTax = calSalesTax(calSubTotal(getCartOrders()));
-            totalTax.setText(String.format(" $%.2f", tempTax));
-
-            double tempOrdertoal = tempSub+tempTax+sCharge;
-            orderTotal.setText(String.format(" $%.2f", tempOrdertoal));
+            calculateTotals();
         }
-
 
         btnPlaceOrder = v.findViewById(R.id.btnPlaceOrder);
         btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PaymentsContract paymentsContract = new PaymentsContract(getContext());
-                ArrayList<Payment> payment =  paymentsContract.paymentsList(customer.getM_Id());
-                if(payment != null){
-                placeOrder(tempOrderTotal,tempTax,tempSub,1,1,customer.getM_Id());
-                clearCart(customer.getM_Id());
-                Toast.makeText(getContext(), "Order Placed", Toast.LENGTH_SHORT).show();
-            }
-                else Toast.makeText(getContext(),"Please Add a Payment Method", Toast.LENGTH_SHORT).show();
+                if (cartList != null) {
+                    PaymentsContract paymentsContract = new PaymentsContract(getContext());
+                    ArrayList<Payment> payment = paymentsContract.paymentsList(customer.getM_Id());
+                    if (payment != null) {
+                        placeOrder(tempOrderTotal, tempTax, tempSub, payment.get(0).getM_ID(), customer.getM_Id());
+                        clearCart(customer.getM_Id());
+                        Toast.makeText(getContext(), "Order Placed", Toast.LENGTH_SHORT).show();
+
+                        OrderConfirmationFragment confirmationFragment = new OrderConfirmationFragment();
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("orderNumber", String.valueOf(orderNumber));
+                        confirmationFragment.setArguments(bundle1);
+                        transaction.replace(R.id.mainFragment_container, confirmationFragment).commit();
+
+                    } else
+                        Toast.makeText(getContext(), "Please Add a Payment Method", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(getContext(), "Cart is Empty Cannot Place Order", Toast.LENGTH_SHORT).show();
+
             }
         });
 
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Cart cart = cMenuAdapter.getItemAt(viewHolder.getAdapterPosition()); //get cart swiped
+
+                CheckOutContract checkOutContract = new CheckOutContract(getContext());
+                checkOutContract.removeCartById(cart.getM_ID());
+                cMenuAdapter.submitList(getCartOrders());
+                calculateTotals();
+                Toast.makeText(getContext(), "Item Removed", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(recyclerView);
+
         return v;
+    }
+
+    //calculate the invoice totals
+    public void calculateTotals() {
+
+        //check is cart is empty then set everything to 0
+        if (cartList == null) {
+            tempSub = 0; subTotal.setText("$0.00");
+            tempTax = 0; totalTax.setText("$0.00");
+            tempOrderTotal = 0; orderTotal.setText("$0.00");
+        } else {
+            tempSub = calSubTotal(getCartOrders());
+            subTotal.setText(String.format(" $%.2f", tempSub));
+
+            tempTax = calSalesTax(calSubTotal(getCartOrders()));
+            totalTax.setText(String.format(" $%.2f", tempTax));
+
+            tempOrderTotal = tempSub + tempTax + sCharge;
+            orderTotal.setText(String.format(" $%.2f", tempOrderTotal));
+        }
     }
 
 
@@ -158,24 +204,45 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         return tax;
     }
 
-    public void placeOrder(double tempOrdertoal, double tempTax, double tempSub,  long orderId, long paymentId, long customerId ) {
+    public void placeOrder(double tempOrdertoal, double tempTax, double tempSub, long paymentId, long customerId) {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE,0);
+        cal.add(Calendar.DATE, 0);
         String todayDate = dateFormat.format(cal.getTime());
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("foodTruck", Context.MODE_PRIVATE);
+
+        //create order
+        OrdersContract ordersContract = new OrdersContract(getContext());
+        ordersContract.createOrder(getRandomNumberUsingNextInt(), todayDate, "Preparing", customerId, sharedPreferences.getLong("truck_Id", 0));
+
+        Order order = ordersContract.getOrderByOrderNumber(String.valueOf(orderNumber));
+        //create invoice
         InvoiceContract invoiceContract = new InvoiceContract(getContext());
-        Invoice invoice = invoiceContract.createInvoice(todayDate,String.valueOf(tempOrdertoal),String.valueOf(sCharge),String.valueOf(tempTax),String.valueOf(tempSub),orderId,paymentId,customerId);
-///if cart list empty dont place order
+        invoiceContract.createInvoice(todayDate, String.format("%.2f", tempSub), String.format("%.2f", sCharge), String.format("%.2f", tempTax), String.format("%.2f", tempOrdertoal), order.getM_Id(), paymentId, customerId);
     }
 
-    public void clearCart(long id){
-       CheckOutContract mc = new CheckOutContract(getContext());
-       if (mc.getEntireCart(id) != null){
-       mc.clearTable(id);
-       int size = cartList.size();
-       cartList.clear();
-       cMenuAdapter.submitList(cartList);
-       cMenuAdapter.notifyDataSetChanged();}
+    public void clearCart(long id) {
+        CheckOutContract mc = new CheckOutContract(getContext());
+        if (mc.getEntireCart(id) != null) {
+            mc.clearTable(id);
+            int size = cartList.size();
+            cartList.clear();
+            cMenuAdapter.submitList(cartList);
+            cMenuAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public String getRandomNumberUsingNextInt() {
+        Random random = new Random();
+        orderNumber = random.nextInt(9999 - 1000) + 1000;
+
+        OrdersContract ordersContract = new OrdersContract(getContext());
+        for (Order order : ordersContract.getAllOrders()) {
+            if (orderNumber == Integer.parseInt(order.getM_OrderNumber()))
+                getRandomNumberUsingNextInt();
+        }
+        return String.valueOf(orderNumber);
     }
 
 }

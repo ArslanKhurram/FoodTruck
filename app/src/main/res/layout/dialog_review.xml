@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
+    android:padding="20dp"
     android:orientation="vertical">
 
     <TextView
@@ -28,8 +28,15 @@
         android:id="@+id/reviewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLength="100"
-        android:maxLines="1" />
+        android:maxLength="50"
+        android:maxLines="2" />
+
+    <TextView
+        android:id="@+id/titleCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0/50"
+        android:layout_gravity="end"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,5 +49,13 @@
         android:id="@+id/reviewDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="4" />
+        android:maxLength="150"
+        android:maxLines="10" />
+
+    <TextView
+        android:id="@+id/descriptionCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="0/150" />
 </LinearLayout>

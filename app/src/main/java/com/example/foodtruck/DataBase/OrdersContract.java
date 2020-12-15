@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.foodtruck.Models.Customer;
 import com.example.foodtruck.Models.FoodTruck;
@@ -60,20 +61,20 @@ public final class OrdersContract {
     };
 
     //add order into database
-    public Order createOrder(String orderNumber, String dateAdded, String status, long customerId, long vendorId) {
+    public Order createOrder(String orderNumber, String dateAdded, String status, long customerId, long foodtruckId) {
         open();
         ContentValues cv = new ContentValues();
         cv.put(OrdersEntry.COL_ORDER_NUMBER, orderNumber);
         cv.put(OrdersEntry.COL_DATE_ADDED, dateAdded);
         cv.put(OrdersEntry.COL_STATUS, status);
         cv.put(OrdersEntry.COL_CUSTOMER_ID, customerId);
-        cv.put(OrdersEntry.COL_FOOD_TRUCK_ID, vendorId);
+        cv.put(OrdersEntry.COL_FOOD_TRUCK_ID, foodtruckId);
 
         long insertId = mDb.insert(OrdersEntry.TABLE_NAME, null, cv);
         Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry._ID +
                 " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
-        Order newOrder = cursorToOrder(cursor, customerId, vendorId);
+        Order newOrder = cursorToOrder(cursor, customerId, foodtruckId);
         cursor.close();
         mDb.close();
         close();
@@ -92,6 +93,29 @@ public final class OrdersContract {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), foodTruckID);
+                ordersList.add(order);
+                if (cursor.isLast() || cursor.isClosed())
+                    break;
+                else
+                    cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        mDb.close();
+        close();
+        return ordersList;
+    }
+    //return array List of all orders
+    public ArrayList<Order> getAllOrders() {
+        open();
+        ArrayList<Order> ordersList = new ArrayList<Order>();
+
+        Cursor cursor = mDb.rawQuery("SELECT * FROM " + OrdersEntry.TABLE_NAME, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_FOOD_TRUCK_ID)));
                 ordersList.add(order);
                 if (cursor.isLast() || cursor.isClosed())
                     break;
@@ -135,6 +159,22 @@ public final class OrdersContract {
         open();
         Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry._ID + " =? ",
                 new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_FOOD_TRUCK_ID)));
+        cursor.close();
+        mDb.close();
+        close();
+        return order;
+    }
+
+    //return Order by searching by order number
+    public Order getOrderByOrderNumber(String orderNumber) {
+        open();
+        Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry.COL_ORDER_NUMBER + " =? ",
+                new String[]{orderNumber}, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
