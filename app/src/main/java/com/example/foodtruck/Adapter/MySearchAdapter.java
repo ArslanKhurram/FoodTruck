@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,7 +97,11 @@ public class MySearchAdapter extends ListAdapter<FoodTruck, MySearchAdapter.Food
             foodTruckPicture.setImageBitmap(bmp);
             foodTruckName.setText(foodTruck.getM_Name());
             foodTruckCategory.setText(foodTruck.getM_Category());
-            foodTruckDistance.setText(String.format("%.1f Miles away", fragment.distanceToFoodTruck(foodTruck)));
+            if (fragment.distanceToFoodTruck(foodTruck) == -1) {
+                foodTruckDistance.setText("Location is disabled");
+                foodTruckDistance.setTextColor(Color.RED);
+            } else
+                foodTruckDistance.setText(String.format("%.1f Miles away", fragment.distanceToFoodTruck(foodTruck)));
             foodTruckRating.setText(String.format("%.1f", rc.averageRatingsForID(foodTruck.getM_ID())));
             foodTruckRatingCount.setText("(" + String.valueOf(rc.countRatingsForID(foodTruck.getM_ID())) + ")");
             rc.close();

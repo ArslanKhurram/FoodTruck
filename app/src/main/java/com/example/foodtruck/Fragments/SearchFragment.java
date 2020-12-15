@@ -87,14 +87,10 @@ public class SearchFragment extends Fragment implements MySearchAdapter.onCardCl
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setAdapter(searchAdapter);
 
-        searchView.setOnClickListener(v1 -> {
-            resetList(resultsList);
-        });
-
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetList(resultsList);
+                searchView.setQuery("", false);
             }
         });
 

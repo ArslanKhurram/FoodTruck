@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
@@ -10,21 +10,39 @@
 
     <TextView
         android:id="@+id/txtMapRadius"
-        android:layout_width="wrap_content"
+        android:visibility="invisible"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/spnMapSpinner"
-        android:layout_alignBottom="@id/spnMapSpinner"
+        android:layout_above="@id/txtClickableRadius"
+        android:layout_alignStart="@id/txtRadiusMiles"
+        android:textAlignment="center"
         android:text="Radius" />
 
-    <Spinner
-        android:id="@+id/spnMapSpinner"
+
+    <TextView
+        android:id="@+id/txtClickableRadius"
+        android:visibility="invisible"
+        android:layout_width="40dp"
+        android:layout_height="32dp"
+        android:textSize="24dp"
+        android:text="5"
+        android:layout_above="@id/txtRadiusMiles"
+        android:layout_marginLeft="4dp"
+        android:gravity="center"
+        android:autoSizeTextType="uniform"
+        android:layout_alignStart="@id/txtRadiusMiles" />
+
+    <TextView
+        android:id="@+id/txtRadiusMiles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:text="Miles"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="32dp"
+        android:layout_alignParentRight="true"
         android:layout_marginRight="32dp"
-        android:layout_marginLeft="12dp" />
+        android:layout_marginBottom="32dp"
+        android:textAlignment="center"
+        android:gravity="center"/>
 
 
 </RelativeLayout>

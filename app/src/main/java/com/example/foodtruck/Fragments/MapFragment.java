@@ -2,11 +2,14 @@ package com.example.foodtruck.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -15,6 +18,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,8 +61,7 @@ public class MapFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap mMap;
-    Spinner radiusSpinner;
-    TextView radiusTxt;
+    TextView radiusTxt, radiusDisplay;
     CircleOptions circleOptions;
     Circle mapCircle;
     FusedLocationProviderClient fusedLocationClient;
@@ -68,8 +73,8 @@ public class MapFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
 
         mMapView = (MapView) v.findViewById(R.id.mapView);
-        radiusSpinner = v.findViewById(R.id.spnMapSpinner);
         radiusTxt = v.findViewById(R.id.txtMapRadius);
+        radiusDisplay = v.findViewById(R.id.txtClickableRadius);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // need to get the map to display immediately
@@ -85,35 +90,53 @@ public class MapFragment extends Fragment {
             public void onMapReady(final GoogleMap googleMap) {
 
                 mMap = googleMap;
+                FoodTrucksContract fc = new FoodTrucksContract(getActivity());
+                VendorsContract vc = new VendorsContract(getActivity());
+                Bitmap bitmap = onCreateBitmap();
 
                 // Check if device has location services permitted
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(getContext(), "Unable to get current location. Be sure location permissions are enabled", Toast.LENGTH_SHORT).show();
                     // Propose to enable said location permissions
                     ActivityCompat.requestPermissions((Activity) getContext(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
-                    radiusSpinner.setVisibility(View.INVISIBLE);
-                    radiusTxt.setVisibility(View.INVISIBLE);
-
                 } else {
+                    // Establish a criteria that will gather the food truck location and current device location at the best accuracy as the device can
+                    Criteria criteria = new Criteria();
+                    criteria.setAccuracy(Criteria.ACCURACY_FINE);
+                    criteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH);
+                    criteria.setVerticalAccuracy(Criteria.ACCURACY_HIGH);
+                    criteria.setPowerRequirement(Criteria.POWER_HIGH);
+                    criteria.setAltitudeRequired(false);
+                    criteria.setSpeedRequired(false);
+                    criteria.setBearingRequired(false);
+                    criteria.setCostAllowed(true);
+
+                    // Location Manager handles the current location based on the initialized criteria
+                    LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                    Location deviceLocation = new Location(locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, true)));
                     mMap.setMyLocationEnabled(true);
-                }
-                FoodTrucksContract fc = new FoodTrucksContract(getActivity());
-                VendorsContract vc = new VendorsContract(getActivity());
-                Bitmap bitmap = onCreateBitmap();
-                Toast.makeText(getContext(), "Location success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Location success", Toast.LENGTH_SHORT).show();
+                    radiusTxt.setVisibility(View.VISIBLE);
+                    radiusDisplay.setVisibility(View.VISIBLE);
 
                     // Instantiates a new CircleOptions object and defines the center and radius, required to create a circle visible on the map
-//                     circleOptions = new CircleOptions()
-//                             .center(new LatLng(40.806404, -73.25934)) // TOOD: have circle center on device's location (getMyMapLocation methods deprecated & doesn't actually work) GEOFENCE??
-//                             .radius(10000)
-//                             .strokeWidth(2)
-//                             .strokeColor(Color.argb(155, 52, 189, 235))
-//                             .fillColor(Color.argb(44, 52, 189, 235)); // In meters
+                    circleOptions = new CircleOptions()
+                            .center(new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude())) // TOOD: have circle center on device's location (getMyMapLocation methods deprecated & doesn't actually work) GEOFENCE??
+                            .radius(Integer.parseInt(radiusDisplay.getText().toString()) * 1609.34)
+                            .strokeWidth(2)
+                            .strokeColor(Color.argb(155, 52, 189, 235))
+                            .fillColor(Color.argb(44, 52, 189, 235)); // In meters
+                    // Draw circle on map with the specified options
+                    mapCircle = mMap.addCircle(circleOptions);
 
-                    // Draw circle on map
-                    //mapCircle = mMap.addCircle(circleOptions);
+                    radiusDisplay.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            OpenCircleRadiusDialog(radiusDisplay.getText().toString());
+                        }
+                    });
 
-               // LatLng latLng = new LatLng(40.806404, -73.25934);
+                }
 
                 // Loop through each vendor
                 for(int c = 1; c <= vc.CountContracts(); c++) {
@@ -141,17 +164,6 @@ public class MapFragment extends Fragment {
             }
         });
 
-        radiusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               // mapCircle.setRadius((int) parent.getItemAtPosition(position));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // default radius
-            }
-        });
 
         return v;
     }
@@ -176,6 +188,7 @@ public class MapFragment extends Fragment {
         return myIndex;
     }
 
+    // Open menu when marker clicked
     private void GotoMenu(FoodTruck ft) {
         MenuCustomerViewFragment menuFrag = new MenuCustomerViewFragment();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -186,10 +199,35 @@ public class MapFragment extends Fragment {
         transaction.replace(R.id.fragment_container, menuFrag).commit();
     }
 
+    // Dialog to adjust circle's radius located on current location
+    private void OpenCircleRadiusDialog(String val) {
+        LayoutInflater dialogInflater = getLayoutInflater();
+        View dv = dialogInflater.inflate(R.layout.dialog_setmapradius, null);
+        NumberPicker radiusPicker = dv.findViewById(R.id.numRadius);
+        radiusPicker.setMinValue(1);
+        radiusPicker.setMaxValue(100);
+        radiusPicker.setWrapSelectorWheel(false);
+        radiusPicker.setValue(Integer.parseInt(val));
+        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dv)
+                .setNeutralButton("Confirm", null)
+                .show();
+        alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(getResources().getColor(R.color.quantum_deeppurple, null));
+        alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radiusDisplay.setText(String.valueOf(radiusPicker.getValue()));
+                mapCircle.setRadius(radiusPicker.getValue() * 1609.34); // Convert meters to miles
+                alertDialog.dismiss();
+            }
+
+        });
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
     }
+
 
 
 
