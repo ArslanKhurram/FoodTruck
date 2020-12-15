@@ -105,7 +105,7 @@ public class OrderHistory extends Fragment implements InvoiceAdapter.OnInvoiceLi
         serviceCharge.setText(invoice.getM_ServiceCharge());
         taxAmount.setText(invoice.getM_TaxAmount());
         cardName.setText(invoice.getM_Payment().getM_NameOnCard());
-        cardNumber.setText(invoice.getM_Payment().getM_CreditCardNumber());
+        cardNumber.setText("************" + invoice.getM_Payment().getM_CreditCardNumber().substring(invoice.getM_Payment().getM_CreditCardNumber().length() - 4));
 
         //orderedItems listview
         listView = dv.findViewById(R.id.itemsList);
