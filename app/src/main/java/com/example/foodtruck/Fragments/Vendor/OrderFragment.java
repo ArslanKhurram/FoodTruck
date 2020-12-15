@@ -115,7 +115,7 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
 
         Vendor vendor = vc.getVendorIdByEmail(email);
         FoodTrucksContract fc = new FoodTrucksContract(getContext());
-        FoodTruck foodTruck = fc.getFoodTruckByVendorId(vendor.getM_Id());
+        FoodTruck foodTruck = (FoodTruck) foodtruckSpinner.getSelectedItem();
 
         if (foodTruck != null) {
             switch (status) {
@@ -131,6 +131,13 @@ public class OrderFragment extends Fragment implements OrderAdapter.OnOrderListe
                     completedOrderList = orderCList;
                     return completedOrderList;
             }
+        } else {
+            int size1 = pendingOrderList.size();
+            int size2 = completedOrderList.size();
+            pendingOrderList.clear();
+            completedOrderList.clear();
+            pendingOrderAdapter.notifyItemRangeChanged(0, size1);
+            CompletedOrderAdapter.notifyItemRangeChanged(0, size2);
         }
         return null;
     }
