@@ -1,13 +1,19 @@
 package com.example.foodtruck.Fragments.Customer;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,6 +32,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -54,9 +61,15 @@ import com.example.foodtruck.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Arrays;
 import java.util.Random;
+
 
 public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.OnItemListener, View.OnClickListener {
     private RecyclerView recyclerView;
@@ -92,9 +105,37 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         tv.setVisibility(View.INVISIBLE);
         TextView truckName = v.findViewById(R.id.foodTruckName);
 
+        TextView truckAddress = v.findViewById(R.id.foodTruckAddress);
+
         FoodTrucksContract fc = new FoodTrucksContract(getContext());
         FoodTruck foodTruck = fc.getFoodTruckById(truckID);
         truckName.setText(foodTruck.getM_Name() + " Menu");
+
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(foodTruck.getM_Latitude(), foodTruck.getM_Longitude(), 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (addresses != null && addresses.size() > 0) {
+            String address = addresses.get(0).getAddressLine(0);
+            truckAddress.setText(address);
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                truckAddress.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mapConfirmDialog(foodTruck);
+                    }
+                });
+            }
+            truckAddress.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    truckAddress.setSelected(true);
+                }
+            }, 3000);
+        }
 
         SharedPreferences sharedPref = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
         String userType = sharedPref.getString("UserType", "");
@@ -274,6 +315,48 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
             });
         }
     }
+
+    public void mapConfirmDialog(FoodTruck ft) {
+        LayoutInflater dialogInflater = getLayoutInflater();
+        View dv = dialogInflater.inflate(R.layout.dialog_confirm_map, null);
+        TextView tv = dv.findViewById(R.id.txtDirectionsPrompt);
+        tv.setText("Directions for " + ft.getM_Name());
+        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).setView(dv)
+                .setPositiveButton("Yes", null)
+                .setNegativeButton("No", null)
+                .show();
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.quantum_deeppurple, null));
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.quantum_deeppurple, null));
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                OpenMapIntent(ft);
+            }
+        });
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    private void OpenMapIntent(FoodTruck ft) {
+        String q = "google.navigation:q=" + String.valueOf(ft.getM_Latitude()) + "," + String.valueOf(ft.getM_Longitude());
+        Uri intentUri = Uri.parse(q);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, intentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        try {
+            if(mapIntent.resolveActivity(getContext().getPackageManager()) != null) {
+                startActivity((mapIntent));
+            }
+        } catch (NullPointerException e) {
+            Toast.makeText(getContext(), "Error opening map", Toast.LENGTH_SHORT).show();
+        }
+        startActivity(mapIntent);
+    }
+
 
     //Add Cart To CheckOut Cart Db
     private void addCartToDb(Item item) {

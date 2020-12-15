@@ -20,12 +20,31 @@
         <TextView
             android:id="@+id/foodTruckName"
             android:layout_width="wrap_content"
-            android:layout_height="49dp"
+
+            android:layout_height="wrap_content"
             android:layout_toStartOf="@id/btnSave"
             android:layout_alignParentStart="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:text="Test"
+            android:text="Name"
+            android:maxLines="2"
             android:textAlignment="center"
+            android:gravity="center"
+            android:background="@drawable/btn_upload"/>
+
+        <TextView
+            android:id="@+id/foodTruckAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/btnSave"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/foodTruckName"
+            android:textAppearance="@style/TextAppearance.Compat.Notification.Line2.Media"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:text="Address"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:scrollHorizontally="true"
+            android:freezesText="true"
             android:gravity="center"
             android:background="@drawable/btn_upload"/>
 
