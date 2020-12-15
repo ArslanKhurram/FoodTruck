@@ -143,6 +143,8 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         if (userType.equals("Vendor"))
             btnSave.setVisibility(View.INVISIBLE);
 
+
+
         if (checkFavorited()) {
             @SuppressLint("UseCompatLoadingForDrawables") Drawable favorite = getContext().getResources().getDrawable(R.drawable.ic_favorite, null);
             favorite.setBounds(0, 0, 70, 70);
@@ -293,7 +295,11 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
                 .setNegativeButton("Cancel", null)
                 .show();
 
+        CheckOutContract checkOutContract = new CheckOutContract(getContext());
         Button btnAdd = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+
+
+            if (!checkOutContract.checkIfCartExistByCustomerIdAndItemId(currentCustomer.getM_Id(), item.getM_Id())) {
 
         SharedPreferences sharedPrf = getActivity().getSharedPreferences("KeyData", Context.MODE_PRIVATE);
         String userType = sharedPrf.getString("UserType", "");
@@ -303,11 +309,24 @@ public class MenuCustomerViewFragment extends Fragment implements MenuAdapter.On
         } else {
             btnAdd.setOnClickListener(v -> {
 
+
                 if (checkedOption != null && Arrays.asList(checkedOption).contains(true)) {
                     addToCart(checkedOption, currentCustomer, item, spnQnty.getSelectedItem().toString());
                 } else {
                     addCartToDb(item);
                 }
+
+            } else {
+                Cart cart = checkOutContract.getCartByCustomerIdAndItemId(currentCustomer.getM_Id(), item.getM_Id());
+                if(cart != null) {
+                    int quantity = Integer.parseInt(cart.getM_Quantity()) + Integer.parseInt(spnQnty.getSelectedItem().toString());
+                    checkOutContract.updateCartQuantity(cart.getM_ID(), String.valueOf(quantity));
+                    Toast.makeText(getContext(),"Quantity Updated In Cart", Toast.LENGTH_SHORT).show();
+                }
+            }
+            //Clears checkout cart database but shouldnt be use yet until we forward the cart to foodtrucks
+            // clearCheckoutDatabase();
+
                 //Clears checkout cart database but shouldnt be use yet until we forward the cart to foodtrucks
                 // clearCheckoutDatabase();
 

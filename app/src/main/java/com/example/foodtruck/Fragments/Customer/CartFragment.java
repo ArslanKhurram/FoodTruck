@@ -3,6 +3,7 @@ package com.example.foodtruck.Fragments.Customer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +21,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodtruck.Adapter.MenuAdapter;
 import com.example.foodtruck.Adapter.MyCartAdapter;
+import com.example.foodtruck.DataBase.CartOptionsContract;
 import com.example.foodtruck.DataBase.CheckOutContract;
 import com.example.foodtruck.DataBase.CustomersContract;
 import com.example.foodtruck.DataBase.InvoiceContract;
 import com.example.foodtruck.DataBase.MenusContract;
+import com.example.foodtruck.DataBase.OrderedItemOptionsContract;
+import com.example.foodtruck.DataBase.OrderedItemsContract;
 import com.example.foodtruck.DataBase.OrdersContract;
 import com.example.foodtruck.DataBase.PaymentsContract;
 import com.example.foodtruck.Models.Cart;
+import com.example.foodtruck.Models.CartOptions;
 import com.example.foodtruck.Models.Customer;
+import com.example.foodtruck.Models.Order;
+import com.example.foodtruck.Models.OrderedItem;
 import com.example.foodtruck.Models.Invoice;
 import com.example.foodtruck.Models.Order;
 import com.example.foodtruck.Models.Payment;
@@ -81,7 +88,7 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         servicePrice.setText(String.format(" $%.2f", sCharge));
 
         if (cartList != null) {
-            calculateTotals();
+            calculateTotal();
         }
 
         btnPlaceOrder = v.findViewById(R.id.btnPlaceOrder);
@@ -102,12 +109,10 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
                         bundle1.putString("orderNumber", String.valueOf(orderNumber));
                         confirmationFragment.setArguments(bundle1);
                         transaction.replace(R.id.mainFragment_container, confirmationFragment).commit();
-
                     } else
                         Toast.makeText(getContext(), "Please Add a Payment Method", Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(getContext(), "Cart is Empty Cannot Place Order", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -119,13 +124,15 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
                 Cart cart = cMenuAdapter.getItemAt(viewHolder.getAdapterPosition()); //get cart swiped
 
                 CheckOutContract checkOutContract = new CheckOutContract(getContext());
                 checkOutContract.removeCartById(cart.getM_ID());
                 cMenuAdapter.submitList(getCartOrders());
-                calculateTotals();
                 Toast.makeText(getContext(), "Item Removed", Toast.LENGTH_SHORT).show();
+                if (cartList == null)
+                    resetET();
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -150,6 +157,31 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             tempOrderTotal = tempSub + tempTax + sCharge;
             orderTotal.setText(String.format(" $%.2f", tempOrderTotal));
         }
+    }
+
+
+    public void calculateTotal() {
+        if (cartList == null) {
+            tempSub = 0;
+            tempTax = 0;
+            tempOrderTotal = 0;
+            resetET();
+        } else {
+            tempSub = calSubTotal(getCartOrders());
+            subTotal.setText(String.format(" $%.2f", tempSub));
+
+            tempTax = calSalesTax(calSubTotal(getCartOrders()));
+            totalTax.setText(String.format(" $%.2f", tempTax));
+
+            tempOrderTotal = tempSub + tempTax + sCharge;
+            orderTotal.setText(String.format(" $%.2f", tempOrderTotal));
+        }
+    }
+
+    private void resetET() {
+        subTotal.setText(" $0.00");
+        totalTax.setText(" $0.00");
+        orderTotal.setText(" $0.00");
     }
 
 
@@ -186,7 +218,8 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             cartList = mc.getEntireCart(cC.getM_Id());
             return cartList;
         } else
-            return null;
+            resetET();
+        return null;
     }
 
 
@@ -202,9 +235,12 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         double salesTax = .08875;
         double tax = d * salesTax;
         return tax;
+
     }
 
-    public void placeOrder(double tempOrdertoal, double tempTax, double tempSub, long paymentId, long customerId) {
+
+    public void placeOrder(double tempOrderTotal, double tempTax, double tempSub, long paymentId, long customerId) {
+      
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, 0);
@@ -217,9 +253,16 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         ordersContract.createOrder(getRandomNumberUsingNextInt(), todayDate, "Preparing", customerId, sharedPreferences.getLong("truck_Id", 0));
 
         Order order = ordersContract.getOrderByOrderNumber(String.valueOf(orderNumber));
-        //create invoice
+
+        //Create invoice
         InvoiceContract invoiceContract = new InvoiceContract(getContext());
-        invoiceContract.createInvoice(todayDate, String.format("%.2f", tempSub), String.format("%.2f", sCharge), String.format("%.2f", tempTax), String.format("%.2f", tempOrdertoal), order.getM_Id(), paymentId, customerId);
+        invoiceContract.createInvoice(todayDate, String.format("%.2f", tempSub), String.format("%.2f", sCharge), String.format("%.2f", tempTax), String.format("%.2f", tempOrderTotal), order.getM_Id(), paymentId, customerId);
+
+
+        CheckOutContract checkOutContract = new CheckOutContract(getContext());
+
+        addOrderItems(order);
+        addOrderOptions(order);
     }
 
     public void clearCart(long id) {
@@ -230,7 +273,9 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
             cartList.clear();
             cMenuAdapter.submitList(cartList);
             cMenuAdapter.notifyDataSetChanged();
+            resetET();
         }
+        
     }
 
     public String getRandomNumberUsingNextInt() {
@@ -245,5 +290,39 @@ public class CartFragment extends Fragment implements MenuAdapter.OnItemListener
         return String.valueOf(orderNumber);
     }
 
+
+    private void addOrderItems(Order order) {
+        for (Cart cart : cartList) {
+            OrderedItemsContract orderedItemsContract = new OrderedItemsContract(getContext());
+            orderedItemsContract.addOrderedItem(cart.getM_Quantity(), cart.getM_Item().getM_Id(), order.getM_Id());
+        }
+    }
+
+    private void addOrderOptions(Order order) {
+        ArrayList<CartOptions> cartOptions = new ArrayList<>();
+        CartOptionsContract cartOptionsContract = new CartOptionsContract(getContext());
+        for (Cart cart : cartList) {
+
+            ArrayList<CartOptions> options = cartOptionsContract.getAllEntriesByCartID(cart.getM_ID());
+            if (options != null) {
+                cartOptions.addAll(options);
+            }
+        }
+
+        OrderedItemOptionsContract orderedItemOptionsContract = new OrderedItemOptionsContract(getContext());
+        OrderedItemsContract orderedItemsContract = new OrderedItemsContract(getContext());
+        int i = 1;
+        for (CartOptions cartOptions1 : cartOptions) {
+            Log.i("zz", "Iteration: " + i);
+            OrderedItem orderedItem = orderedItemsContract.getOrderedItemByOrderAndItemId(order.getM_Id(), cartOptions1.getM_itemId().getM_Id());
+            if (orderedItem != null) {
+                Log.i("zz", "I was here");
+                orderedItemOptionsContract.addOrderedItemOptions(cartOptions1.getM_Option().getM_Id(), cartOptions1.getM_itemId().getM_Id(), orderedItem.getM_id());
+            }
+        }
+        cartOptions.clear();
+    }
 }
+
+
 

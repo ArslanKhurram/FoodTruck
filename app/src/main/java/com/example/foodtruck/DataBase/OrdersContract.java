@@ -211,6 +211,51 @@ public final class OrdersContract {
         return order;
     }
 
+    //return array List of all orders
+    public ArrayList<Order> getAllOrders() {
+        open();
+        ArrayList<Order> ordersList = new ArrayList<Order>();
+
+        Cursor cursor = mDb.rawQuery("SELECT * FROM " + OrdersEntry.TABLE_NAME, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_FOOD_TRUCK_ID)));
+                ordersList.add(order);
+                if (cursor.isLast() || cursor.isClosed())
+                    break;
+                else
+                    cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        mDb.close();
+        close();
+        return ordersList;
+    }
+
+
+    //return Order by searching by order number
+    public Order getOrderByOrderNumber(String orderNumber) {
+        open();
+        Cursor cursor = mDb.query(OrdersEntry.TABLE_NAME, mAllColumns, OrdersEntry.COL_ORDER_NUMBER + " =? ",
+                new String[]{orderNumber}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Order order = cursorToOrder(cursor, cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_CUSTOMER_ID)), cursor.getLong(cursor.getColumnIndex(OrdersEntry.COL_FOOD_TRUCK_ID)));
+        cursor.close();
+        mDb.close();
+        close();
+        return order;
+    }
+
+
+
+
+
     //column and table names
     public static final class OrdersEntry implements BaseColumns {
         public static final String TABLE_NAME = "orders";
